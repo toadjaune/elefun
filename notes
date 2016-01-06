@@ -1,0 +1,36 @@
+inverser la relation entre les pages children : parent
+pour pouvoir avoir une seule ligne en bdd par page avec l'id du père.
+au lieu d'un ensemble de children.
+
+TABLES :
+- Pages
+    la structure du cours
+        :id
+        :type
+        :name
+        :graded
+        :format
+        :parent
+- User
+    les différents utilisateurs
+        :id
+        :username
+        (:ip ?)
+        (:agent ? -> navigateur, à peu près useless)
+- Events
+    les évènements loggés par le serveur
+        :time
+        :type
+        :org_id
+        :user_id
+        :course_id
+        :session_id
+        :path #
+        event 
+          :mode #
+- Sessions
+    les différentes sessions par les utilisateur (pour éviter de faire les
+    requêtes sur la table Events, qui est la plus grosse de loin)
+        :id
+        :user_id
+        :session
