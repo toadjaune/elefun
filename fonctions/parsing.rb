@@ -2,13 +2,10 @@ require 'rubygems'
 require 'json'
 require 'mongoid'
 
-Mongoid.load!("config/mongoid.yml", :development)
-
 class Page
   
   attr_accessor :id, :type, :display_name, :graded, :format, :children
   
-  include Mongoid::Document
   
   def initialize(params, blocks)
     @id = params['id']
