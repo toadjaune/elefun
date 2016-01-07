@@ -17,8 +17,8 @@ class Page
 end
 
 db = Neo4j::Session.open(:server_db)
-db.query.match('n').optional_match('n-p-').delete('n, p')
-puts(Page.count + " Pages")
+db.query("MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE r, n")
+puts(Page.count.to_s + " Pages")
 puts("DB cleared !")
 
 file = File.new('data/course_structure_ENSCachan_20003S02_Trimestre_1_2015.json', 'r')
@@ -52,4 +52,4 @@ end
 cours = tree(blocks, root, "", file2)
 cours.save
 
-puts(Page.count + "Pages")
+puts(Page.count.to_s + " Pages")
