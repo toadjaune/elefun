@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require 'json'
 require 'neo4j'
-require_relative 'events'
+require_relative 'event'
 require_relative 'user'
 require_relative 'session'
 require_relative 'page'
@@ -9,27 +9,25 @@ require_relative 'page'
 db = Neo4j::Session.open(:server_db)
 
 
-file = File.new('../data/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized','r')
-file.each do |line|
-	a = JSON.parse(line)
-	u = User.find_by(user_id: "#{a['context']['user_id']}")
-	if !u.empty? then
-		s = Session.find_by(name: "#{a['name']}",user: "#{u}"} then
-		if !s.empty? && a['event']="browser"
-			p = Page.find_by(id: "#{a['event']['id']}")
-			if !p.empty?
-				rel = Event.new(from_node: "#{s}",to_class: "#{p}",time: "#{a['time']}",event_type: "browser",org_id: "#{a['context']['org_id']}",path: "#{a['context']['path'],}",event_id: "#{a['event']['id']}")
-			end
-
-		else
-
-
-
-
+file = File.new('data/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized','r')
+file.each do |l|
+    line = JSON.parse(l)
+    user = User.find_by(user_id: line['context']['user_id'])
+	if !user.empty? then
+		s = user.sessions.where(name: line['name']).first
+		#s = Session.find_by(name: line['name'], user: user)
+		if s.empty? 
+			s = Session.create({name: line['name'], agent: line['agent'], user: u}) 
 		end
 	else
-		u = User.create({"username"=>"#{a['username']}", "user_id"=>"#{a['context']['user_id']}"})
-		s = Session.create({"name"=>"#{a['name']}","agent"=>"#{a['agent']}","user"=>"#{u}"}) 
+		user = User.create({username: line['username'], user_id: line['context']['user_id']})
+		s = Session.create({name: line['name'], agent: line['agent'], user: u}) 
 	end
+		
+	if line['event'] == "browser"
+		page = Page.find_by(id: line['event']['id'])
+		if !page.empty?
+			time = Datetime.iso8601(line['time'])
+			rel = Event.new(from_node: s,to_class: page,time: time,event_type: "browser",org_id: line['context']['org_id'],path: a['context']['path'],event_id: line['event']['id'])
 end
 		
