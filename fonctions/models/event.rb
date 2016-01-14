@@ -1,4 +1,5 @@
 require 'neo4j'
+require 'date'
 
 class Event
   include Neo4j::ActiveRel
@@ -7,8 +8,8 @@ class Event
   to_class :Page
   type 'visited'
   
-  property :time, type: Datetime
   property :event_type, type: String
+  property :time, type: DateTime
   
   #context
   property :org_id, type: Integer
