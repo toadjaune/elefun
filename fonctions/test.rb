@@ -17,14 +17,14 @@ db = Neo4j::Session.open(:server_db)
 file = File.new('data/20003S02/browser_events', 'r')
 
 nb_i4x = 0
-nb_path = 0
+nb_page = 0
 nb_event_id = 0
 total = 0
 
 file.each do |l|
   line = JSON.parse(l)
-  id = line['event']['id']
-  if id
+  #id = line['event']['id']
+  if line['event'].is_a?(Hash) and id = line['event']['id']
     if id.match '^i4x:'
       puts("#{total}| i4x  : " + id.split('/').last)
       nb_i4x += 1
@@ -34,13 +34,12 @@ file.each do |l|
     end
   else
     puts("#{total}| page : " + line['page'].split('/').last)
-    nb_path += 1
+    nb_page += 1
   end
   total += 1
 end
   
-  puts("i4x : #{nb_i4x}/#{total}")
-  puts("i4x : #{nb_path}/#{total}")
-  puts("i4x : #{nb_event_id}/#{total}")
+puts("i4x : #{nb_i4x}/#{total} | #{1.0*nb_i4x/total*100}%")
+puts("page : #{nb_page}/#{total} | #{1.0*nb_page/total*100}%")
+puts("event id : #{nb_event_id}/#{total} | #{1.0*nb_event_id/total*100}%")
 
-  

@@ -1,5 +1,7 @@
 require 'neo4j'
 require 'date'
+require_relative 'session'
+require_relative 'page'
 
 class Event
   include Neo4j::ActiveRel
@@ -12,7 +14,7 @@ class Event
   property :time, type: DateTime
   
   #context
-  property :org_id, type: Integer
+  property :org_id, type:   Integer
   property :path, type: String
   
   #event

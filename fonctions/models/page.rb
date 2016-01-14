@@ -8,7 +8,7 @@ class Page
   property :display_name
   property :graded, type: Boolean, default: false
   property :forma, type: String, default: ""
-  property :myid, constraint: :unique
+  property :myid, type: String,  constraint: :unique
   
   validates :display_name, presence: true
   

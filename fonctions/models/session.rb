@@ -3,7 +3,7 @@ require 'neo4j'
 class Session
   include Neo4j::ActiveNode
   
-  property :name, type: String
+  property :name, type: String, constraint: :unique
   property :agent, type: String
   property :ip, type: String
   
