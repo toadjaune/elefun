@@ -4,11 +4,8 @@ require 'json'
 require_relative 'models/page'
 
 
-db = Neo4j::Session.open(:server_db)
-db.query("MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE r, n")
-puts(Page.count.to_s + " Pages")
-puts("DB cleared !")
 
+db = Neo4j::Session.open(:server_db)
 file = File.new('data/20003S02/course_structure_ENSCachan_20003S02_Trimestre_1_2015.json', 'r')
 cours = JSON.parse(file.gets)
 #on a désormais un hash du JSON
