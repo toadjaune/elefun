@@ -15,6 +15,8 @@ class Page
   has_one :in, :parent, type: :page, model_class: :Page
   has_many :out, :children, type: :page, model_class: :Page
   
+  has_many :in, :sessions, rel_class: :Event	
+	
   def set(params)
     self.myid = params['id'].split("/").last
     self.type = params['type']

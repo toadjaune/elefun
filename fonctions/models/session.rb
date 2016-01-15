@@ -10,4 +10,5 @@ class Session
   validates_presence_of :name
   
   has_one :in, :user, type: :user
+  has_many :out, :pages, rel_class: :Event
 end
