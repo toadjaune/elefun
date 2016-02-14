@@ -8,7 +8,7 @@ file2 = File.new('data/20003S02/browser_events','w')
 i = 0
 file1.each do |l|
 	line = JSON.parse(l)
-	if line['event_source'] == "browser" 
+  if line['event_source'] == "browser" and !(line['event_type'] == "page_close")
 		file2.write(l)
 		i += 1
 	end

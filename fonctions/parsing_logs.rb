@@ -25,6 +25,7 @@ end
 
 #file = File.new('data/20003S02/course_head.json','r')
 file = File.new('data/20003S02/browser_events','r')
+#file = File.new('data/20003S02/bug','r')
 nb = 0
 parsed = 0
 server = 0
@@ -76,9 +77,11 @@ file.each do |l|
 			puts("error #{line['event_type']}")
 			errors += 1
 		end
-          
+        if nb == 101204
+			puts(line)
+		end
         
-		if page
+      if page and !s.name.empty?
 			time = DateTime.iso8601(line['time'])
             rel = Event.create(from_node: s, to_node: page, time: time, event_type: "browser", org_id: line['context']['org_id'], path: line['context']['path'], page: line['page'])
 			rela += 1

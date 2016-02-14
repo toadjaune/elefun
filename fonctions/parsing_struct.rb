@@ -21,7 +21,7 @@ classe.set(blocks[root])
 def tree(blocks, id, depth)
   page = Page.new
   page.set(blocks[id])
-  puts(page.display_name)
+	puts(depth + page.display_name)
   depth = depth + " "
   children_id = blocks[id]["children"]
   page.children = []
