@@ -12,12 +12,13 @@ class Thread
 
 	property :category_id, type: String
 
+	has_many :out, :responses, type: :response
 
-	#has_one :in, :sess_creation, type: :session, model_class: :Session
-	#has_many :in, :sessions, type: :session, model_class: :Session
+	#has_one :in, :sess_creation, type: :session
+	#has_many :in, :sessions, type: :session
 
 	#manque cet élément (à voir si utile)
-	#has_one :out, :page, type: :page, model_class: :Page
+	#has_one :out, :page, type: :page
 
 	def set(params)
 		self.id = params['event']['id']
