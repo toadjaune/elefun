@@ -2,6 +2,7 @@ require 'neo4j'
 require 'date'
 
 class Event
+  #Représente les différents event liant Page et User via des Sessions
   include Neo4j::ActiveRel
   
   from_class :Session

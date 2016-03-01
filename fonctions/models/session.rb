@@ -1,6 +1,7 @@
 require 'neo4j'
 
 class Session
+  #Appartient à un User et regroupe un ensemble de Page visitées
   include Neo4j::ActiveNode
   
   property :name, type: String, constraint: :unique

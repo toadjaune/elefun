@@ -1,6 +1,7 @@
 require 'neo4j'
 
 class Page
+  #Représente les différentes pages du cours
   include Neo4j::ActiveNode
   
   
@@ -15,7 +16,9 @@ class Page
   has_one :in, :parent, type: :page, model_class: :Page
   has_many :out, :children, type: :page, model_class: :Page
   
-  has_many :in, :sessions, rel_class: :Event	
+  has_many :in, :sessions, rel_class: :Event
+  
+  has_many :in, :groups, type: :group
 	
   def set(params)
     self.myid = params['id'].split("/").last
