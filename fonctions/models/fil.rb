@@ -12,7 +12,7 @@ class Fil
 
   property :category_id, type: String
 
-  has_many :out, :responses, type: :response
+  has_many :in, :responses, type: :response
 
   #has_one :in, :sess_creation, type: :session
   #has_many :in, :sessions, type: :session

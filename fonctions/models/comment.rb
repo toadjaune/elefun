@@ -12,7 +12,7 @@ class Comment
 
   property :category_id, type: String
 
-  has_one :in, :response, type: :response
+  has_one :out, :response, type: :response
 
   # ajout des sessions...
 
@@ -23,9 +23,9 @@ class Comment
     self.time = params['time']
     self.message = params['event']['body']
     self.category_id = params['event']['category_id']
-
-    r = Response.as(:r).where(name: params['event']['response']['id']).pluck(:r).first
-    self.response << r
-
+    r = Response.as(:r).where(myid: params['event']['response']['id']).pluck(:r).first
+    if r
+      r.comments << self
+    end
   end
 end

@@ -13,13 +13,14 @@ require_relative 'models/comment'
 
 db = Neo4j::Session.open(:server_db)
 
-file = File.new('data/20003S02/course_head.json','r')
+#file = File.new('data/20003S02/course_head.json','r')
 #file = File.new('data/20003S02/browser_events','r')
 #file = File.new('data/20003S02/bug','r')
+file = File.new('data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized','r')
 nb = 0
 parsed = 0
 server = 0
-forum = 0
+forums = 0
 browser = 0
 users = 0
 sessions = 0
@@ -39,19 +40,30 @@ file.each do |l|
 
     forum = /edx\.forum\.(?<type>.*)\.created/.match(line['event_type'])
     if forum != nil
-      forum += 1
-      parse += case forum[:type]
-      when 'fil'
+      forums += 1
+      parsed += case forum[:type]
+      when 'thread'
         puts('fil')
-        Fil.new.set(line)
-        1
-      when 'comment'
-        puts('comment')
-        Comment.new.set(line)
+        f = Fil.new
+        f.set(line)
+        f.save
+        puts(line['event']['id'])
         1
       when 'response'
         puts('response')
-        Response.new.set(line)
+        r = Response.new
+        r.set(line)
+        r.save
+        puts(line['event']['id'])
+        puts('fil_id : ' + line['event']['discussion']['id'])
+        1
+      when 'comment'
+        puts('comment')
+        c = Comment.new
+        c.set(line)
+        c.save
+        puts(line['event']['id'])
+        puts('response_id : ' + line['event']['response']['id'])
         1
       else
         puts("What is this ? #{forum[:type]}")
@@ -66,7 +78,7 @@ puts(sess.uniq)
 duration = Time.now - start
 puts("duration : #{duration}")
 puts("server : #{server}")
-puts("- forum : #{forum}")
+puts("- forum : #{forums}")
 puts("browser : #{browser}")
 puts("errors : #{errors}")
 puts("sessions trouvées : #{sessions}")

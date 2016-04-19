@@ -12,8 +12,8 @@ class Response
 
   property :category_id, type: String
 
-  has_one :in, :fil, type: :fil
-  has_many :out, :comments, type: :comment
+  has_one :out, :fil, type: :fil
+  has_many :in, :comments, type: :comment
 
   # ajout des sessions...
 
@@ -25,7 +25,9 @@ class Response
     self.message = params['event']['body']
     self.category_id = params['event']['category_id']
 
-    t = Thread.as(:t).where(name: params['event']['discussion']['id']).pluck(:t).first
-    self.thread << t
+    f = Fil.as(:t).where(myid: params['event']['discussion']['id']).pluck(:t).first
+    if f
+      f.responses << self
+    end
   end
 end
