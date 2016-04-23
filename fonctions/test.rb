@@ -17,7 +17,7 @@ db = Neo4j::Session.open(:server_db)
 
 #on compte ce qu'on arrive à parser parmi les events browser en première partie en parsant sur le :path puis sur le event[:id]
 
-f = Fil.first
+f = Fil.last
 puts(f.myid)
 f.responses.each do |c|
   print 1

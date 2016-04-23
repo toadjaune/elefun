@@ -7,6 +7,9 @@ require_relative 'models/event'
 require_relative 'models/user'
 require_relative 'models/session'
 require_relative 'models/page'
+require_relative 'models/fil'
+require_relative 'models/response'
+require_relative 'models/comment'
 
 db = Neo4j::Session.open(:server_db)
 
@@ -34,7 +37,7 @@ def parse_logs(filename)
   new_sessions = 0
   new_relations = 0
   page_errors = 0
-  sessions_errors = 0
+  session_errors = 0
   start = Time.now
   sess = []
   
@@ -49,7 +52,6 @@ def parse_logs(filename)
 
     if line['event_source'] == "server" 
       server += 1
-
       forum = /edx\.forum\.(?<type>.*)\.created/.match(line['event_type'])
       if forum != nil
         forums += 1
@@ -80,12 +82,12 @@ def parse_logs(filename)
         else
           puts("What is this ? #{forum[:type]}")
           #puts(line)
-          toparse.write(line)
+          toparse.write(line+'\n')
         end
       else
-      toparse.write(line)
+      toparse.write(line+'\n')
       end
-    elsif line['event_source'] == "browser" and !(line['event_type'] == "page_close")
+    elsif line['event_source'] == "browser" and !(line['event_type'] == "page_close") and !line['session'].blank?
       browser += 1
     
       ###GET SESSIONS
@@ -124,10 +126,8 @@ def parse_logs(filename)
       if page.nil?
         puts("error #{line['event_type']}")
         page_errors += 1
-        toparse.write(line)
-      end
-      #si on trouve la page
-      if page
+        toparse.write(line+'\n')
+      else
         time = DateTime.iso8601(line['time'])
         rel = Event.create(from_node: s, to_node: page, time: time, event_type: line['event_type'], org_id: line['context']['org_id'], path: line['context']['path'], page: line['page'])
         new_relations += 1
@@ -150,7 +150,7 @@ def parse_logs(filename)
 end
 
 #parse_logs('data/20003S02/course_head.json')
-#parse_logs('data/20003S02/browser_events')
+#parse_logs('data/20003S02/debug')
 parse_logs('data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized')
   
 
