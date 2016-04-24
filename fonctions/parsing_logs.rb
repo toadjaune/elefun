@@ -52,18 +52,21 @@ def parse_logs(filename)
 
     if line['event_source'] == "server" 
       server += 1
-      forum = /edx\.forum\.(?<type>.*)\.created/.match(line['event_type'])
-      if forum != nil
-        forums += 1
-        parsed += case forum[:type]
-        when 'thread'
+      parsed += case line['event_type']
+        when '/create_account'
+          puts('Enroll')
+          u = User.find_by(username: line['POST']['username'])
+          if !u
+            User.create(line['POST'])
+          end
+        when 'edx.forum.thread.created'
           puts('fil')
           f = Fil.new
           f.set(line)
           f.save
           #puts(line['event']['id'])
           1
-        when 'response'
+        when 'edx.forum.response.created'
           puts('response')
           r = Response.new
           r.set(line)
@@ -71,7 +74,7 @@ def parse_logs(filename)
           #puts(line['event']['id'])
           #puts('fil_id : ' + line['event']['discussion']['id'])
           1
-        when 'comment'
+        when 'edx.forum.comment.created'
           puts('comment')
           c = Comment.new
           c.set(line)
