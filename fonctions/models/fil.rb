@@ -28,6 +28,7 @@ class Fil
     self.message = params['event']['body']
     self.fil_type = params['event']['thread_type']
     self.category_id = params['event']['category_id']
+  end
 
   def set_discuss(params)
     self.time = params['time']
