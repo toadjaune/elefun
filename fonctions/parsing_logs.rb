@@ -14,6 +14,11 @@ require_relative 'models/comment'
 db = Neo4j::Session.open(:server_db)
 
 
+# Quelques données propres à ce MOOC
+@auteur = 'ENSCachan'
+@id_cours = '20003S02'
+@periode = 'Trimestre_1_2015'
+
 #renvoit l'id de la page suivant les différents format possible
 def get_id(line)
   if line['event'].is_a?(Hash) and id = line['event']['id']
@@ -23,7 +28,7 @@ def get_id(line)
       return id.split('-').last
     end
   else
-	return line['page'].split('/').last
+    return line['page'].split('/').last
   end
   return nil
 end
@@ -40,11 +45,11 @@ def parse_logs(filename)
   session_errors = 0
   start = Time.now
   sess = []
-  
+
   server = 0
   forums = 0
   browser = 0
-  
+
 
   file.each do |l|
     nb += 1
@@ -52,50 +57,142 @@ def parse_logs(filename)
 
     if line['event_source'] == "server" 
       server += 1
-      case line['event_type']
-        when '/create_account'
-          #puts('Enroll')
-          if !line['event']['POST'].nil?   
-            u = User.find_by(username: line['event']['POST']['username'])
-            if u.nil?
-              u = User.new
-              u.set(line['event']['POST'])
-              u.save
-              new_users += 1
-            end
+      parsed += case line['event_type']
+      when '/create_account'
+        #puts('Enroll')
+        if !line['event']['POST'].nil?   
+          u = User.find_by(username: line['event']['POST']['username'])
+          if u.nil?
+            u = User.new
+            u.set(line['event']['POST'])
+            u.save
+            new_users += 1
           end
-          parsed += 1
-        when 'edx.forum.thread.created'
+        end
+        1
+      when /edx\.forum\.(?<type>.*)\.created/
+        case $LAST_MATCH_INFO['type']
+        when 'thread'
           puts('fil')
           f = Fil.new
           f.set(line)
           f.save
           #puts(line['event']['id'])
-          parsed += 1
-        when 'edx.forum.response.created'
+          1
+        when 'response'
           puts('response')
           r = Response.new
           r.set(line)
           r.save
           #puts(line['event']['id'])
           #puts('fil_id : ' + line['event']['discussion']['id'])
-          parsed += 1
-        when 'edx.forum.comment.created'
+          1
+        when 'comment'
           puts('comment')
           c = Comment.new
           c.set(line)
           c.save
           #puts(line['event']['id'])
           #puts('response_id : ' + line['event']['response']['id'])
-          parsed += 1
+          1
         else
-          toparse.write(l+'\n')
-          puts('prout')
-          puts(line)
+          puts("What is this edx.forum type? #{$LAST_MATCH_INFO['type']}")
+          toparse.write(l + "\n")
+        end
+      when /\/courses\/#{@auteur}\/#{@id_cours}\/#{@periode}\/discussion\/(?<type>.+)/
+        discussion = /(?<categorie>[^\/]*)\/(?<arg>.*)/.match($LAST_MATCH_INFO['type'])
+        case discussion['categorie']
+        when /((\h{15,})|(i4x-#{auteur}-#{id_cours}-course-#{periode}_(?<partie>\w*)))/
+          if /threads\/create/.match(discussion['arg']) != nil
+            puts('fil /discussion')
+            f = Fil.new
+            f.set_discuss(line)
+            f.save
+            1
+          else
+            puts("What is this hexa discussion? #{discussion['categorie']}")
+            toparse.write("#{line}\n")
+          end
+
+        when 'threads', 'comments'
+          action = /(?<id_fil>\h*)\/(?<action>.*)/.match(discussion['arg'])
+          case action['action']
+          when 'update'
+            puts("fil /discussion : #{discussion['categorie']} update")
+            f = (discussion['categorie'] == 'thread' ? Fil.find_by(myid: action['id_fil']) : Response.find_by(myid: action['id_fil']))
+            if !f
+              puts("#{discussion['categorie']} inconnu jusque là ; id :#{action['id_fil']}")
+              f = (discussion['categorie'] == 'thread' ? Fil.New : Response.New)
+              f[:myid] = action['id_fil']
+            end
+            f.set_discuss(line)
+            f.save
+            1
+          when 'delete'
+            puts("fil /discussion : #{discussion['categorie']} delete (id: #{action['id_fil']}")
+            f = (discussion['categorie'] == 'thread' ? Fil.find_by(myid: action['id_fil']) : Response.find_by(myid: action[:id_fil]))
+            if f
+              f.delete
+              f.save
+            end
+            1
+          when 'reply'
+            puts("fil /discussion : #{discussion['categorie']} reply (id: #{action['id_fil']}")
+            f = (discussion['categorie'] == 'thread' ? Fil.find_by(myid: action['id_fil']) : Response.find_by(myid: action[:id_fil]))
+            if !f
+              puts("#{discussion['categorie']} inconnu jusque là ; id :#{action['id_fil']}")
+              f = (discussion['categorie'] == 'thread' ? Fil.New : Response.New)
+              f[:myid] = action['id_fil']
+            end
+            r = (discussion['categorie'] == 'thread' ? Reponse.New : Comment.New)
+            r.set_discuss(line, f)
+            r.save
+            1
+          when 'pin', 'follow', 'unfollow', 'upvote', 'unvote', 'close', 'flagAbuse', 'endorse'
+            puts("/discussion/#{discussion['categorie']} : #{action['action']}")
+            # Penser à retirer l'élément si une utilité lui est trouvé...
+            1
+          else
+            puts("What is tbis discussion/#{discussion['categorie']} ? #{action['action']}")
+            toparse.write("#{line}\n")
+          end
+
+        when 'upload', 'users'
+          puts("/discussion/#{discussion['categorie']}")
+          1
+        when 'forum'
+          case discussion['arg']
+          when '', 'search'
+            puts("/discussion/forum/#{discussion['arg']}")
+            1
+          when /(?<id_conv>\h{10,})\/(?<element>\w*)(\z|(\/(?<id_thread>\h{10,})))/
+            case $LAST_MATCH_INFO['element']
+            when 'inline'
+              puts("/discussion/forum/.../inline")
+              1
+            when 'threads'
+              puts("/discussion/forum/.../threads/...")
+              1
+            else
+              puts("Element de discussion/forum inconnu")
+              toparse.write("#{line}\n") 
+            end
+          else
+            puts("What is this discussion? #{discussion['categorie']}")
+            toparse.write("#{line}\n")
+          end
+        else
+          puts("What is this ? #{forum[:type]}")
+          #puts(line)
+          toparse.write("#{line}\n")
+        end
+      else
+        #toparse.write("#{line}\n")
+        toparse.write("#{line}\n")
       end
     elsif line['event_source'] == "browser" and !(line['event_type'] == "page_close") and !line['session'].blank?
       browser += 1
-    
+
       ###GET SESSIONS
       #on cherche si on connait le user
       user = User.find_by(user_id: line['context']['user_id'])
@@ -132,7 +229,7 @@ def parse_logs(filename)
       if page.nil?
         puts("error #{line['event_type']}")
         page_errors += 1
-        toparse.write(line+'\n')
+        toparse.write("#{line}\n")
       else
         time = DateTime.iso8601(line['time'])
         rel = Event.create(from_node: s, to_node: page, time: time, event_type: line['event_type'], org_id: line['context']['org_id'], path: line['context']['path'], page: line['page'])
@@ -159,6 +256,7 @@ end
 #parse_logs('data/20003S02/course_head.json')
 parse_logs('data/20003S02/enrollments')
 #parse_logs('data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized')
-  
 
-		
+
+
+

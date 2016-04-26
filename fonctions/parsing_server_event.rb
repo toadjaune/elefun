@@ -29,6 +29,11 @@ errors = 0
 rela = 0
 start = Time.now
 sess = []
+
+auteur = 'ENSCachan'
+id_cours = '20003S02'
+periode = 'Trimestre_1_2015'
+
 file.each do |l|
   nb += 1
   #puts("parsing line #{nb}")
@@ -66,7 +71,7 @@ file.each do |l|
         puts('response_id : ' + line['event']['response']['id'])
         1
       else
-        puts("What is this ? #{forum[:type]}")
+        puts("What is this? #{forum[:type]}")
         puts(line)
       end
     end

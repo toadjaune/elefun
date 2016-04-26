@@ -28,4 +28,13 @@ class Comment
       r.comments << self
     end
   end
+
+  def set_discuss(params, r)
+    self.time = params['time']
+    self.message = params['event']['POST']['body'].pop
+    if f
+      r.comments << self
+    end
+  end
+
 end
