@@ -30,4 +30,13 @@ class Response
       f.responses << self
     end
   end
+
+  def set_discuss(params, f)
+    self.time = params['time']
+    self.message = params['event']['POST']['body'].pop
+    if f
+      f.responses << self
+    end
+  end
+
 end

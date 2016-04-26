@@ -9,6 +9,7 @@ class Fil
 
   property :title, type: String
   property :message, type: String
+  property :fil_type, type: String
 
   property :category_id, type: String
 
@@ -25,7 +26,14 @@ class Fil
     self.time = params['time']
     self.title = params['event']['title']
     self.message = params['event']['body']
+    self.fil_type = params['event']['thread_type']
     self.category_id = params['event']['category_id']
+
+  def set_discuss(params)
+    self.time = params['time']
+    self.title = params['event']['POST']['title'].pop
+    self.message = params['event']['POST']['body'].pop
+    self.fil_type = params['event']['POST']['thread_type'].pop
 
     #s = Session.as(:s).where(name: params['session']).pluck(:s).first
     #if s.nil?
