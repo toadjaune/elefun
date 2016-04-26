@@ -15,9 +15,9 @@ db = Neo4j::Session.open(:server_db)
 
 
 # Quelques données propres à ce MOOC
-auteur = 'ENSCachan'
-id_cours = '20003S02'
-periode = 'Trimestre_1_2015'
+@auteur = 'ENSCachan'
+@id_cours = '20003S02'
+@periode = 'Trimestre_1_2015'
 
 #renvoit l'id de la page suivant les différents format possible
 def get_id(line)
@@ -91,9 +91,9 @@ def parse_logs(filename)
                     1
                   else
                     puts("What is this edx.forum type? #{$LAST_MATCH_INFO['type']}")
-                    toparse.write(line+'\n')
+                    toparse.write("#{line}\n")
                   end
-                when /\/courses\/#{auteur}\/#{id_cours}\/#{periode}\/discussion\/(?<type>.+)/
+                when /\/courses\/#{@auteur}\/#{@id_cours}\/#{@periode}\/discussion\/(?<type>.+)/
                   discussion = /(?<categorie>[^\/]*)\/(?<arg>.*)/.match($LAST_MATCH_INFO['type'])
                   case discussion['categorie']
                   when /((\h{15,})|(i4x-#{auteur}-#{id_cours}-course-#{periode}_(?<partie>\w*)))/
@@ -105,7 +105,7 @@ def parse_logs(filename)
                       1
                     else
                       puts("What is this hexa discussion? #{discussion['categorie']}")
-                      toparse.write(line+'\n')
+                      toparse.write("#{line}\n")
                     end
 
                   when 'threads', 'comments'
@@ -148,7 +148,7 @@ def parse_logs(filename)
                       1
                     else
                       puts("What is tbis discussion/#{discussion['categorie']} ? #{action['action']}")
-                      toparse.write(line+'\n')
+                      toparse.write("#{line}\n")
                     end
 
                   when 'upload', 'users'
@@ -169,19 +169,20 @@ def parse_logs(filename)
                         1
                       else
                         puts("Element de discussion/forum inconnu")
-                        toparse.write(line+'\n') 
+                        toparse.write("#{line}\n") 
                       end
                     else
                       puts("What is this discussion? #{discussion['categorie']}")
-                      toparse.write(line+'\n')
+                      toparse.write("#{line}\n")
                     end
                   else
                     puts("What is this ? #{forum[:type]}")
                     #puts(line)
-                    toparse.write(line+'\n')
+                    toparse.write("#{line}\n")
                   end
                 else
-                  toparse.write(line+'\n')
+                  #toparse.write("#{line}\n")
+                  toparse.write("#{line}\n")
                 end
     elsif line['event_source'] == "browser" and !(line['event_type'] == "page_close") and !line['session'].blank?
       browser += 1
@@ -222,7 +223,7 @@ def parse_logs(filename)
       if page.nil?
         puts("error #{line['event_type']}")
         page_errors += 1
-        toparse.write(line+'\n')
+        toparse.write("#{line}\n")
       else
         time = DateTime.iso8601(line['time'])
         rel = Event.create(from_node: s, to_node: page, time: time, event_type: line['event_type'], org_id: line['context']['org_id'], path: line['context']['path'], page: line['page'])
