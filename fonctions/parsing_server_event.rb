@@ -89,15 +89,15 @@ file.each do |l|
                     puts("What is this hexa discussion? #{forum2[:categorie]}")
                     puts(line)
                   end
-                when 'threads' or 'comments'
+                when 'threads', 'comments'
                   action = /(?<id_fil>\h*)\/(?<action>.*)/.match(forum2[:arg])
                   case action[:action]
                   when 'update'
                     puts("fil /discussion : #{forum2[:categorie]} update")
-                    f = Fil.find_by(myid: action[:id_fil]) if forum2[:categorie] == 'thread' else Response.find_by(myid: action[:id_fil])
+                    f = (forum2[:categorie] == 'thread' ? Fil.find_by(myid: action[:id_fil]) : Response.find_by(myid: action[:id_fil]))
                     if !f
                       puts("#{forum2[:categorie]} inconnu jusque là ; id :#{action[:id_fil]}")
-                      f = Fil.New if forum2[:categorie] == 'thread' else Response.New
+                      f = (forum2[:categorie] == 'thread' ? Fil.New : Response.New)
                       f[:myid] = action[:id_fil]
                     end
                     f.set_discuss(line)
@@ -105,7 +105,7 @@ file.each do |l|
                     1
                   when 'delete'
                     puts("fil /discussion : #{forum2[:categorie]} delete (id: #{action[:id_fil]}")
-                    f = Fil.find_by(myid: action[:id_fil]) if forum2[:categorie] == 'thread' else Response.find_by(myid: action[:id_fil])
+                    f = (forum2[:categorie] == 'thread' ? Fil.find_by(myid: action[:id_fil]) : Response.find_by(myid: action[:id_fil]))
                     if f
                       f.delete
                       f.save
@@ -113,13 +113,13 @@ file.each do |l|
                     1
                   when 'reply'
                     puts("fil /discussion : #{forum2[:categorie]} reply (id: #{action[:id_fil]}")
-                    f = Fil.find_by(myid: action[:id_fil]) if forum2[:categorie] == 'thread' else Response.find_by(myid: action[:id_fil])
+                    f = (forum2[:categorie] == 'thread' ? Fil.find_by(myid: action[:id_fil]) : Response.find_by(myid: action[:id_fil]))
                     if !f
                       puts("#{forum2[:categorie]} inconnu jusque là ; id :#{action[:id_fil]}")
-                      f = Fil.New if forum2[:categorie] == 'thread' else Response.New
+                      f = (forum2[:categorie] == 'thread' ? Fil.New : Response.New)
                       f[:myid] = action[:id_fil]
                     end
-                    r = Reponse.new if forum2[:categorie] == 'thread' else Comment.New
+                    r = (forum2[:categorie] == 'thread' ? Reponse.New : Comment.New)
                     r.set_discuss(line, f)
                     r.save
                     1
@@ -158,6 +158,7 @@ file.each do |l|
                   else
                     puts("What is this discussion/thread ? #{action[:action]}")
                     puts(line)
+                  end
                 when 'upload'
                   puts('discussion/upload')
                   1
