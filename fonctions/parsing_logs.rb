@@ -52,20 +52,26 @@ def parse_logs(filename)
 
     if line['event_source'] == "server" 
       server += 1
-      parsed += case line['event_type']
+      case line['event_type']
         when '/create_account'
-          puts('Enroll')
-          u = User.find_by(username: line['POST']['username'])
-          if !u
-            User.create(line['POST'])
+          #puts('Enroll')
+          if !line['event']['POST'].nil?   
+            u = User.find_by(username: line['event']['POST']['username'])
+            if u.nil?
+              u = User.new
+              u.set(line['event']['POST'])
+              u.save
+              new_users += 1
+            end
           end
+          parsed += 1
         when 'edx.forum.thread.created'
           puts('fil')
           f = Fil.new
           f.set(line)
           f.save
           #puts(line['event']['id'])
-          1
+          parsed += 1
         when 'edx.forum.response.created'
           puts('response')
           r = Response.new
@@ -73,7 +79,7 @@ def parse_logs(filename)
           r.save
           #puts(line['event']['id'])
           #puts('fil_id : ' + line['event']['discussion']['id'])
-          1
+          parsed += 1
         when 'edx.forum.comment.created'
           puts('comment')
           c = Comment.new
@@ -81,14 +87,11 @@ def parse_logs(filename)
           c.save
           #puts(line['event']['id'])
           #puts('response_id : ' + line['event']['response']['id'])
-          1
+          parsed += 1
         else
-          puts("What is this ? #{forum[:type]}")
-          #puts(line)
-          toparse.write(line+'\n')
-        end
-      else
-      toparse.write(line+'\n')
+          toparse.write(l+'\n')
+          puts('prout')
+          puts(line)
       end
     elsif line['event_source'] == "browser" and !(line['event_type'] == "page_close") and !line['session'].blank?
       browser += 1
@@ -136,13 +139,14 @@ def parse_logs(filename)
         new_relations += 1
       end
     end
-    if nb % 1000 == 0
+    if nb % 20 == 0
       puts(nb)
     end
   end
   duration = Time.now - start
   puts("durée (en min) : #{duration/60}")
   puts("total : #{nb}")
+  puts("parsed : #{parsed}")
   puts("server : #{server}")
   puts("browser : #{browser}")
   puts("sessions appartenant à plus d'un user : #{session_errors}")
@@ -153,8 +157,8 @@ def parse_logs(filename)
 end
 
 #parse_logs('data/20003S02/course_head.json')
-#parse_logs('data/20003S02/debug')
-parse_logs('data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized')
+parse_logs('data/20003S02/enrollments')
+#parse_logs('data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized')
   
 
 		

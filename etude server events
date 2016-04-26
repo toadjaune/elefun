@@ -1,0 +1,22 @@
+Enrollment : 
+parsing sur "event_type": "/create_account"
+  - 3999 lignes trouvées, beaucoup de vides
+parsing sur "gender" (contenu dans le POST d'une réelle inscription)
+  - 1363 lignes
+  - NB ne pas parser sur gender
+  - on trouve des lignes du genre de 
+  {"event_type"=>"/courses/ENSCachan/20003S02/Trimestre_1_2015/instructor/api/get_distribution", "agent"=>"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.124 Safari/537.36", "page"=>nil, "accept_language"=>"fr-FR,fr;q=0.8,en-US;q=0.6,en;q=0.4", "referer"=>"https://www.france-universite-numerique-mooc.fr/courses/ENSCachan/20003S02/Trimestre_1_2015/instructor", "username"=>"586e0af07ac252b1042b0316394c43c17b9611fecc126395882ec9112a2791d0", "time"=>"2015-06-12T08:58:03.122347+00:00", "context"=>{"org_id"=>"ENSCachan", "course_user_tags"=>{}, "user_id"=>567888, "course_id"=>"ENSCachan/20003S02/Trimestre_1_2015", "path"=>"/courses/ENSCachan/20003S02/Trimestre_1_2015/instructor/api/get_distribution"}, "ip"=>"", "event"=>{"POST"=>{}, "GET"=>{"feature"=>["gender"]}}, "host"=>"www.france-universite-numerique-mooc.fr", "event_source"=>"server"}
+
+parsing sur honor code :
+  - 1214 lignes
+parsing sur year_of_birth :
+  - 1360 lignes
+  
+Il faut trouver un bon moyen :
+parsing sur csrfmiddlewaretoken :
+  - 1345 lignes, autant que celles aprsées avec succès par le critère "gender"
+  
+Il ne faudra plus que faire le lien avec les user_id utilisés dans les browser_events
+
+
+  

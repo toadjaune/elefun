@@ -17,11 +17,17 @@ db = Neo4j::Session.open(:server_db)
 
 #on compte ce qu'on arrive à parser parmi les events browser en première partie en parsant sur le :path puis sur le event[:id]
 
-f = Fil.last
-puts(f.myid)
-f.responses.each do |c|
-  print 1
+file1 = File.new('data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized','r')
+file2 = File.new('event_type_spreadsheet','w')
+#file = File.new('data/20003S02/enrollments','r')
+
+h = Hash.new(0)
+
+file1.each do |l|
+  line = JSON.parse(l)
+  h[line['event_type']] += 1
 end
 
-r = Response.first
-puts(r.fil.myid)
+h.each do |key, value|
+  file2.write(key.to_s + " : " + value.to_s + "\n")
+end
