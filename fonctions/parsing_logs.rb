@@ -49,7 +49,7 @@ def parse_logs(filename)
   server = 0
   forums = 0
   browser = 0
-
+ 
 
   file.each do |l|
     nb += 1
@@ -67,8 +67,10 @@ def parse_logs(filename)
               u.set(line['event']['POST'])
               u.save
               new_users += 1
-              parsed += 1
             end
+            parsed += 1
+          else
+            toparse.write(l + "\n")          
           end 
         when /edx\.forum\.(?<type>.*)\.created/
           puts("erreur")
@@ -114,7 +116,6 @@ def parse_logs(filename)
                 puts("What is this hexa discussion? #{discussion['categorie']}")
                 toparse.write("#{line}\n")
               end
-
             when 'threads', 'comments'
               action = /(?<id_fil>\h*)\/(?<action>.*)/.match(discussion['arg'])
               case action['action']
@@ -131,7 +132,7 @@ def parse_logs(filename)
                 parsed += 1
               when 'delete'
                 puts("fil /discussion : #{discussion['categorie']} delete (id: #{action['id_fil']}")
-                f = (discussion['categorie'] == 'thread' ? Fil.find_by(myid: action['id_fil']) : Response.find_by(myid: action[:id_fil]))
+                f = (discussion['categorie'] == 'thread' ? Fil.find_by(myid: action['id_fil']) : Response.find_by(myid: action['id_fil']))
                 if f
                   f.delete
                   f.save
@@ -139,7 +140,7 @@ def parse_logs(filename)
                 parsed += 1
               when 'reply'
                 puts("fil /discussion : #{discussion['categorie']} reply (id: #{action['id_fil']}")
-                f = (discussion['categorie'] == 'thread' ? Fil.find_by(myid: action['id_fil']) : Response.find_by(myid: action[:id_fil]))
+                f = (discussion['categorie'] == 'thread' ? Fil.find_by(myid: action['id_fil']) : Response.find_by(myid: action['id_fil']))
                 if !f
                   puts("#{discussion['categorie']} inconnu jusque là ; id :#{action['id_fil']}")
                   f = (discussion['categorie'] == 'thread' ? Fil.New : Response.New)
@@ -188,7 +189,6 @@ def parse_logs(filename)
               toparse.write(l + "\n")
           end
         else
-          #toparse.write("#{line}\n")
           toparse.write(l + "\n")          
       end
     elsif line['event_source'] == "browser" and !(line['event_type'] == "page_close") and !line['session'].blank?
@@ -221,7 +221,7 @@ def parse_logs(filename)
           session_errors += 1
         end
         user.sessions << s
-        user.save
+      user.save
       end
       ###
 
@@ -236,7 +236,7 @@ def parse_logs(filename)
         rel = Event.create(from_node: s, to_node: page, time: time, event_type: line['event_type'], org_id: line['context']['org_id'], path: line['context']['path'], page: line['page'])
         new_relations += 1
       end
-    end
+    end	
     if nb % 500 == 0
       puts(nb)
     end
