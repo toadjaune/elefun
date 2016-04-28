@@ -32,7 +32,7 @@ class Comment
   def set_discuss(params, r)
     self.time = params['time']
     self.message = params['event']['POST']['body'].pop
-    if f
+    if r 
       r.comments << self
     end
   end
