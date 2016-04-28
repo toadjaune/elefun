@@ -26,6 +26,7 @@ $periode = 'Trimestre_1_2015'
 def parse_logs(filename)
   file = File.new(filename,'r')
   $toparse = File.new('data/20003S02/left_to_parse','w')
+  $bugged = File.new('data/20003S02/bugged','w')
   $nb = 0
   $parsed = 0
   $new_users = 0
@@ -43,36 +44,41 @@ def parse_logs(filename)
   file.each do |l|
     $nb += 1
     line = JSON.parse(l)
+    begin
+      ### SERVER_EVENTS
+      if line['event_source'] == "server" 
+        $server += 1
+        case line['event_type']
+          when '/create_account'
+            #puts('Enroll')
+            Parser.enrollment_parser(line) ? $parsed += 1 : $toparse.write(l)
 
-    ### SERVER_EVENTS
-    if line['event_source'] == "server" 
-      $server += 1
-      case line['event_type']
-        when '/create_account'
-          #puts('Enroll')
-          Parser.enrollment_parser(line) ? $parsed += 1 : $toparse.write(l)
-        
-        when /edx\.forum\.(?<type>.*)\.created/
-          Parser.created_forum_parser(line, $LAST_MATCH_INFO['type']) ? $parsed += 1 : $toparse.write(l)  
-       
-        when /\/courses\/#{$auteur}\/#{$id_cours}\/#{$periode}\/discussion\/(?<type>.+)/
-          discussion = /(?<categorie>[^\/]*)\/(?<arg>.*)/.match($LAST_MATCH_INFO['type'])
-          #hack dégueulasse sur la ligne suivante
-          if discussion  
-            Parser.discussion_forum_parser(line, discussion) ? $parsed += 1 : $toparse.write(l)
-          end
-        else
-          $toparse.write(l)
+          when /edx\.forum\.(?<type>.*)\.created/
+            Parser.created_forum_parser(line, $LAST_MATCH_INFO['type']) ? $parsed += 1 : $toparse.write(l)  
+
+          when /\/courses\/#{$auteur}\/#{$id_cours}\/#{$periode}\/discussion\/(?<type>.+)/
+            discussion = /(?<categorie>[^\/]*)\/(?<arg>.*)/.match($LAST_MATCH_INFO['type'])
+            #hack dégueulasse sur la ligne suivante
+            if discussion  
+              Parser.discussion_forum_parser(line, discussion) ? $parsed += 1 : $toparse.write(l)
+            end
+          else
+            $toparse.write(l)
+        end
+
+      ### BROWSER_EVENTS
+      elsif line['event_source'] == "browser" and !(line['event_type'] == "page_close") and !line['session'].blank?
+        $browser += 1
+        Parser.browser_parser(line) ? $parsed += 1 : $toparse.write(l)
+      end	
+      if $nb % 1000 == 0
+        puts($nb)
       end
-    
-    ### BROWSER_EVENTS
-    elsif line['event_source'] == "browser" and !(line['event_type'] == "page_close") and !line['session'].blank?
-      $browser += 1
-      Parser.browser_parser(line) ? $parsed += 1 : $toparse.write(l)
-    end	
-    if $nb % 1000 == 0
-      puts($nb)
-    end
+    rescue Exception => e  
+      puts e.message
+      $bugged.write e.message
+      $bugged.write("#{nb}:"+l)
+    end  
   end
   duration = Time.now - start
   puts("durée (en min) : #{duration/60}")
