@@ -49,7 +49,7 @@ module Parser
     #on récupère l'id de la page
     page = Page.find_by(myid: Parser.get_id(line))
     if page.nil?
-      puts("error #{line['event_type']}")
+      #puts("error #{line['event_type']}")
       $page_errors += 1
       return false
     else

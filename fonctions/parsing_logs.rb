@@ -77,7 +77,7 @@ def parse_logs(filename)
     rescue Exception => e  
       puts e.message
       $bugged.write e.message
-      $bugged.write("#{nb}:"+l)
+      $bugged.write("#{$nb}:"+l)
     end  
   end
   duration = Time.now - start
@@ -107,8 +107,8 @@ def parse_logs(filename)
 end
 
 #parse_logs('data/20003S02/course_head.json')
-parse_logs('data/20003S02/browser_events')
-#parse_logs('data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized')
+#parse_logs('data/20003S02/debug')
+parse_logs('data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized')
 
 
 

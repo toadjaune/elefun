@@ -38,10 +38,9 @@ module Parser
           puts('fil /discussion')
           f = Fil.new
           ###erreur appel de [] sur nil,
-          #f.set_discuss(line)
-          #f.save
+          f.set_discuss(line)
+          f.save
           ###
-          true
           true
         else
           #puts("What is this hexa discussion? #{discussion['categorie']}")
@@ -59,8 +58,8 @@ module Parser
               f[:myid] = action['id_fil']
             end
             ###A dÃ©commenter, fait bugger  appel de Response.responses ???
-            #f.set_discuss(line, f)
-            #f.save
+            f.set_discuss(line, f)
+            f.save
             ###
             true
           when 'delete'
@@ -81,8 +80,8 @@ module Parser
             end
             r = (discussion['categorie'] == 'thread' ? Reponse.new : Comment.new)
             ###Pareil
-            #r.set_discuss(line, f)
-            #r.save
+            r.set_discuss(line, f)
+            r.save
             ###
             true
           when 'pin', 'follow', 'unfollow', 'upvote', 'unvote', 'close', 'flagAbuse', 'endorse'
