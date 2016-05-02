@@ -42,7 +42,6 @@ module Parser
           #f.save
           ###
           true
-          true
         else
           #puts("What is this hexa discussion? #{discussion['categorie']}")
           false
