@@ -57,7 +57,7 @@ module Parser
               f = (discussion['categorie'] == 'thread' ? Fil.new : Response.new)
               f[:myid] = action['id_fil']
             end
-            ###A dÃ©commenter, fait bugger  appel de Response.responses ???
+            ### À décommenter, fait bugger appel de Response.responses ???
             f.set_discuss(line, f)
             f.save
             ###
