@@ -27,6 +27,19 @@
     <% end %>
   </tbody>
 </table>
+<li>
+  <% @moocs.each do |mooc| %>
+    <ul><%= mooc.bdd%></ul>
+  <% end %>
+</li>
+
+<!--form>
+    <select>
+      <% @moocs.each do |mooc| %>
+          <option><%= mooc.bdd%></option>
+      <% end %>
+  </select>
+</form-->
 
 <br>
 
