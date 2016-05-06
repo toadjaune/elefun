@@ -30,6 +30,7 @@ def parse_logs(filename)
   $nb = 0
   $parsed = 0
   $new_users = 0
+  $new_users_enroll = 0
   $new_sessions = 0
   $new_relations = 0
   $page_errors = 0
@@ -89,7 +90,8 @@ def parse_logs(filename)
   puts("sessions appartenant à plus d'un user : #{$session_errors}")
   puts("pages non trouvées : #{$page_errors}")
   puts("sessions créés : #{$new_sessions}")
-  puts("user créés : #{$new_users}")
+  puts("user créés via enrollment : #{$new_users_enroll}")
+  puts("user créés via browser : #{$new_users}")
   puts("relations créées : #{$new_relations}")
 
   result = File.new('results', 'a')
@@ -101,14 +103,15 @@ def parse_logs(filename)
   result.puts("sessions appartenant à plus d'un user : #{$session_errors}")
   result.puts("pages non trouvées : #{$page_errors}")
   result.puts("sessions créés : #{$new_sessions}")
-  result.puts("user créés : #{$new_users}")
+  result.puts("user créés via enrollment : #{$new_users_enroll}")
+  result.puts("user créés via browser : #{$new_users}")
   result.puts("relations créées : #{$new_relations}")
   result.puts("_________________________________")
 end
 
 #parse_logs('data/20003S02/course_head.json')
-#parse_logs('data/20003S02/debug')
-parse_logs('data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized')
+parse_logs('data/20003S02/videos')
+#parse_logs('data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized')
 
 
 

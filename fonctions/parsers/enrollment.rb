@@ -7,7 +7,7 @@ module Parser
         u = User.new
         u.set(line['event']['POST'])
         u.save
-        $new_users += 1
+        $new_users_enroll += 1
       end
       return true
     else
