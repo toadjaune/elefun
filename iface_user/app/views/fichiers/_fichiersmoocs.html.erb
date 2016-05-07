@@ -1,0 +1,16 @@
+<% @fichiers.each do |fichier| %>
+  <p>
+    <strong>Nom:</strong>
+    <%= fichier.nom %>
+  </p>
+
+  <p>
+    <strong>Mooc:</strong>
+    <%= fichier.mooc %>
+  </p>
+
+  <%= link_to 'Edit', edit_fichier_path(fichier) %> |
+  <%= link_to 'Back', fichiers_path %>
+<% end %>
+
+<%= link_to 'Nouveau fichier', new_fichier_path %>
