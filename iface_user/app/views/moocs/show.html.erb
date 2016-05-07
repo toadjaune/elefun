@@ -1,24 +1,8 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Auteur:</strong>
-  <%= @mooc.auteur %>
-</p>
-
-<p>
-  <strong>Id cours:</strong>
-  <%= @mooc.id_cours %>
-</p>
-
-<p>
-  <strong>Periode:</strong>
-  <%= @mooc.periode %>
-</p>
-
-<p>
-  <strong>Bdd:</strong>
-  <%= @mooc.bdd %>
-</p>
-
-<%= link_to 'Edit', edit_mooc_path(@mooc) %> |
-<%= link_to 'Back', moocs_path %>
+<div id="mooc">
+  <%= render 'moocs/showmooc' %>
+</div>
+<hr>
+<div id="fichier">
+ <%= render 'fichiers/fichiersmoocs' %>
+</div>
+<hr>

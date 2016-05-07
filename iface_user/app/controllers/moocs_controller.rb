@@ -10,8 +10,11 @@ class MoocsController < ApplicationController
   # GET /moocs/1
   # GET /moocs/1.json
   def show
+    @fichiers = @mooc.fichiers
+    respond_to do |format|
+      format.html { render :show, layout: false }
+    end
   end
-
   # GET /moocs/new
   def new
     @mooc = Mooc.new
@@ -19,6 +22,9 @@ class MoocsController < ApplicationController
 
   # GET /moocs/1/edit
   def edit
+    respond_to do |format|
+      format.html { render :edit, layout: false }
+    end
   end
 
   # POST /moocs
@@ -42,7 +48,8 @@ class MoocsController < ApplicationController
   def update
     respond_to do |format|
       if @mooc.update(mooc_params)
-        format.html { redirect_to @mooc, notice: 'Mooc was successfully updated.' }
+        #format.html { redirect_to @mooc, notice: 'Mooc was successfully updated.' }
+        format.html { render :edited, layout: false }
         format.json { render :show, status: :ok, location: @mooc }
       else
         format.html { render :edit }
@@ -69,6 +76,6 @@ class MoocsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mooc_params
-      params.require(:mooc).permit(:auteur, :id_cours, :periode, :bdd_id)
+      params.require(:mooc).permit(:auteur, :id_cours, :periode, :bdd_id, :nom)
     end
 end

@@ -9,6 +9,7 @@
 #  bdd_id     :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  nom        :string
 #
 # Indexes
 #
@@ -16,5 +17,6 @@
 #
 
 class Mooc < ActiveRecord::Base
+  has_many :fichiers
   belongs_to :bdd
 end

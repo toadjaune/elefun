@@ -14,3 +14,49 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require_tree .
+
+var url ,chargement, loadMOOC
+
+url='http://localhost:3000';
+
+chargement = $('<div class="hidden"><p>Chargement...</p></div>');
+
+function changeContent(tag, u){
+    $(tag).empty();
+    $(tag).append(chargement);
+    $.get(u, function(data, status){
+        $(tag).empty();
+        $(tag).append(data);
+    });
+};
+
+function loadMOOC(id){
+    changeContent($("#info_mooc"), url+'/moocs/'+id);
+};
+
+function inputify(tag){
+    this.inputtag=$('<input type="text" value="'+$(tag).text()+'"></input>');
+    $(tag).after(inputtag);
+    $(tag).remove();
+};
+
+function editMOOC(id){
+    changeContent($("#mooc"), url+'/moocs/'+id+'/edit')
+};
+
+$(document).ready(function(){
+    loadMOOC($("#select_mooc").find(":selected").val());
+    $(document).on('submit', 'form', function() {
+        noeud = $(this).parent();
+        $.ajax({
+            data: $(this).serialize(),
+            type: $(this).attr('method'),
+            url: $(this).attr('action'),
+            success: function(response) {
+                $(noeud).empty();
+                $(noeud).append(response);
+            }
+        });
+        return false; 
+    });
+});

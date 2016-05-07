@@ -1,0 +1,26 @@
+
+<p>
+<strong>Nom:</strong>
+<span class="moocinfo"><%= @mooc.nom %></span>
+</p>
+<p>
+<strong>Auteur:</strong>
+<span class="moocinfo"><%= @mooc.auteur %></span>
+</p>
+
+<p>
+<strong>Id cours:</strong>
+<span class="moocinfo"><%= @mooc.id_cours %></span>
+</p>
+
+<p>
+<strong>Periode:</strong>
+<span class="moocinfo"><%= @mooc.periode %></span>
+</p>
+
+<p>
+<strong>Bdd:</strong>
+<span class="moocinfo"><%= @mooc.bdd %></span>
+</p>
+
+<button id="editmooc" onclick="editMOOC(<%= @mooc.id %>)">Modifier</button>
