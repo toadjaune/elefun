@@ -46,8 +46,42 @@ class BddScriptAssociation < ActiveRecord::Base
     a.etat ||= BddScriptAssociation.etats_valides[0]
   end
 
-
-  def perform(script_name, opts)
-    Script.where(nom: script_name).first.launch(opts)
+  # Cette méthode est un wrapper pour le lancement du script
+  # Elle renvoie nil s'il a correctement été lancé, un message d'erreur sinon
+  def launch(opts='')
+#    if etat == 'En cours' || etat == 'En attente'
+#      return 'Impossible de lancer ce script pour le moment'
+#    end
+    self.etat = 'En attente'
+    save!
+    BddScriptAssociation.perform_async(id,opts)
+    nil
   end
+
+  #def launch(args='')
+  #  script_file = File.expand_path("../../../scripts/#{nom}", __FILE__)
+  #  stdout_and_stderr, status = capture2e(RbConfig.ruby, script_file, args)
+  #  p stdout_and_stderr
+  #  p status
+  #end
+
+
+  # NB : On n'appelle jamais perform directement, mais plutôt BddScriptAssociation.perform_async, qui est une méthode de classe et non d'instance.
+  # On a donc besoin d'un id en argument pour savoir quel script exécuter.
+  def perform(bdd_script_association, opts)
+    association = BddScriptAssociation.find(bdd_script_association)
+    script = association.script
+    script_file = File.expand_path("../../../scripts/#{script.nom}", __FILE__)
+    association.etat = 'En cours'
+    association.save!
+    stdout_and_stderr, status = capture2e(RbConfig.ruby, script_file, opts)
+    association.log = stdout_and_stderr
+    if status.exitstatus == 0
+      association.etat = 'Réussi'
+    else
+      association.etat = 'Échoué'
+    end
+    association.save!
+  end
+
 end

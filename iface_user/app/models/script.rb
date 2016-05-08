@@ -8,23 +8,12 @@
 #  updated_at :datetime         not null
 #
 
-require 'rbconfig'
-require 'open3'
-include Open3
-
 class Script < ActiveRecord::Base
 
   validates :nom, 
     presence: true,
     uniqueness: true
   validate :script_existence
-
-  def launch(args='')
-    script_file = File.expand_path("../../../scripts/#{nom}", __FILE__)
-    stdout_and_stderr, status = capture2e(RbConfig.ruby, script_file, args)
-    p stdout_and_stderr
-    p status
-  end
 
   private
 
