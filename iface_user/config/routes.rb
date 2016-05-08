@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :scripts
   resources :bdds
+  resources :bdd_script_associations
   resources :fichiers
   resources :moocs
    get 'moocs/:id/all' => 'moocs#all', as: :liste_moocs

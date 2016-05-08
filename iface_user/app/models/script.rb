@@ -15,6 +15,10 @@ class Script < ActiveRecord::Base
     uniqueness: true
   validate :script_existence
 
+  def to_s
+    nom
+  end
+
   private
 
   def script_existence

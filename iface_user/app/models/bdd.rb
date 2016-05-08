@@ -8,4 +8,8 @@
 #
 
 class Bdd < ActiveRecord::Base
+
+  def to_s
+    id
+  end
 end
