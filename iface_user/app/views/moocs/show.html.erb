@@ -1,8 +1,11 @@
-<div id="mooc">
-  <%= render 'moocs/showmooc' %>
+<div class='panel panel-default'>
+  <div class='panel panel-heading'><%= @mooc.nom %></div>
+  <ul class='list-group'>
+    <li id="mooc" class='list-group-item'>
+    <%= render 'moocs/showmooc' %>
+    </li>
+    <li id="fichier" class='list-group-item'>
+    <%= render 'fichiers/fichiersmoocs' %>
+    </li>
+  </ul>
 </div>
-<hr>
-<div id="fichier">
- <%= render 'fichiers/fichiersmoocs' %>
-</div>
-<hr>

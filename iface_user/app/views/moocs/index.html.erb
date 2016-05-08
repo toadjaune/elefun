@@ -1,19 +1,27 @@
-<p id="notice"><%= notice %></p>
+<p id="notice" class='alert'><%= notice %></p>
 
-<h1>Listing Moocs</h1>
+<div class='well'>
+  <h1>Listing Moocs</h1>
 
-<form id="select_mooc">
-  <select>
-      <% @moocs.each do |mooc| %>
-        <option value="<%=mooc.id%>" onclick="loadMOOC(<%=mooc.id%>)"><%= mooc.nom%></option>
-      <% end %>
-  </select>
-</form>
-
-<%= link_to 'New Mooc', new_mooc_path %>
-<br>
-
-
-<hr>
+  <form id="select_mooc" >
+    <div class='row'>
+      <div class="col-sm-6 col-sm-offset-1">
+        <select class="form-control">    
+          <% @moocs.each do |mooc| %>
+            <option value="<%=mooc.id%>"
+          class=""
+          onclick="loadMOOC(<%=mooc.id%>)"
+          <% if @id == mooc.id.to_i %>selected<% puts('selected')%><% end %>>
+          <%= mooc.nom%>
+          </option>
+        <% end %>
+        </select>
+      </div>
+    </div>
+  </form>
+  <div class='row'>
+    <%= link_to 'New Mooc', new_mooc_path, class: 'col-sm-offset-1 btn btn-link'  %>
+  </div>
+</div>
 
 <div id="info_mooc"></div>

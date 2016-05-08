@@ -15,9 +15,17 @@ class MoocsController < ApplicationController
       format.html { render :show, layout: false }
     end
   end
+
   # GET /moocs/new
   def new
     @mooc = Mooc.new
+  end
+
+  # GET /moocs/1/all
+  def all
+    @moocs = Mooc.all
+    @id = params[:id].to_i
+    render :index
   end
 
   # GET /moocs/1/edit
@@ -34,7 +42,7 @@ class MoocsController < ApplicationController
 
     respond_to do |format|
       if @mooc.save
-        format.html { redirect_to @mooc, notice: 'Mooc was successfully created.' }
+        format.html { redirect_to '/moocs/'+@mooc.id.to_s+'/all', notice: 'Mooc was successfully created.' }
         format.json { render :show, status: :created, location: @mooc }
       else
         format.html { render :new }
@@ -49,7 +57,7 @@ class MoocsController < ApplicationController
     respond_to do |format|
       if @mooc.update(mooc_params)
         #format.html { redirect_to @mooc, notice: 'Mooc was successfully updated.' }
-        format.html { render :edited, layout: false }
+        format.html { redirect_to '/moocs/'+@mooc.id.to_s+'/all', layout: false, notice: 'Mooc édité' }
         format.json { render :show, status: :ok, location: @mooc }
       else
         format.html { render :edit }
@@ -63,7 +71,7 @@ class MoocsController < ApplicationController
   def destroy
     @mooc.destroy
     respond_to do |format|
-      format.html { redirect_to moocs_url, notice: 'Mooc was successfully destroyed.' }
+      format.html { redirect_to '/moocs', notice: 'Mooc supprimé' }
       format.json { head :no_content }
     end
   end

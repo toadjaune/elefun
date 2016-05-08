@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require twitter/bootstrap
 //= require turbolinks
 //= require_tree .
 
@@ -43,10 +44,16 @@ function inputify(tag){
 function editMOOC(id){
     changeContent($("#mooc"), url+'/moocs/'+id+'/edit')
 };
-
-$(document).ready(function(){
+/*
+$(document).on('click', 'nav', function() {
+    if ($('#info_mooc').children().length == 0) {
+        loadMOOC($("#select_mooc").find(":selected").val());
+    }
+});
+*/
+$(document).on('page:load ready', function(){
     loadMOOC($("#select_mooc").find(":selected").val());
-    $(document).on('submit', 'form', function() {
+    $(document).on('submit', '.edit_mooc', function() {
         noeud = $(this).parent();
         $.ajax({
             data: $(this).serialize(),
