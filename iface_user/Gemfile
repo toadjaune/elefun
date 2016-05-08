@@ -41,6 +41,8 @@ gem 'haml-rails', '~> 0.9.0'
 # Auth utilisateurs
 gem 'devise', '~> 4.1.0'
 
+# Lancement des scripts en background
+gem 'sidekiq'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
