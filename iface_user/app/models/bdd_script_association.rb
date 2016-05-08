@@ -8,6 +8,7 @@
 #  etat       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  log        :text
 #
 # Indexes
 #
@@ -18,4 +19,6 @@
 class BddScriptAssociation < ActiveRecord::Base
   belongs_to :bdd
   belongs_to :script
+
+  validates_presence_of :bdd, :script
 end
