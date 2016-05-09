@@ -10,6 +10,8 @@
 
 class Script < ActiveRecord::Base
 
+  has_many :bdd_script_association, dependent: :destroy
+
   validates :nom, 
     presence: true,
     uniqueness: true
@@ -22,7 +24,8 @@ class Script < ActiveRecord::Base
   private
 
   def script_existence
-    if !File.exists?(File.expand_path("../../../scripts/#{nom}", __FILE__))
+    file = File.expand_path("../../../scripts/#{nom}", __FILE__)
+    if !File.exists?(file) || File.ftype(file) == 'directory'
       errors.add(:nom, "doit correspondre à un script existant. [Fichier non trouvé : #{File.expand_path("#{Rails.root}/scripts/#{nom}", __FILE__)}]")
     end
   end

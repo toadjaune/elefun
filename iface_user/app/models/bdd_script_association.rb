@@ -37,7 +37,14 @@ class BddScriptAssociation < ActiveRecord::Base
   belongs_to :bdd
   belongs_to :script
 
-  validates_presence_of :bdd, :script
+  validates :bdd,
+    presence: true,
+    uniqueness: { scope: :script,
+                  message: 'Cette BDD est déjà liée à ce script' } # On vérifie que le lien BDD-Script est unique
+  validates :script,
+    presence: true,
+    uniqueness: { scope: :bdd,
+                  message: 'Cette BDD est déjà liée à ce script' }
   validates :etat,
     presence: true,
     inclusion: { in: self.etats_valides }
@@ -49,25 +56,18 @@ class BddScriptAssociation < ActiveRecord::Base
   # Cette méthode est un wrapper pour le lancement du script
   # Elle renvoie nil s'il a correctement été lancé, un message d'erreur sinon
   def launch(opts='')
-#    if etat == 'En cours' || etat == 'En attente'
-#      return 'Impossible de lancer ce script pour le moment'
-#    end
+    if etat == 'En cours' || etat == 'En attente'
+      return 'Impossible de lancer ce script pour le moment'
+    end
     self.etat = 'En attente'
     save!
     BddScriptAssociation.perform_async(id,opts)
     nil
   end
 
-  #def launch(args='')
-  #  script_file = File.expand_path("../../../scripts/#{nom}", __FILE__)
-  #  stdout_and_stderr, status = capture2e(RbConfig.ruby, script_file, args)
-  #  p stdout_and_stderr
-  #  p status
-  #end
-
-
   # NB : On n'appelle jamais perform directement, mais plutôt BddScriptAssociation.perform_async, qui est une méthode de classe et non d'instance.
   # On a donc besoin d'un id en argument pour savoir quel script exécuter.
+  # Notons qu'en principe, il faudrait isoler ça dans un classe à part (app/workers ...), mais ça ne semble pas marcher, on le fait donc un peu manuellement.
   def perform(bdd_script_association, opts)
     association = BddScriptAssociation.find(bdd_script_association)
     script = association.script
