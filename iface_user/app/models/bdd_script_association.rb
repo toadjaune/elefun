@@ -65,6 +65,11 @@ class BddScriptAssociation < ActiveRecord::Base
     nil
   end
 
+  def reset_etat
+    self.etat = BddScriptAssociation.etats_valides[0]
+    save
+  end
+
   # NB : On n'appelle jamais perform directement, mais plutôt BddScriptAssociation.perform_async, qui est une méthode de classe et non d'instance.
   # On a donc besoin d'un id en argument pour savoir quel script exécuter.
   # Notons qu'en principe, il faudrait isoler ça dans un classe à part (app/workers ...), mais ça ne semble pas marcher, on le fait donc un peu manuellement.

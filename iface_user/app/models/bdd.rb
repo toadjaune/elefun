@@ -25,7 +25,7 @@ class Bdd < ActiveRecord::Base
 
   # La situation où une BDD n'est pas liée à un script n'est pas supposée avoir lieu
   def is_linked_to_every_script
-    if scripts.count != Script.count
+    if scripts.size != Script.count
       # NB : On se repose sur la validation d'unicité du lien BDD-Script
       errors.add :scripts, 'Doit être liée à tous les scripts'
     end
