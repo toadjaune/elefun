@@ -2,17 +2,28 @@
 require 'neo4j'
 require 'json'
 require_relative 'models/page'
+require_relative 'models/video'
 
 #parcours l'arborescence en prenant en argument la page racine et la profondeur
-def tree(blocks, id, depth)
-  page = Page.new
-  page.set(blocks[id])
+def tree(blocks, id, depth, week)
+  params = blocks[id]
+  case params["type"] 
+    when "dmcloud"
+      page = Video.new
+    #when "problem"
+      #attribuer la valeur quizz
+    else
+      page = Page.new
+  end
+  
+  page.set(params, depth.length, week)    
   puts(depth + page.display_name)
   depth = depth + " "
-  children_id = blocks[id]["children"]
+  
+  children_id = params["children"]
   page.children = []
   for child_id in children_id
-    child = tree(blocks, child_id, depth)
+    child = tree(blocks, child_id, depth, week)
     child.save
     page.children << child
   end
@@ -27,8 +38,8 @@ def parse_struct(filename)
   blocks = cours['blocks']
   #page racine
   classe = Page.new
-  classe.set(blocks[root])
-  cours = tree(blocks, root, "")
+  classe.set(blocks[root], 0, "")
+  cours = tree(blocks, root, "", "")
   cours.save
   puts(Page.count.to_s + " Pages")
 end
