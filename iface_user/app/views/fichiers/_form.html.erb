@@ -16,8 +16,12 @@
     <%= f.text_field :nom %>
   </div>
   <div class="field">
-    <%= f.label :mooc_id %><br>
-    <%= f.text_field :mooc_id %>
+    <%= f.label "id_mooc" %><br>
+    <%= f.text_field :id_mooc %>
+  </div>
+  <div class="field">
+    <%= f.label "fichier log" %><br>
+    <%= f.file_field :test %>
   </div>
   <div class="actions">
     <%= f.submit %>

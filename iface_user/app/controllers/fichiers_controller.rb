@@ -69,6 +69,6 @@ class FichiersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def fichier_params
-      params.require(:fichier).permit(:nom, :mooc_id)
+      params.require(:fichier).permit(:nom, :mooc, :tempfile)
     end
 end

@@ -1,0 +1,31 @@
+<ul>
+<li>
+<strong>Nom :</strong>
+<span class="moocinfo"><%= @mooc.nom %></span>
+</li>
+<li>
+<strong>Auteur :</strong>
+<span class="moocinfo"><%= @mooc.auteur %></span>
+</li>
+
+<li>
+<strong>Id cours :</strong>
+<span class="moocinfo"><%= @mooc.id_cours %></span>
+</li>
+
+<li>
+<strong>Periode :</strong>
+<span class="moocinfo"><%= @mooc.periode %></span>
+</li>
+
+<li>
+<strong>Bdd :</strong>
+<span class="moocinfo"><%= @mooc.bdd %></span>
+</li>
+</ul>
+<div class='raw'>
+  <div class='btn-group col-sm-offset-0' role='group'>
+    <button id="editmooc" class='btn btn-primary btn-xs' onclick="editMOOC(<%= @mooc.id %>)">Modifier</button>
+    <%= link_to 'Destroy', @mooc, method: :delete, class: 'btn btn-warning btn-xs', data: { confirm: 'Êtes-vous sûr ?' } %>
+  </div>
+</div>

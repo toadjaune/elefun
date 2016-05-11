@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160503134537) do
+ActiveRecord::Schema.define(version: 20160508121315) do
 
   create_table "bdd_script_associations", force: :cascade do |t|
     t.integer  "bdd_id"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20160503134537) do
     t.string   "etat"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text     "log"
   end
 
   add_index "bdd_script_associations", ["bdd_id"], name: "index_bdd_script_associations_on_bdd_id"
@@ -32,8 +33,10 @@ ActiveRecord::Schema.define(version: 20160503134537) do
   create_table "fichiers", force: :cascade do |t|
     t.string   "nom"
     t.integer  "mooc_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "genre"
+    t.string   "nom_fichier"
   end
 
   add_index "fichiers", ["mooc_id"], name: "index_fichiers_on_mooc_id"

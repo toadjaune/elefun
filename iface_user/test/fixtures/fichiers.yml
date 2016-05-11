@@ -2,11 +2,13 @@
 #
 # Table name: fichiers
 #
-#  id         :integer          not null, primary key
-#  nom        :string
-#  mooc_id    :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id          :integer          not null, primary key
+#  nom         :string
+#  mooc_id     :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  genre       :string
+#  nom_fichier :string
 #
 # Indexes
 #

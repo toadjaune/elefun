@@ -1,33 +1,27 @@
-<p id="notice"><%= notice %></p>
+<p id="notice" class='alert'><%= notice %></p>
 
-<h1>Listing Moocs</h1>
+<div class='well'>
+  <h1>Listing Moocs</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Auteur</th>
-      <th>Id cours</th>
-      <th>Periode</th>
-      <th>Bdd</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+  <form id="select_mooc" >
+    <div class='row'>
+      <div class="col-sm-6 col-sm-offset-1">
+        <select class="form-control">    
+          <% @moocs.each do |mooc| %>
+            <option value="<%=mooc.id%>"
+          class=""
+          onclick="loadMOOC(<%=mooc.id%>)"
+          <% if @id == mooc.id.to_i %>selected<% puts('selected')%><% end %>>
+          <%= mooc.nom%>
+          </option>
+        <% end %>
+        </select>
+      </div>
+    </div>
+  </form>
+  <div class='row'>
+    <%= link_to 'New Mooc', new_mooc_path, class: 'col-sm-offset-1 btn btn-link'  %>
+  </div>
+</div>
 
-  <tbody>
-    <% @moocs.each do |mooc| %>
-      <tr>
-        <td><%= mooc.auteur %></td>
-        <td><%= mooc.id_cours %></td>
-        <td><%= mooc.periode %></td>
-        <td><%= mooc.bdd %></td>
-        <td><%= link_to 'Show', mooc %></td>
-        <td><%= link_to 'Edit', edit_mooc_path(mooc) %></td>
-        <td><%= link_to 'Destroy', mooc, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Mooc', new_mooc_path %>
+<div id="info_mooc"></div>

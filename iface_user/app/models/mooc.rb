@@ -16,5 +16,6 @@
 #
 
 class Mooc < ActiveRecord::Base
+  has_many :fichiers
   belongs_to :bdd
 end

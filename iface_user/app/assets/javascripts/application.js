@@ -12,5 +12,58 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require twitter/bootstrap
 //= require turbolinks
 //= require_tree .
+
+var url ,chargement, loadMOOC
+
+url='http://localhost:3000';
+
+chargement = $('<div class="hidden"><p>Chargement...</p></div>');
+
+function changeContent(tag, u){
+    $(tag).empty();
+    $(tag).append(chargement);
+    $.get(u, function(data, status){
+        $(tag).empty();
+        $(tag).append(data);
+    });
+};
+
+function loadMOOC(id){
+    changeContent($("#info_mooc"), url+'/moocs/'+id);
+};
+
+function inputify(tag){
+    this.inputtag=$('<input type="text" value="'+$(tag).text()+'"></input>');
+    $(tag).after(inputtag);
+    $(tag).remove();
+};
+
+function editMOOC(id){
+    changeContent($("#mooc"), url+'/moocs/'+id+'/edit')
+};
+/*
+$(document).on('click', 'nav', function() {
+    if ($('#info_mooc').children().length == 0) {
+        loadMOOC($("#select_mooc").find(":selected").val());
+    }
+});
+*/
+$(document).on('page:load ready', function(){
+    loadMOOC($("#select_mooc").find(":selected").val());
+    $(document).on('submit', '.edit_mooc', function() {
+        noeud = $(this).parent();
+        $.ajax({
+            data: $(this).serialize(),
+            type: $(this).attr('method'),
+            url: $(this).attr('action'),
+            success: function(response) {
+                $(noeud).empty();
+                $(noeud).append(response);
+            }
+        });
+        return false; 
+    });
+});

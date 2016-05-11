@@ -1,24 +1,11 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Auteur:</strong>
-  <%= @mooc.auteur %>
-</p>
-
-<p>
-  <strong>Id cours:</strong>
-  <%= @mooc.id_cours %>
-</p>
-
-<p>
-  <strong>Periode:</strong>
-  <%= @mooc.periode %>
-</p>
-
-<p>
-  <strong>Bdd:</strong>
-  <%= @mooc.bdd %>
-</p>
-
-<%= link_to 'Edit', edit_mooc_path(@mooc) %> |
-<%= link_to 'Back', moocs_path %>
+<div class='panel panel-default'>
+  <div class='panel panel-heading'><%= @mooc.nom %></div>
+  <ul class='list-group'>
+    <li id="mooc" class='list-group-item'>
+    <%= render 'moocs/showmooc' %>
+    </li>
+    <li id="fichier" class='list-group-item'>
+    <%= render 'fichiers/fichiersmoocs' %>
+    </li>
+  </ul>
+</div>

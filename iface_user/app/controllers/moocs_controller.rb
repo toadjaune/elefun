@@ -10,6 +10,10 @@ class MoocsController < ApplicationController
   # GET /moocs/1
   # GET /moocs/1.json
   def show
+    @fichiers = @mooc.fichiers
+    respond_to do |format|
+      format.html { render :show, layout: false }
+    end
   end
 
   # GET /moocs/new
@@ -17,8 +21,18 @@ class MoocsController < ApplicationController
     @mooc = Mooc.new
   end
 
+  # GET /moocs/1/all
+  def all
+    @moocs = Mooc.all
+    @id = params[:id].to_i
+    render :index
+  end
+
   # GET /moocs/1/edit
   def edit
+    respond_to do |format|
+      format.html { render :edit, layout: false }
+    end
   end
 
   # POST /moocs
@@ -28,7 +42,7 @@ class MoocsController < ApplicationController
 
     respond_to do |format|
       if @mooc.save
-        format.html { redirect_to @mooc, notice: 'Mooc was successfully created.' }
+        format.html { redirect_to '/moocs/'+@mooc.id.to_s+'/all', notice: 'Mooc was successfully created.' }
         format.json { render :show, status: :created, location: @mooc }
       else
         format.html { render :new }
@@ -42,7 +56,8 @@ class MoocsController < ApplicationController
   def update
     respond_to do |format|
       if @mooc.update(mooc_params)
-        format.html { redirect_to @mooc, notice: 'Mooc was successfully updated.' }
+        #format.html { redirect_to @mooc, notice: 'Mooc was successfully updated.' }
+        format.html { redirect_to '/moocs/'+@mooc.id.to_s+'/all', layout: false, notice: 'Mooc édité' }
         format.json { render :show, status: :ok, location: @mooc }
       else
         format.html { render :edit }
@@ -56,7 +71,7 @@ class MoocsController < ApplicationController
   def destroy
     @mooc.destroy
     respond_to do |format|
-      format.html { redirect_to moocs_url, notice: 'Mooc was successfully destroyed.' }
+      format.html { redirect_to '/moocs', notice: 'Mooc supprimé' }
       format.json { head :no_content }
     end
   end
@@ -69,6 +84,6 @@ class MoocsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def mooc_params
-      params.require(:mooc).permit(:auteur, :id_cours, :periode, :bdd_id)
+      params.require(:mooc).permit(:auteur, :id_cours, :periode, :bdd_id, :nom)
     end
 end
