@@ -26,6 +26,7 @@ class User
   
   validates_presence_of :username
   
+  has_many :out, :informations, type: Info
   has_many :out, :sessions, type: :session
   
   def set(params)

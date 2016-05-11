@@ -38,7 +38,7 @@ class Fil
 
     #s = Session.as(:s).where(name: params['session']).pluck(:s).first
     #if s.nil?
-    #	s = Session.create(name: params['session'], agent: params['agent'])
+    #	s = Session.create(name: params['session'], agent: params['agent'], debut_time: params['time'])
     #end
     #self.sess_creation << s
   end

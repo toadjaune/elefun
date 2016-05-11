@@ -8,13 +8,9 @@ class Info
   to_class :Week
   type 'info'
 
-  property :page_visitees, type: Integer, date: 0
-  property :m_visites, type: Integer, date: 0
-  property :forum_msg, type: Integer, date: 0
-  property :video_play, type: Integer, date: 0
-
-
-
+  property :page_visitees, type: Integer, default: 0
+  property :n_visites, type: Integer, default: 0
+  property :forum_msg, type: Integer, default: 0
+  property :video_play, type: Integer, default: 0
+  property :activite, type:Time, default: 0
 end
-
-
