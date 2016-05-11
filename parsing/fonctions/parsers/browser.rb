@@ -23,7 +23,7 @@ module Parser
       s = user.sessions.as(:s).where(name: line['session']).pluck(:s).first
       if s.nil?
         #sinon on la crée
-        s = Session.create({name: line['session'], agent: line['agent']})
+        s = Session.create({name: line['session'], agent: line['agent'], date_debut: line['time']})
         $new_sessions += 1
         user.sessions << s
         user.save
@@ -37,7 +37,7 @@ module Parser
         s = user.sessions.as(:s).where(name: line['session']).pluck(:s).first
         if s.nil?
           #sinon on la crée
-          s = Session.create({name: line['session'], agent: line['agent']})
+          s = Session.create({name: line['session'], agent: line['agent'], date_debut: line['time']})
           $new_sessions += 1
           user.sessions << s
         end
@@ -51,7 +51,7 @@ module Parser
         s = Session.as(:s).where(name: line['session']).pluck(:s).first
         if s.nil? and !line['session'].empty?
           #cas normal
-          s = Session.create(name: line['session'], agent: line['agent'])
+          s = Session.create({name: line['session'], agent: line['agent'], date_debut: line['time']})
           $new_sessions += 1
         else
           # la session appartient à plus d'un user

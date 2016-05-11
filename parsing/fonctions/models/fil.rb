@@ -1,6 +1,6 @@
 require 'neo4j'
 
-class Fil
+class Fil < Page
   #blabla 
   include Neo4j::ActiveNode
 
@@ -12,7 +12,8 @@ class Fil
   property :fil_type, type: String
 
   property :category_id, type: String
-
+  property :vues, type: Integer, default: 0
+  
   has_many :in, :responses, type: :response
 
   #has_one :in, :sess_creation, type: :session
@@ -38,8 +39,13 @@ class Fil
 
     #s = Session.as(:s).where(name: params['session']).pluck(:s).first
     #if s.nil?
-    #	s = Session.create(name: params['session'], agent: params['agent'])
+    #	s = Session.create(name: params['session'], agent: params['agent'], debut_time: params['time'])
     #end
     #self.sess_creation << s
   end
+  
+  def add_views()
+    self.vues +=1
+  end
+  
 end

@@ -4,7 +4,6 @@ class Page
   #Représente les différentes pages du cours
   include Neo4j::ActiveNode
   
-  
   property :type, default: 'unknown'
   property :display_name
   property :graded, type: Boolean, default: false
