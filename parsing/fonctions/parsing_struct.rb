@@ -7,13 +7,14 @@ require_relative 'models/video'
 #parcours l'arborescence en prenant en argument la page racine et la profondeur
 def tree(blocks, id, depth, week)
   params = blocks[id]
+  page = Page.new
   case params["type"] 
     when "dmcloud"
       page = Video.new
     #when "problem"
       #attribuer la valeur quizz
-    else
-      page = Page.new
+    when "chapter"
+      week = params['display_name'] 
   end
   
   page.set(params, depth.length, week)    

@@ -5,9 +5,10 @@ class Video < Page
   include Neo4j::ActiveNode
   
   
-  property :views, type: String, default: 0
+  property :views, type: Integer, default: 0
   
   def add_view
     self.views += 1
+    self.save
   end
 end
