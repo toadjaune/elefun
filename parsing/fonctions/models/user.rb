@@ -1,4 +1,5 @@
 require 'neo4j'
+require_relativ 'info'
 
 class User
   #Un utilisateur ayant été vu au moins une fois pendant le cours

@@ -4,10 +4,8 @@ class Fil < Page
   #blabla 
   include Neo4j::ActiveNode
 
-  property :myid, type: String, constraint: :unique
   property :time, type: DateTime
 
-  property :title, type: String
   property :message, type: String
   property :fil_type, type: String
 
@@ -25,7 +23,7 @@ class Fil < Page
   def set(params)
     self.myid = params['event']['id']
     self.time = params['time']
-    self.title = params['event']['title']
+    self.display_name = params['event']['title']
     self.message = params['event']['body']
     self.fil_type = params['event']['thread_type']
     self.category_id = params['event']['category_id']
@@ -33,7 +31,7 @@ class Fil < Page
 
   def set_discuss(params)
     self.time = params['time']
-    self.title = params['event']['POST']['title'].pop
+    self.display_name = params['event']['POST']['title'].pop
     self.message = params['event']['POST']['body'].pop
     self.fil_type = params['event']['POST']['thread_type'].pop
 

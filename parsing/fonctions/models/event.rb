@@ -26,7 +26,6 @@ class Event
   
   property :event_source, type: String
   
-    :time
   
   def update_user_stats
     case self.time <=> from_class.date_debut
@@ -39,14 +38,16 @@ class Event
     i.activite = (from_class.date_fin.to_time-from_class.date_fin.to_time+3600).to_datetime
     case to_class.labels[1].to_s    
       when ""
-        from_class.page_visitees++
+        i.page_visitees+=1
       when "Fil"
-        from_class.forum_msg++
+        i.forum_lu+=1
         to_class.add_views
       when "Video"
-        from_class.video_play++
+        i.video_play+=1
         to_class.add_views
       when "Quizz"
-    
-  
+        i.quizz+=1
+        to_class.add_part     
+    end
+  end
 end
