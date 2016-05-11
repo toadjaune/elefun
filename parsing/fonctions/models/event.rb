@@ -37,14 +37,16 @@ class Event
     end
     i = from_class.user.info(:i).where('t.week.date_debut < {date} and t.week.date_fin >= {date}').params(date: "#{self.time}").pluck(:i)
     i.activite = (from_class.date_fin.to_time-from_class.date_fin.to_time+3600).to_datetime
-    #case to_class.labels
-    #  when "[:Cours]"
-    #    from_class.page_visitees++
-    #  when "[:Comment]"
-    #    from_class.forum_msg++
-    #  when "[:Video]"
-    #    from_class.video_play++
-    #  when "[:Quizz]"
+    case to_class.labels[1].to_s    
+      when ""
+        from_class.page_visitees++
+      when "Fil"
+        from_class.forum_msg++
+        to_class.add_views
+      when "Video"
+        from_class.video_play++
+        to_class.add_views
+      when "Quizz"
     
   
 end
