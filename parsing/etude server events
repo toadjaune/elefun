@@ -17,6 +17,38 @@ parsing sur csrfmiddlewaretoken :
   - 1345 lignes, autant que celles aprsées avec succès par le critère "gender"
   
 Il ne faudra plus que faire le lien avec les user_id utilisés dans les browser_events
+après étude seules 748 sont vraiment des création de compte, il y a 597 doublons.
+
+il apparait de plus que beaucoup de création de user ne sont pas présentes, en parsant le cours, on crée 2738 nouveaux user sur lesquels nous n'avons aucune information.
 
 
-  
+QUIZ :
+on commence par étudier les event_type contenant le mot problem
+on se rend vite compte que les COURS/.../i4x/...problem;hash... ne sont les dialogues avec les user, autant ne prendre que les logs serveurs contenant les mêmes infos et plus encore (ie les corrections)
+
+on étudie donc :
+ - problem_save : 7011
+ - problem_check : 26196
+ - problem_graded : 13782
+ - problem_show : 4672
+ - save_problem_success : 7505
+
+on va créer des relation session-[result]->quiz, quiz étant une page dont les fils sont des questions. La structure voudrait que un page regroupe plusieurs question mais il y a plus généralement une question par page, on regroupe donc les informations dans la page mère, pour cela on ajoute aux attributs de la relation result les parametres :
+* grade
+* max_grade
+* attempt
+de l'user concernant cette question.
+
+
+
+
+
+parsing_struct :
+etudes des types des pages :
+  - html -> seul pattern établi : depth = 4
+  - dmcloud -> VIDEOS
+  - vertical -> seul pattern établi : depth = 3
+  - sequential -> seul pattern établi : depth = 2
+  - problem -> les différentes questions des quizz, des fois la page parente du quizz elle-même (erreur de création du quizz ?), moins de la moitié des pages est en graded:true
+  - chapter -> page de profondeur 1 : les semaines
+  - discussion -> semblent être des forums intégrés au cours, uniquement relié à des ligne "jump_to" dans les logs (à première vue)

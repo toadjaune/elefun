@@ -3,6 +3,8 @@ require 'neo4j'
 require 'json'
 require_relative 'models/page'
 require_relative 'models/video'
+require_relative 'models/question'
+require_relative 'models/quiz'
 
 #parcours l'arborescence en prenant en argument la page racine et la profondeur
 def tree(blocks, id, depth, week)
@@ -11,10 +13,16 @@ def tree(blocks, id, depth, week)
   case params["type"] 
     when "dmcloud"
       page = Video.new
-    #when "problem"
-      #attribuer la valeur quizz
+    when "problem"
+      page = Question.new
     when "chapter"
-      week = params['display_name'] 
+      week = params['display_name']
+    when "vertical"
+      #il se peut que la page soit un quiz
+      if !params["children"].empty? and blocks[params["children"].last]['type'] == "problem"
+        #on regarde si le dernier fils est une question le premier peut etre une intro
+        page = Quiz.new
+      end
   end
   
   page.set(params, depth.length, week)    

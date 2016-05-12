@@ -1,16 +1,23 @@
 require 'neo4j'
 require 'date'
 
-class Result < Event
+class Result
+  #regroupe les résultats au quiz d'un user via une de ses session 
+  include Neo4j::ActiveRel
   
-  property :correct, type: Boolean, default: false
+  from_class :User
+  to_class :Quiz
+  type 'result'
   
-  def get_result(success, attempts)
-    # success = line['event']['success"]
-    if success == "correct"
-      self.correct = true
-    end
-    # attempts = line['event']['attempts"]
-    self.attempts = attempts
+  type 'result'
+  property :grade, type: Integer, default: 0
+  property :max_grade, type: Integer, default: 0
+  property :attempts, type: Integer, default: 0
+  
+  def update_result(event)
+    self.grade += event['grade']
+    self.max_grade += event['max_grade']
+    self.attempts += event['attempts']
     self.save
+  end
 end

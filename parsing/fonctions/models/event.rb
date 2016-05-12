@@ -12,7 +12,7 @@ class Event
   property :event_type, type: String
   property :time, type: DateTime
   
-  after_create :update_user_stats
+  #after_create :update_user_stats
   #context
   property :org_id, type: String
   property :path, type: String
@@ -25,28 +25,30 @@ class Event
   property :page, type: String
   
   property :event_source, type: String
-  
-    :time
+  property :event_source, type: String
   
   def update_user_stats
-    case self.time <=> from_class.date_debut
+    case self.time <=> self.from_node.date_debut
       when -1
-        from_class.date_debut = self.time
+        self.from_node.date_debut = self.time
       when 1
-        from_class.date_fin=self.time unless ( from_class.date_fin <=> self.time ) != -1 
+        self.from_node.date_fin=self.time unless ( self.from_node.date_fin <=> self.time ) != -1 
     end
-    i = from_class.user.info(:i).where('t.week.date_debut < {date} and t.week.date_fin >= {date}').params(date: "#{self.time}").pluck(:i)
-    i.activite = (from_class.date_fin.to_time-from_class.date_fin.to_time+3600).to_datetime
-    case to_class.labels[1].to_s    
-      when ""
-        from_class.page_visitees++
-      when "Fil"
-        from_class.forum_msg++
-        to_class.add_views
-      when "Video"
-        from_class.video_play++
-        to_class.add_views
-      when "Quizz"
     
-  
+    #accéder aux infos suivant le model :
+    # Student.first.lessons.each_rel { |r| }
+    i = self.from_node.user.infos(:i).where('t.week.date_debut < {date} and t.week.date_fin >= {date}').params(date: "#{self.time}").pluck(:i)
+    i.activite = (self.from_node.date_fin.to_time-self.from_node.date_fin.to_time+3600).to_datetime
+    case self.to_node.labels[1].to_s    
+      when ""
+        self.from_node.page_visitees += 1
+      when "Fil"
+        self.from_node.forum_msg += 1
+        self.to_node.add_views
+      when "Video"
+        self.from_node.video_play += 1
+        self.to_node.add_views
+      when "Quizz"
+    end
+  end  
 end

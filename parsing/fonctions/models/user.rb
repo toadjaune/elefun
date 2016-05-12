@@ -4,8 +4,8 @@ class User
   #Un utilisateur ayant été vu au moins une fois pendant le cours
   include Neo4j::ActiveNode
   
-  property :username, type: String
-  property :user_id, type: Integer
+  property :username, type: String, constraint: :unique
+  property :user_id, type: Integer, constraint: :unique
  
   property :name, type: String
   property :password, type: String
@@ -26,8 +26,10 @@ class User
   
   validates_presence_of :username
   
-  has_many :out, :informations, type: Info
+  has_many :out, :weeks, rel_class: :Info
   has_many :out, :sessions, type: :session
+  
+  has_many :out, :quizs, rel_class: :Result
   
   def set(params)
     self.username = params['username'][0]
@@ -50,6 +52,6 @@ class User
   end
   
   def to_s
-    return "username : "+self.username
+    return "[USER] username : "+self.username
   end
 end
