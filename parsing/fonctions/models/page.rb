@@ -4,8 +4,7 @@ class Page
   #Représente les différentes pages du cours
   include Neo4j::ActiveNode
   
-  property :type, default: 'unknown'
-  property :display_name
+  property :display_name, type: String
   property :graded, type: Boolean, default: false
   property :forma, type: String, default: ""
   property :myid, type: String,  constraint: :unique
@@ -18,8 +17,7 @@ class Page
   has_many :out, :children, type: :page, model_class: :Page
   
   has_many :in, :sessions, rel_class: :Event
-  
-  has_many :in, :groups, type: :group
+
 	
   def set(params, depth, week)
     self.myid = params['id'].split("/").last

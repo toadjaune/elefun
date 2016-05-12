@@ -1,0 +1,25 @@
+<%= form_for(@bdd_script_association) do |f| %>
+  <% if @bdd_script_association.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@bdd_script_association.errors.count, "error") %> prohibited this bdd_script_association from being saved:</h2>
+
+      <ul>
+      <% @bdd_script_association.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :bdd_id %><br>
+    <%= f.text_field :bdd_id %>
+  </div>
+  <div class="field">
+    <%= f.label :script_id %><br>
+    <%= f.text_field :script_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

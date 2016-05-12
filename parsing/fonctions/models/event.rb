@@ -25,7 +25,6 @@ class Event
   property :page, type: String
   
   property :event_source, type: String
-  property :event_source, type: String
   
   def update_user_stats
     case self.time <=> self.from_node.date_debut
@@ -41,14 +40,16 @@ class Event
     i.activite = (self.from_node.date_fin.to_time-self.from_node.date_fin.to_time+3600).to_datetime
     case self.to_node.labels[1].to_s    
       when ""
-        self.from_node.page_visitees += 1
+        i.page_visitees+=1
       when "Fil"
-        self.from_node.forum_msg += 1
-        self.to_node.add_views
+        i.forum_lu+=1
+        to_class.add_views
       when "Video"
-        self.from_node.video_play += 1
-        self.to_node.add_views
+        i.video_play+=1
+        to_class.add_views
       when "Quizz"
+        i.quizz+=1
+        to_class.add_part     
     end
-  end  
+  end
 end
