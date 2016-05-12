@@ -1,5 +1,5 @@
 class BddScriptAssociationsController < ApplicationController
-  before_action :set_bdd_script_association, only: [:show, :edit, :update, :destroy]
+  before_action :set_bdd_script_association, only: [:show, :edit, :update, :destroy, :launch, :reset]
 
   # GET /bdd_script_associations
   # GET /bdd_script_associations.json
@@ -61,6 +61,35 @@ class BddScriptAssociationsController < ApplicationController
     end
   end
 
+  # GET /bdd_script_associations/1/launch
+  # GET /bdd_script_associations/1/launch.json
+  def launch
+    respond_to do |format|
+      res = @bdd_script_association.launch
+      if res.nil?
+        format.html { redirect_to @bdd_script_association, notice: 'Script lancé avec succès.' }
+        format.json { render :show, status: :ok, location: @bdd_script_association }
+      else
+        format.html { render :edit, notice: res }
+        format.json { render json: @bdd_script_association.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # GET /bdd_script_associations/1/reset
+  # GET /bdd_script_associations/1/reset.json
+  def reset
+    respond_to do |format|
+      if @bdd_script_association.reset_etat
+        format.html { redirect_to @bdd_script_association, notice: 'Script réinitialisé avec succès.' }
+        format.json { render :show, status: :ok, location: @bdd_script_association }
+      else
+        format.html { render :edit }
+        format.json { render json: @bdd_script_association.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_bdd_script_association
@@ -69,6 +98,7 @@ class BddScriptAssociationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def bdd_script_association_params
-      params.require(:bdd_script_association).permit(:bdd_id, :script_id)
+      # Tout est géré du côté du modèle. À aucun moment on a besoin de passer des paramètres
+      params.require(:bdd_script_association).permit(:none)
     end
 end

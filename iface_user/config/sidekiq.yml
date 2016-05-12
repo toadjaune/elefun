@@ -1,3 +1,4 @@
 ---
 # On ne veut SURTOUT PAS de parallélisation de l'exécution des scripts
 :concurrency: 1
+:retry: false
