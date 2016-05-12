@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing BddScriptAssociations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th> BDD </th>
+      <th> Script </th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @bdd_script_associations.each do |bsa| %>
+      <tr>
+        <td><%= bsa.bdd %></td>
+        <td><%= bsa.script %></td>
+        <td><%= link_to 'Show', bsa %></td>
+        <td><%= link_to 'Edit', edit_bdd_path(bsa) %></td>
+        <td><%= link_to 'Destroy', bsa, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Association', new_bdd_script_association_path %>

@@ -1,9 +1,14 @@
 Rails.application.routes.draw do
-  resources :scripts
   resources :bdds
+  resources :bdd_script_associations do
+    # GET bdd_script_associations/:id/launch
+    get 'launch', on: :member
+    # GET bdd_script_associations/:id/reset
+    get 'reset', on: :member
+  end
   resources :fichiers
   resources :moocs
-   get 'moocs/:id/all' => 'moocs#all', as: :liste_moocs
+  get 'moocs/:id/all' => 'moocs#all', as: :liste_moocs
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
