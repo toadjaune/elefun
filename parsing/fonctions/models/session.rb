@@ -16,4 +16,8 @@ class Session
   has_one :in, :user, type: :user
   has_many :out, :pages, rel_class: :Event
 
+  def end
+    self.name += rand(36**10).to_s(36)
+    self.save
   end
+ end

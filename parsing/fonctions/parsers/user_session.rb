@@ -28,6 +28,14 @@ module Parser
         $new_sessions += 1
         user.sessions << s
         user.save
+      else 
+        if s.date_fin.to_time+$inactivite < line['time'].to_datetime.to_time then
+          s.end
+          s = Session.create({name: line['session'], agent: line['agent'], date_debut: line['time']})
+          $new_sessions +=1
+          user.sessions << s
+          user.save
+        end
       end
       if user.user_id.blank?
         user.update(user_id: line['context']['user_id'])
@@ -41,6 +49,14 @@ module Parser
           s = Session.create({name: line['session'], agent: line['agent'], date_debut: line['time']})
           $new_sessions += 1
           user.sessions << s
+        else 
+          if s.date_fin.to_time+$inactivite < line['time'].to_datetime.to_time then
+            s.end
+            s = Session.create({name: line['session'], agent: line['agent'], date_debut: line['time']})
+            $new_sessions +=1
+            user.sessions << s
+            user.save
+          end
         end
         #si on est dans ce cas le username est vide donc :
         user.username = line['username']

@@ -29,6 +29,8 @@ errors = 0
 rela = 0
 start = Time.now
 sess = []
+#Temps d'inactivité en secondes autorisé avant qu'on considère une nouvelle session
+inactivite=3600
 
 auteur = 'ENSCachan'
 id_cours = '20003S02'
