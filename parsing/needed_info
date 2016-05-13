@@ -1,0 +1,57 @@
+USER
+  variables :
+    * genre, age, diplome                -> obtenu par enrollment
+    * nombre de vidéos vues
+    * nombre de quiz vus                 -> vu ou participé ?
+    * nombre de devoirs déposés          -> impossible sans MOODLE
+    * nombre d'accès à MOODLE            -> idem
+    * nombre de messages postés sur les forums
+    * nombre de messages lus sur les forums
+    * nombre de sessions
+    * entropie des activités par session -> kesako?
+
+  groupes :
+    * va sur MOODLE                      -> impossible sans MOODLE
+    * participe au forum
+    * ne font que vidéos et quiz         -> pas trivial
+    * actif en semaine 1 pour voir l'évolution
+    * actif seulement en semaine 1
+    * actif seulement en dernière semaine
+    
+  MOOC
+    variables :
+      * nombre d'inscrits
+      * nombre de participants effectifs (vidéo ou quiz ou MOODLE)
+      * genre des inscrits
+      * nombre de vidéos dispo
+      * nombre de quizs
+      * nombre d'activités (énigne, projet)
+      * nombre de vues d'une vidéo
+      * nombre de quiz répondu
+      * nombre de dépôts d'activité    -> impossible sans MOODLE
+      * nombre de certifié             -> trouver comment récupérer l'information
+      
+  SESSION
+    définition :
+      période d'activité, on les délimité par une inactivité de plus d'une heure
+      -> en pratique on a les token dans les logs, il faut juste créer une nouvelle
+      session si le token est gardé même avec inactivité suffisante
+      
+    groupes :
+      * navigation sans réalisation d'activité
+      * visionnage de vidéo
+      * réalisation de quiz
+      * réalisation de devoirs         -> impossible sans MOODLE
+      -> combinaisons des groupes
+      -> introduction d'une notion quantitative ?
+      
+    but :
+      regrouper les gens par sessions qu'il réalisent
+      évolution des proportions de types de sessions
+      
+  ECHANTILLONNAGE/ZAPPING :
+    définition : étude des "trous" de participation par rapport au déroulement 
+    prévu du cours 
+      -> réalisable mais peu pertinent sans les devoirs ???
+      -> on peut toujours essayer de faire cela sur les vidéos/quiz
+    
