@@ -83,7 +83,7 @@ def parse_logs(filename)
       elsif line['event_source'] == "browser" and !(line['event_type'] == "page_close") and !line['session'].blank?
         user,session = Parser.get_session(line)
         $browser += 1
-        Parser.browser_parser(line) ? $parsed += 1 : $toparse.write(l)
+        Parser.browser_parser(line, user, session) ? $parsed += 1 : $toparse.write(l)
       end	
       if $nb % 100 == 0
         puts($nb)
