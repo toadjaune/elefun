@@ -62,7 +62,7 @@ def parse_logs(filename)
         case line['event_type']
           when 'problem_check'
             user = Parser.get_user(line)
-          Parser.problem_check_parser(line, user) ? $parsed += 1 : $toparse.write(l)
+            Parser.problem_check_parser(line, user) ? $parsed += 1 : $toparse.write(l)
           when /edx\.forum\.(?<type>.*)\.created/
             Parser.created_forum_parser(line, $LAST_MATCH_INFO['type']) ? $parsed += 1 : $toparse.write(l)  
 

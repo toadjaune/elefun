@@ -29,13 +29,14 @@ module Parser
         user.sessions << s
         user.save
       else 
-        if s.date_fin.to_time+$inactivite < line['time'].to_datetime.to_time then
+        if s.date_fin.to_time+$inactivite < Time.iso8601(line['time']) then
           s.end
           s = Session.create({name: line['session'], agent: line['agent'], date_debut: line['time']})
           $new_sessions +=1
           user.sessions << s
           user.save
         end
+        s.page_vues +=1
       end
       if user.user_id.blank?
         user.update(user_id: line['context']['user_id'])
@@ -50,7 +51,7 @@ module Parser
           $new_sessions += 1
           user.sessions << s
         else 
-          if s.date_fin.to_time+$inactivite < line['time'].to_datetime.to_time then
+          if s.date_fin.to_time+$inactivite < Time.iso8601(line['time']) then
             s.end
             s = Session.create({name: line['session'], agent: line['agent'], date_debut: line['time']})
             $new_sessions +=1
