@@ -6,7 +6,8 @@ class FichiersController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @fichiers.map{|fichier| fichier.to_jq_upload } }
+      #format.json { render json: @fichiers.map{|fichier| fichier.to_jq_upload } }
+      format.json { render :json => { :files => @fichiers.map{|upload| upload.to_jq_upload }} }
     end
   end
 

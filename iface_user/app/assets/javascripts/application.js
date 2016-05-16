@@ -12,8 +12,11 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui
 //= require twitter/bootstrap
 //= require turbolinks
+//= require jquery-fileupload
+//= require fileupload.js
 //= require_tree .
 
 var url ,chargement, loadMOOC
@@ -22,17 +25,20 @@ url='http://localhost:3000';
 
 chargement = $('<div class="hidden"><p>Chargement...</p></div>');
 
-function changeContent(tag, u){
+function changeContent(tag, u, f){
     $(tag).empty();
     $(tag).append(chargement);
     $.get(u, function(data, status){
         $(tag).empty();
         $(tag).append(data);
+        if (f) {
+            f();
+        };
     });
 };
 
 function loadMOOC(id){
-    changeContent($("#info_mooc"), url+'/moocs/'+id);
+    changeContent($("#info_mooc"), url+'/moocs/'+id, prepareFileupload);
 };
 
 function inputify(tag){
@@ -42,15 +48,9 @@ function inputify(tag){
 };
 
 function editMOOC(id){
-    changeContent($("#mooc"), url+'/moocs/'+id+'/edit')
+    changeContent($("#mooc"), url+'/moocs/'+id+'/edit',prepareFileupload);
 };
-/*
-$(document).on('click', 'nav', function() {
-    if ($('#info_mooc').children().length == 0) {
-        loadMOOC($("#select_mooc").find(":selected").val());
-    }
-});
-*/
+
 $(document).on('page:load ready', function(){
     loadMOOC($("#select_mooc").find(":selected").val());
     $(document).on('submit', '.edit_mooc', function() {

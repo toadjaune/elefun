@@ -21,7 +21,7 @@ class Fichier < ActiveRecord::Base
 
   include Rails.application.routes.url_helpers
 
-  attr_accessible :fichier
+#  attr_accessible :fichier
   has_attached_file :fichier, path: 'fichiers'
   belongs_to :mooc
 

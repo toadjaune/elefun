@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 20160508150145) do
     t.integer  "bdd_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "nom"
   end
 
   add_index "moocs", ["bdd_id"], name: "index_moocs_on_bdd_id"
