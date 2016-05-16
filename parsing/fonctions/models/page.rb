@@ -23,7 +23,6 @@ class Page
 	
   def set(params, depth, week)
     self.myid = params['id'].split("/").last
-    self.type = params['type']
     self.display_name = params['display_name']
     self.graded = params['graded']
     self.forma = params['format']

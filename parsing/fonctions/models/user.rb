@@ -26,7 +26,7 @@ class User
   
   validates_presence_of :username
   
-  has_many :out, :weeks, rel_class: :Info
+  has_many :out, :weeks, rel_class: :info
   has_many :out, :sessions, type: :session
   
   has_many :out, :quizs, rel_class: :Result

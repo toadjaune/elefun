@@ -41,7 +41,7 @@ class Event
     case self.to_node.labels[1].to_s    
       when ""
         i.page_visitees+=1
-      when "Fil"
+      when "Fil", "Response", "Comment"
         i.forum_lu+=1
         to_class.add_views
       when "Video"

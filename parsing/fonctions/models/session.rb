@@ -10,6 +10,11 @@ class Session
   property :ip, type: String
   property :date_debut, type: DateTime
   property :date_fin, type: DateTime
+  property :forum_vu, type: Integer, default: 0
+  property :video_vu, type: Integer, default: 0
+  property :forum_msg, type: Integer, default: 0
+  property :quizz_fait, type: Integer, default: 0
+  property :page_vues, type: Integer, default: 0
   
   property :video_viewed, type: Integer, default: 0
   property :quiz_answered, type: Integer, default: 0
@@ -37,5 +42,10 @@ class Session
   
   def set_posts
     
+  end
+
+  def end
+    self.name += rand(36**10).to_s(36)
+    self.save
   end
 end
