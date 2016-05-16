@@ -12,7 +12,7 @@ class Fil < Page
   property :category_id, type: String
   property :vues, type: Integer, default: 0
   
-  has_many :in, :responses, type: :response
+  has_many :out, :responses, type: :response
 
   #has_one :in, :sess_creation, type: :session
   #has_many :in, :sessions, type: :session
@@ -40,6 +40,7 @@ class Fil < Page
     #	s = Session.create(name: params['session'], agent: params['agent'], debut_time: params['time'])
     #end
     #self.sess_creation << s
+    self.save
   end
   
   def add_views()

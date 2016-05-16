@@ -22,15 +22,14 @@ db = Neo4j::Session.open(:server_db)
 #on compte ce qu'on arrive à parser parmi les events browser en première partie en parsant sur le :path puis sur le event[:id]
 
 #question = Quiz.find_by(myid: "8367920c39f34e06bd5c64394f3a11d8")
+file = File.new('data/20003S02/test','r')
 
-user = User.all
-nb=0
-quiz=0
-vid = 0
-user.each do |u|
-  nb +=1
-  vid += u.watched_videos
-  quiz += u.answered_quizs
+$auteur = 'ENSCachan'
+$id_cours = '20003S02'
+$periode = 'Trimestre_1_2015'
+
+s = Session.all
+s.each do |sess|
+  sess.set_view
+  sess.set_quiz
 end
-puts "nb de quiz moyen #{1.0*quiz/nb}"
-puts "nb de vidéo moyenne #{1.0*vid/nb}"

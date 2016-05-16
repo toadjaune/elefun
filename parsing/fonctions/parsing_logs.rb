@@ -62,7 +62,7 @@ def parse_logs(filename)
         case line['event_type']
           when 'problem_check'
             user = Parser.get_user(line)
-          Parser.problem_check_parser(line, user) ? $parsed += 1 : $toparse.write(l)
+            Parser.problem_check_parser(line, user) ? $parsed += 1 : $toparse.write(l)
           when /edx\.forum\.(?<type>.*)\.created/
             Parser.created_forum_parser(line, $LAST_MATCH_INFO['type']) ? $parsed += 1 : $toparse.write(l)  
 
@@ -99,9 +99,6 @@ def parse_logs(filename)
       $bugged.write e.backtrace
       $bugged.write("#{$nb}:"+l)
     end  
-    ### A CODER -> mettre dans un script à part ?
-    Quiz.combine_quiz_results
-    ###
   end
   duration = Time.now - start
   puts("durée (en min) : #{duration/60}")
@@ -135,7 +132,7 @@ def parse_logs(filename)
 end
 
 #parse_logs('data/20003S02/course_head.json')
-parse_logs('data/20003S02/quiz')
+parse_logs('data/20003S02/videos')
 #parse_logs('data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized')
 
 

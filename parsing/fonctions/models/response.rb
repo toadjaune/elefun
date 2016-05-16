@@ -12,8 +12,8 @@ class Response
 
   property :category_id, type: String
 
-  has_one :out, :fil, type: :fil
-  has_many :in, :comments, type: :comment
+  has_one :in, :fil, type: :fil
+  has_many :out, :comments, type: :comment
 
   # ajout des sessions...
 
@@ -35,8 +35,12 @@ class Response
     self.time = params['time']
     self.message = params['event']['POST']['body'].pop
     if f
+      if !f.is_a?(Fil)
+        puts 'PROUT'
+      end
       f.responses << self
     end
+    self.save
   end
 
 end

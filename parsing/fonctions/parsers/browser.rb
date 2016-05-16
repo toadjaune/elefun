@@ -2,7 +2,9 @@
 module Parser
   #renvoit l'id de la page suivant les différents format possible
   def self.get_id(line)
-    if line['event'].is_a?(Hash) and id = line['event']['id']
+    if line['event_type'] == "problem_check"
+      return line['event'].match('problem-([a-z0-9]*)_')[1]
+    elsif line['event'].is_a?(Hash) and id = line['event']['id']
       if id.match '^i4x:'
         return id.split('/').last
       else

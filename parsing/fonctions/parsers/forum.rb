@@ -38,7 +38,9 @@ module Parser
           puts('fil /discussion')
           f = Fil.new
           ###erreur appel de [] sur nil,
-          f.set_discuss(line)
+          if line['event']
+            f.set_discuss(line)
+          end
           f.save
           ###
           true
@@ -51,23 +53,37 @@ module Parser
         case action['action']
           when 'update'
             #puts("fil /discussion : #{discussion['categorie']} update")
-            f = (discussion['categorie'] == 'thread' ? Fil.find_by(myid: action['id_fil']) : Response.find_by(myid: action['id_fil']))
-            if !f
-              #puts("#{discussion['categorie']} inconnu jusque là ; id :#{action['id_fil']}")
-              f = (discussion['categorie'] == 'thread' ? Fil.new : Response.new)
-              f[:myid] = action['id_fil']
+            if discussion['categorie'] == 'thread'
+              f = Fil.find_by(myid: action['id_fil'])
+              if !f
+                f = Fil.new
+                f.myid = action['id_fil']
+              end
+              if line['event']
+                f.set_discuss(line)
+              end
+            else
+              puts "response + #{action['id_fil']}"
+              r = Response.find_by(myid: action['id_fil'])
+              if !r
+                r = Response.new
+                r.myid = action['id_fil']
+              end
+              f = Fil.find_by(myid: action['action'])
+              if line['event']
+                r.set_discuss(line, f)
+              end
             end
-            ### À décommenter, fait bugger appel de Response.responses ???
-            f.set_discuss(line, f)
-            f.save
-            ###
             true
           when 'delete'
             #puts("fil /discussion : #{discussion['categorie']} delete (id: #{action['id_fil']}")
-            f = (discussion['categorie'] == 'thread' ? Fil.find_by(myid: action['id_fil']) : Response.find_by(myid: action['id_fil']))
+            if discussion['categorie'] == 'thread'
+              f = Fil.find_by(myid: action['id_fil'])
+            else
+              f = Response.find_by(myid: action['id_fil'])
+            end
             if f
-              f.delete
-              f.save
+              f.destroy
             end
             true
           when 'reply'
@@ -76,11 +92,13 @@ module Parser
             if !f
               #puts("#{discussion['categorie']} inconnu jusque là ; id :#{action['id_fil']}")
               f = (discussion['categorie'] == 'thread' ? Fil.new : Response.new)
-              f[:myid] = action['id_fil']
+              f.myid = action['id_fil']
             end
             r = (discussion['categorie'] == 'thread' ? Reponse.new : Comment.new)
             ###Pareil
-            r.set_discuss(line, f)
+            if line['event']
+              r.set_discuss(line, f)
+            end
             r.save
             ###
             true

@@ -9,6 +9,7 @@ module Parser
       result = Result.create(from_node: user, to_node: quiz)
     elsif r.length > 1
       puts "MORE THAN 1 RESULT"
+      return false
     else
       result = r.first
     end
