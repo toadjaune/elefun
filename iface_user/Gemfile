@@ -44,6 +44,9 @@ gem 'devise', '~> 4.1.0'
 # Lancement des scripts en background
 gem 'sidekiq'
 
+# Base de données pour les données extraites
+gem 'neo4j'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

@@ -1,5 +1,3 @@
 *.swp
-.gitignore
 db/*
 Gemfile.lock
-iface_user/fichiers/*
