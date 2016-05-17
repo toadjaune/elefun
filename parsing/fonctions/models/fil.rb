@@ -1,7 +1,7 @@
 require 'neo4j'
 
 class Fil < Page
-  #blabla 
+  #blabla
   include Neo4j::ActiveNode
 
   property :time, type: DateTime
@@ -20,7 +20,7 @@ class Fil < Page
     self.message = params['event']['body']
     self.fil_type = params['event']['thread_type']
     self.category_id = params['event']['category_id']
-   u,s = Parser.get_session(params['session'])
+    u,s = Parser.get_session(params['session'])
     self.user = u
     self.sessions << s
     self.save
@@ -39,9 +39,9 @@ class Fil < Page
     self.sessions << s
     self.save
   end
-  
+
   def add_views()
     self.vues +=1
   end
-  
+
 end
