@@ -53,27 +53,27 @@ module Parser
         case action['action']
           when 'update'
             #puts("fil /discussion : #{discussion['categorie']} update")
-            if discussion['categorie'] == 'thread'
-              f = Fil.find_by(myid: action['id_fil'])
-              if !f
-                f = Fil.new
-                f.myid = action['id_fil']
-              end
-              if line['event']
-                f.set_discuss(line)
-              end
-            else
-              puts "response + #{action['id_fil']}"
-              r = Response.find_by(myid: action['id_fil'])
-              if !r
-                r = Response.new
-                r.myid = action['id_fil']
-              end
-              f = Fil.find_by(myid: action['action'])
-              if line['event']
-                r.set_discuss(line, f)
-              end
-            end
+            # if discussion['categorie'] == 'thread'
+              # f = Fil.find_by(myid: action['id_fil'])
+              # if !f
+                # f = Fil.new
+                # f.myid = action['id_fil']
+              # end
+              # if line['event']
+                # f.set_discuss(line)
+              # end
+            # else
+              # puts "response + #{action['id_fil']}"
+              # r = Response.find_by(myid: action['id_fil'])
+              # if !r
+                # r = Response.new
+                # r.myid = action['id_fil']
+              # end
+              # f = Fil.find_by(myid: action['action'])
+              # if line['event']
+                # r.set_discuss(line, f)
+              # end
+            # end
             true
           when 'delete'
             #puts("fil /discussion : #{discussion['categorie']} delete (id: #{action['id_fil']}")

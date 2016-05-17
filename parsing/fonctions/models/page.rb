@@ -17,7 +17,6 @@ class Page
   has_many :out, :children, type: :page, model_class: :Page
   
   has_one :out, :week, type: :week
-  
   has_many :in, :sessions, rel_class: :Event
 
 	
