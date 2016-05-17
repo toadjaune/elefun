@@ -1,11 +1,9 @@
 require 'neo4j'
 
-class Response
+class Response < Page
   #réponse à blabla
   include Neo4j::ActiveNode
 
-
-  property :myid, type: String
   property :time, type: DateTime
 
   property :message, type: String
@@ -14,8 +12,6 @@ class Response
 
   has_one :in, :fil, type: :fil
   has_many :out, :comments, type: :comment
-
-  # ajout des sessions...
 
   # et des cours auxquels ça fait référence
 
