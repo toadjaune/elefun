@@ -124,6 +124,10 @@ module Parser
                 #puts("/discussion/forum/.../inline")
                 true
               when 'threads'
+                time =  DateTime.iso8601(line['time'])
+                user,session = Parser.get_session(line)
+                fil = Parser.get_fil($LAST_MATCH_INFO['id_thread'])
+                rel = Event.create(from_node: session, to_node: fil, time: time, event_type: 'forum_visit')
                 #puts("/discussion/forum/.../threads/...")
                 true
               else

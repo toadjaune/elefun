@@ -81,4 +81,12 @@ module Parser
     end
       return user, s
   end
+
+  def self.get_fil(idt)
+    fil = Fil.find_by(myid: idt)
+    if !fil
+      fil = Fil.create(myid: idt)
+    end
+    return fil
+  end
 end
