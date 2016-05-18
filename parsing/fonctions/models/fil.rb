@@ -15,7 +15,7 @@ class Fil < Page
   #has_one :in, :sess_creation, type: :session
 
   def set(params)
-    super.set(params)
+    self.myid = params['event']['id']
     self.time = params['time']
     self.message = params['event']['body']
     self.fil_type = params['event']['thread_type']
@@ -31,7 +31,7 @@ class Fil < Page
     self.display_name = params['event']['POST']['title'].pop
     self.message = params['event']['POST']['body'].pop
     self.fil_type = params['event']['POST']['thread_type'].pop
-    u,s = Parser.get_session(params['session'])
+    u,s = Parser.get_session(params)
     self.user = u
     #if s.nil?
     #	s = Session.create(name: params['session'], agent: params['agent'], debut_time: params['time'])

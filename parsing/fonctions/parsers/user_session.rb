@@ -89,4 +89,12 @@ module Parser
     end
     return fil
   end
+
+  def self.get_response(idr)
+    resp = Fil.find_by(myid: idr)
+    if !resp
+      resp = Fil.create(myid: idr)
+    end
+    return resp
+  end
 end

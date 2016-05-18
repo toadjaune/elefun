@@ -36,8 +36,9 @@ class Session
     self.save
   end
 
-  def set_visits
-
+  def set_visit
+    self.forum_visited += 1
+    self.save
   end
 
   def set_posts
