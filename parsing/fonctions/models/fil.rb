@@ -20,7 +20,7 @@ class Fil < Page
     self.message = params['event']['body']
     self.fil_type = params['event']['thread_type']
     self.category_id = params['event']['category_id']
-   u,s = Parser.get_session(params['session'])
+          u,s = Parser.get_session(params['session'])
     self.user = u
     self.sessions << s
     self.save

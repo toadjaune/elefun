@@ -1,4 +1,5 @@
 v : fait
+0 : en cours
 x : pas faisable
 USER
   variables :
@@ -35,7 +36,7 @@ USER
       
 SESSION
   définition :
-    période d'activité, on les délimité par une inactivité de plus d'une heure
+    période d'activité, on les délimite par une inactivité de plus d'une heure
     -> en pratique on a les token dans les logs, il faut juste créer une nouvelle
     session si le token est gardé même avec inactivité suffisante
 
@@ -46,6 +47,7 @@ SESSION
   x  * réalisation de devoirs         -> impossible sans MOODLE
     -> combinaisons des groupes
     -> introduction d'une notion quantitative ?
+    On va compter le nombre de réalisations d'activités dans le session afin de pouvori choisir des critères de requêtes
 
   but :
     regrouper les gens par sessions qu'il réalisent

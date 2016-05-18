@@ -8,18 +8,15 @@ class Session
   property :name, type: String, constraint: :unique
   property :agent, type: String
   property :ip, type: String
-  property :date_debut, type: DateTime
-  property :date_fin, type: DateTime
-  property :forum_vu, type: Integer, default: 0
-  property :video_vu, type: Integer, default: 0
-  property :forum_msg, type: Integer, default: 0
-  property :quizz_fait, type: Integer, default: 0
-  property :page_vues, type: Integer, default: 0
+  property :start, type: DateTime
+  property :end, type: DateTime
   
   property :video_viewed, type: Integer, default: 0
   property :quiz_answered, type: Integer, default: 0
+  property :page_visited, type: Integer, default: 0
   property :forum_visited, type: Integer, default: 0
   property :forum_posted, type: Integer, default: 0
+  
   
   validates_presence_of :name
   
