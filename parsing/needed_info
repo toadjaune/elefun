@@ -8,8 +8,8 @@ USER
   v  * nombre de quiz vus                 -> idem sur les quizs auxquels le user a répondu
   x  * nombre de devoirs déposés          -> impossible sans MOODLE
   x  * nombre d'accès à MOODLE            -> idem
-    * nombre de messages postés sur les forums
-    * nombre de messages lus sur les forums
+  0  * nombre de messages postés sur les forums -> Fil.count, Response.count, Comment.count
+  v  * nombre de messages lus sur les forums -> Parser.get_forum_visits, resultat à stocker
   v  * nombre de sessions
     * entropie des activités par session -> kesako?
 
@@ -17,7 +17,7 @@ USER
   x  * va sur MOODLE                      -> impossible sans MOODLE
     * participe au forum
     * ne font que vidéos et quiz         -> pas trivial
-    * actif en semaine 1 pour voir l'évolution -> semaine 0/1 ?
+    * actif en semaine 1 pour voir l'évolution -> semaine 0/1 ? quelle activité ?
     * actif seulement en semaine 1
     * actif seulement en dernière semaine
     
@@ -42,13 +42,13 @@ SESSION
     session si le token est gardé même avec inactivité suffisante
 
   groupes :
-    * navigation sans réalisation d'activité
+    * navigation sans réalisation d'activité -> à expliciter
     * visionnage de vidéo
     * réalisation de quiz
   x  * réalisation de devoirs         -> impossible sans MOODLE
     -> combinaisons des groupes
     -> introduction d'une notion quantitative ?
-    On va compter le nombre de réalisations d'activités dans le session afin de pouvori choisir des critères de requêtes
+    On va compter le nombre de réalisations d'activités dans le session afin de pouvoir choisir des critères de requêtes
 
   but :
     regrouper les gens par sessions qu'il réalisent

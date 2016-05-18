@@ -32,6 +32,7 @@ module Parser
         if s.end.to_time+$inactivite < Time.iso8601(line['time']) then
           s.end_inactivity
           s = Session.create({name: line['session'], agent: line['agent'], start: line['time']})
+          $session_time_out += 1
           $new_sessions +=1
           user.sessions << s
           user.save
@@ -54,6 +55,7 @@ module Parser
           if s.end.to_time+$inactivite < Time.iso8601(line['time']) then
             s.end_inactivity
             s = Session.create({name: line['session'], agent: line['agent'], start: line['time']})
+            $session_time_out += 1
             $new_sessions +=1
             user.sessions << s
             user.save

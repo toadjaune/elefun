@@ -41,4 +41,10 @@ h.each do |event, nb|
 end
 =end
 
-puts Parser.get_forum_visits
+u = User.first
+puts u.sessions_number
+puts u.username
+
+u = User.last
+puts u.sessions_number
+puts u.username

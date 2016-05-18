@@ -1,8 +1,10 @@
 require 'neo4j'
+require_relative '../regroup/user'
 
 class User
   #Un utilisateur ayant été vu au moins une fois pendant le cours
   include Neo4j::ActiveNode
+  include Regroup::Users
   
   property :username, type: String, constraint: :unique
   property :user_id, type: Integer, constraint: :unique
@@ -65,7 +67,7 @@ class User
       return self.query_as(:u).match("u-->(:Session)-[:event]->(v:Video)").count('DISTINCT v')
     end
   end
-  
+
   def answered_quizs(week = nil)
     # 0 ou 1 si une semaine spécifiée
     if week
@@ -74,11 +76,8 @@ class User
       return self.query_as(:u).match("u-[r:result]->(q:Quiz)").count(:r)
     end
   end
-  
+
   def sessions_number
     return self.sessions.count
   end
-  
-  
-  
 end

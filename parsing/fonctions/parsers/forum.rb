@@ -32,7 +32,7 @@ module Parser
   end
   
   def self.get_forum_visits
-    return Session.query_as(:s).match('s-[e:event]->(:Fil)').where(e:{type: 'forum_visit'}).count(:e)
+    return Session.query_as(:s).match('s-[e:event]->(:Fil)').where(e:{event_type: 'forum_visit'}).count(:e)
   end
   
   def self.discussion_forum_parser(line, discussion)

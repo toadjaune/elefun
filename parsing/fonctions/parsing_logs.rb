@@ -37,6 +37,7 @@ def parse_logs(filename)
   $parsed = 0
   $new_users = 0
   $new_users_enroll = 0
+  $session_time_out = 0
   $new_sessions = 0
   $new_relations = 0
   $page_errors = 0
@@ -109,11 +110,12 @@ def parse_logs(filename)
   puts("sessions appartenant à plus d'un user : #{$session_errors}")
   puts("pages non trouvées : #{$page_errors}")
   puts("sessions créés : #{$new_sessions}")
+  puts("session timed out : #{$session_time_out}")
   puts("user créés via enrollment : #{$new_users_enroll}")
   puts("user créés via browser : #{$new_users}")
   puts("questions traitées : #{$parsed_questions}")
   puts("relations créées : #{$new_relations}")
-
+  
   result = File.new('results', 'a')
   result.puts("#{Time.now}")
   result.puts("durée (en min) : #{duration/60}")
@@ -124,6 +126,7 @@ def parse_logs(filename)
   result.puts("sessions appartenant à plus d'un user : #{$session_errors}")
   result.puts("pages non trouvées : #{$page_errors}")
   result.puts("sessions créés : #{$new_sessions}")
+  result.puts("session timed out : #{$session_time_out}")
   result.puts("user créés via enrollment : #{$new_users_enroll}")
   result.puts("user créés via browser : #{$new_users}")
   result.puts("questions traitées : #{$parsed_questions}")
