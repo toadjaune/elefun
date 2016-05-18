@@ -5,8 +5,8 @@ class Info
   include Neo4j::ActiveRel
 
   from_class :User
-  to_class :Week
-  type 'info'
+  to_class :Fil
+  type 'info_week'
 
   property :page_visitees, type: Integer, default: 0
   property :quizz, type: Integer, default: 0

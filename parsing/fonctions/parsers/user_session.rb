@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-module Parser 
+module Parser
   def self.get_user(line)
     user = User.find_by(username: line['username'])
     if user
@@ -15,7 +15,7 @@ module Parser
     end
     return user
   end
-  
+
   def self.get_session(line)
     #on cherche si on connait le user
     user = User.find_by(username: line['username'])
@@ -28,9 +28,9 @@ module Parser
         $new_sessions += 1
         user.sessions << s
         user.save
-      else 
+      else
         if s.date_fin.to_time+$inactivite < Time.iso8601(line['time']) then
-          s.end
+          s.end_inactivity
           s = Session.create({name: line['session'], agent: line['agent'], date_debut: line['time']})
           $new_sessions +=1
           user.sessions << s
@@ -50,9 +50,9 @@ module Parser
           s = Session.create({name: line['session'], agent: line['agent'], date_debut: line['time']})
           $new_sessions += 1
           user.sessions << s
-        else 
+        else
           if s.date_fin.to_time+$inactivite < Time.iso8601(line['time']) then
-            s.end
+            s.end_inactivity
             s = Session.create({name: line['session'], agent: line['agent'], date_debut: line['time']})
             $new_sessions +=1
             user.sessions << s

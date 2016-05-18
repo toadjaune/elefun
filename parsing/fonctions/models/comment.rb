@@ -1,20 +1,15 @@
 require 'neo4j'
 
-class Comment
+class Comment < Page
   #commentaire sur du blabla
   include Neo4j::ActiveNode
 
-
-  property :myid, type: String
   property :time, type: DateTime
-
   property :message, type: String
 
   property :category_id, type: String
 
   has_one :in, :response, type: :response
-
-  # ajout des sessions...
 
   # et des cours auxquels ça fait référence
 
@@ -26,13 +21,14 @@ class Comment
     r = Response.as(:r).where(myid: params['event']['response']['id']).pluck(:r).first
     if r
       r.comments << self
+      r.save
     end
   end
 
   def set_discuss(params, r)
     self.time = params['time']
     self.message = params['event']['POST']['body'].pop
-    if r 
+    if r
       r.comments << self
     end
     self.save

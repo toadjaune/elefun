@@ -5,17 +5,15 @@ class Session
   #Appartient à un User et regroupe un ensemble de Page visitées
   include Neo4j::ActiveNode
 
+  #Données
   property :name, type: String, constraint: :unique
   property :agent, type: String
   property :ip, type: String
   property :date_debut, type: DateTime
   property :date_fin, type: DateTime
-  property :forum_vu, type: Integer, default: 0
-  property :video_vu, type: Integer, default: 0
-  property :forum_msg, type: Integer, default: 0
-  property :quizz_fait, type: Integer, default: 0
-  property :page_vues, type: Integer, default: 0
 
+  #Méta-données
+  property :page_vues, type: Integer, default: 0
   property :video_viewed, type: Integer, default: 0
   property :quiz_answered, type: Integer, default: 0
   property :forum_visited, type: Integer, default: 0
@@ -31,8 +29,18 @@ class Session
     self.save
   end
 
+  def add_views
+    self.video_viewed +=1
+    self.save
+  end
+
   def set_quiz
     self.quiz_answered = self.query_as(:s).match('s-[:event]->(:Question)<--(q:Quiz)').count('DISTINCT q')
+    self.save
+  end
+
+  def add_quiz
+    self.quiz_answered +=1
     self.save
   end
 
@@ -40,8 +48,23 @@ class Session
 
   end
 
+  def add_visit
+    self.page_vues+=1
+    self.save
+  end
+
   def set_posts
 
+  end
+
+  def add_posts
+    self.forum_posted+=1
+    self.save
+  end
+
+  def add_forum_visits
+    self.forum_visited+=1
+    self.save
   end
 
   def end_inactivity

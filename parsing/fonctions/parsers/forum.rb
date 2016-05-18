@@ -30,9 +30,9 @@ module Parser
         false
     end
   end
-  
+
   def self.discussion_forum_parser(line, discussion)
-    return case discussion['categorie'] 
+    return case discussion['categorie']
       when /((\h{15,})|(i4x-#{$auteur}-#{$id_cours}-course-#{$periode}_(?<partie>\w*)))/
         if /threads\/create/.match(discussion['arg']) != nil
           puts('fil /discussion')
@@ -132,7 +132,7 @@ module Parser
                 true
               else
                 #puts("Element de discussion/forum inconnu")
-                false 
+                false
             end
           else
             #puts("What is this discussion? #{discussion['categorie']}")
@@ -145,3 +145,4 @@ module Parser
     end
   end
 end
++

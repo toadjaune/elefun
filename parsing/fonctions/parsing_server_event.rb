@@ -42,7 +42,7 @@ file.each do |l|
 
   line = JSON.parse(l)
 
-  if line['event_source'] == "server" 
+  if line['event_source'] == "server"
     server += 1
 
     forum = /edx\.forum\.(?<type>.*)\.created/.match(line['event_type'])
