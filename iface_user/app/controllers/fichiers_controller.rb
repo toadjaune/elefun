@@ -48,7 +48,7 @@ class FichiersController < ApplicationController
 #        format.html { redirect_to @fichier, notice: 'Fichier was successfully created.' }
 #        format.json { render :show, status: :created, location: @fichier }
         format.html {
-          render :json => [@fichier.to_jq_fichier].to_json,
+          render :json => [@fichier.to_jq_upload].to_json,
           :content_type => 'text/html',
           :layout => false
         }
