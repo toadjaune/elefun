@@ -24,7 +24,8 @@ USER
   MOOC
     variables :
     0  * nombre d'inscrits              -> on n'a que 700 et quelques personnes inscrites
-      * nombre de participants effectifs (vidéo ou quiz ou MOODLE)
+      * nombre de participants effectifs-> @ vori si vidéo et quiz suffisent
+        (vidéo ou quiz ou MOODLE)
     0  * genre des inscrits              -> on n'as pas d'infos sur une bonne partie
     v  * nombre de vidéos dispo         -> Video.count
     v  * nombre de quizz                 -> Quiz.count

@@ -132,7 +132,7 @@ def parse_logs(filename)
 end
 
 #parse_logs('data/20003S02/course_head.json')
-parse_logs('data/20003S02/videos')
+parse_logs('prout')
 #parse_logs('data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized')
 
 

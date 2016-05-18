@@ -24,14 +24,14 @@ module Parser
       s = user.sessions.as(:s).where(name: line['session']).pluck(:s).first
       if s.nil?
         #sinon on la crée
-        s = Session.create({name: line['session'], agent: line['agent'], date_debut: line['time']})
+        s = Session.create({name: line['session'], agent: line['agent'], start: line['time']})
         $new_sessions += 1
         user.sessions << s
         user.save
       else 
-        if s.date_fin.to_time+$inactivite < Time.iso8601(line['time']) then
-          s.end
-          s = Session.create({name: line['session'], agent: line['agent'], date_debut: line['time']})
+        if s.end.to_time+$inactivite < Time.iso8601(line['time']) then
+          s.end_inactivity
+          s = Session.create({name: line['session'], agent: line['agent'], start: line['time']})
           $new_sessions +=1
           user.sessions << s
           user.save
@@ -47,13 +47,13 @@ module Parser
         s = user.sessions.as(:s).where(name: line['session']).pluck(:s).first
         if s.nil?
           #sinon on la crée
-          s = Session.create({name: line['session'], agent: line['agent'], date_debut: line['time']})
+          s = Session.create({name: line['session'], agent: line['agent'], start: line['time']})
           $new_sessions += 1
           user.sessions << s
         else 
-          if s.date_fin.to_time+$inactivite < Time.iso8601(line['time']) then
-            s.end
-            s = Session.create({name: line['session'], agent: line['agent'], date_debut: line['time']})
+          if s.end.to_time+$inactivite < Time.iso8601(line['time']) then
+            s.end_inactivity
+            s = Session.create({name: line['session'], agent: line['agent'], start: line['time']})
             $new_sessions +=1
             user.sessions << s
             user.save
@@ -69,7 +69,7 @@ module Parser
         s = Session.as(:s).where(name: line['session']).pluck(:s).first
         if s.nil? and !line['session'].empty?
           #cas normal
-          s = Session.create({name: line['session'], agent: line['agent'], date_debut: line['time']})
+          s = Session.create({name: line['session'], agent: line['agent'], start: line['time']})
           $new_sessions += 1
         else
           # la session appartient à plus d'un user
@@ -80,5 +80,21 @@ module Parser
       end
     end
       return user, s
+  end
+
+  def self.get_fil(idt)
+    fil = Fil.find_by(myid: idt)
+    if !fil
+      fil = Fil.create(myid: idt)
+    end
+    return fil
+  end
+
+  def self.get_response(idr)
+    resp = Fil.find_by(myid: idr)
+    if !resp
+      resp = Fil.create(myid: idr)
+    end
+    return resp
   end
 end
