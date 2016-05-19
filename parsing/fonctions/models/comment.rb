@@ -12,7 +12,7 @@ class Comment
 
   property :category_id, type: String
 
-  has_one :out, :response, type: :response
+  has_one :in, :response, type: :response
 
   # ajout des sessions...
 
@@ -35,6 +35,7 @@ class Comment
     if r 
       r.comments << self
     end
+    self.save
   end
 
 end

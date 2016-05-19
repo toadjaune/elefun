@@ -3,17 +3,28 @@ require 'neo4j'
 require 'json'
 require_relative 'models/page'
 require_relative 'models/video'
+require_relative 'models/question'
+require_relative 'models/quiz'
+require_relative 'models/week'
 
 #parcours l'arborescence en prenant en argument la page racine et la profondeur
-def tree(blocks, id, depth, week)
+def tree(blocks, id, depth, week = nil)
   params = blocks[id]
+  page = Page.new
   case params["type"] 
     when "dmcloud"
       page = Video.new
-    #when "problem"
-      #attribuer la valeur quizz
-    else
-      page = Page.new
+    when "problem"
+      page = Question.new
+    when "chapter"
+    week = Week.new(name: params['display_name'], number: Week.count)
+      week.save
+    when "vertical"
+      #il se peut que la page soit un quiz
+      if !params["children"].empty? and blocks[params["children"].last]['type'] == "problem"
+        #on regarde si le dernier fils est une question puisque le premier peut etre une intro
+        page = Quiz.new
+      end
   end
   
   page.set(params, depth.length, week)    
@@ -39,7 +50,7 @@ def parse_struct(filename)
   #page racine
   classe = Page.new
   classe.set(blocks[root], 0, "")
-  cours = tree(blocks, root, "", "")
+  cours = tree(blocks, root, "")
   cours.save
   puts(Page.count.to_s + " Pages")
 end
