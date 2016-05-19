@@ -8,6 +8,8 @@ module Parser
         u.set(line['event']['POST'])
         u.save
         $new_users_enroll += 1
+      #else
+        #doublon
       end
       return true
     else

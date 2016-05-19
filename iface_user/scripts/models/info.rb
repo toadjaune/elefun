@@ -1,7 +1,7 @@
 require 'neo4j'
 require 'date'
 
-class Info < Etiquetable
+class Info
   include Neo4j::ActiveRel
 
   from_class :User

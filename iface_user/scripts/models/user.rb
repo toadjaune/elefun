@@ -1,12 +1,13 @@
 require 'neo4j'
-require_relative 'info'
+require_relative '../regroup/user'
 
-class User < Etiquetable
+class User
   #Un utilisateur ayant été vu au moins une fois pendant le cours
   include Neo4j::ActiveNode
+  include Regroup::Users
   
-  property :username, type: String
-  property :user_id, type: Integer
+  property :username, type: String, constraint: :unique
+  property :user_id, type: Integer, constraint: :unique
  
   property :name, type: String
   property :password, type: String
@@ -27,8 +28,10 @@ class User < Etiquetable
   
   validates_presence_of :username
   
-  has_many :out, :informations, type: Info
+  has_many :out, :weeks, rel_class: :info
   has_many :out, :sessions, type: :session
+  has_many :out, :fil, type: :fil
+  has_many :out, :quizs, rel_class: :Result
   
   def set(params)
     self.username = params['username'][0]
@@ -51,6 +54,30 @@ class User < Etiquetable
   end
   
   def to_s
-    return "username : "+self.username
+    return "[USER] username : "+self.username
+  end
+  
+  def watched_videos(week = nil)
+    #compte le nombre de vidéos regardées par semaine ou au total
+    # une vidéo n'est comptée qu'une fois par session mais peut l'être
+    #plusieurs fois durant des sessions différentes
+    if week
+      return self.query_as(:u).match_nodes(w: week).match("u-->(:Session)-[:event]->(v:Video)-->(w:Week)").count('DISTINCT v')
+    else
+      return self.query_as(:u).match("u-->(:Session)-[:event]->(v:Video)").count('DISTINCT v')
+    end
+  end
+
+  def answered_quizs(week = nil)
+    # 0 ou 1 si une semaine spécifiée
+    if week
+      return self.query_as(:u).match_nodes(w: week).match("u-[r:result]->(q:Quiz)-->(w:Week)").count(:r)
+    else
+      return self.query_as(:u).match("u-[r:result]->(q:Quiz)").count(:r)
+    end
+  end
+
+  def sessions_number
+    return self.sessions.count
   end
 end

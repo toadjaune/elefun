@@ -1,21 +1,17 @@
 require 'neo4j'
 
-class Response < Etiquetable
+class Response < Page
   #réponse à blabla
   include Neo4j::ActiveNode
 
-
-  property :myid, type: String
   property :time, type: DateTime
 
   property :message, type: String
 
   property :category_id, type: String
 
-  has_one :out, :fil, type: :fil
-  has_many :in, :comments, type: :comment
-
-  # ajout des sessions...
+  has_one :in, :fil, type: :fil
+  has_many :out, :comments, type: :comment
 
   # et des cours auxquels ça fait référence
 
@@ -35,8 +31,12 @@ class Response < Etiquetable
     self.time = params['time']
     self.message = params['event']['POST']['body'].pop
     if f
+      if !f.is_a?(Fil)
+        puts 'PROUT'
+      end
       f.responses << self
     end
+    self.save
   end
 
 end

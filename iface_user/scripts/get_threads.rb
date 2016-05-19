@@ -3,8 +3,6 @@ require 'json'
 require 'neo4j'
 require 'date'
 
-require_relative 'models/etiquetable'
-require_relative 'models/page'
 require_relative 'models/fil'
 require_relative 'models/response'
 require_relative 'models/comment'

@@ -1,6 +1,6 @@
 require 'neo4j'
 
-class Comment < Etiquetable
+class Comment
   #commentaire sur du blabla
   include Neo4j::ActiveNode
 
@@ -12,7 +12,7 @@ class Comment < Etiquetable
 
   property :category_id, type: String
 
-  has_one :out, :response, type: :response
+  has_one :in, :response, type: :response
 
   # ajout des sessions...
 
@@ -35,6 +35,7 @@ class Comment < Etiquetable
     if r 
       r.comments << self
     end
+    self.save
   end
 
 end
