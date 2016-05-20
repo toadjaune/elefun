@@ -9,12 +9,14 @@
  * gem install bundler
  * sudo apt-get install redis
  * bundle install
+ * rake neo4j:install
 
 
 ## Commandes utiles :
-* rails server : Lance le serveur web sur le port 3000
-* sidekiq : Lance sidekiq, nécéssaire pour le lancement de scripts en background
-* bundle install : à lancer à chaque changement de gems
-* rake db:migrate : à lancer à chaque changement de structure de bdd
-* rake db:seed : remplit la BDD avec des données par défaut 
-* rake db:populate : remplit la BDD avec des données quelconques, histoire de pas avoir une BDD vide (utile seulement en dev)
+* rails server      : Lance le serveur web sur le port 3000
+* sidekiq           : Lance sidekiq, nécéssaire pour le lancement de scripts en background
+* rake neo4j:start  : Lance le serveur neo4j (sur le port 7474)
+* bundle install    : à lancer à chaque changement de gems
+* rake db:migrate   : à lancer à chaque changement de structure de bdd
+* rake db:seed      : remplit la BDD avec des données par défaut 
+* rake db:populate  : remplit la BDD avec des données quelconques, histoire de pas avoir une BDD vide (utile seulement en dev)
