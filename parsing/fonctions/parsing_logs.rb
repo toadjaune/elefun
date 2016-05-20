@@ -48,7 +48,7 @@ def parse_logs(filename)
 
   $server = 0
   $browser = 0
- 
+
   $errors = 0
 
   file.each do |l|
@@ -56,21 +56,20 @@ def parse_logs(filename)
     line = JSON.parse(l)
     begin
       ### GET SESSION
-      
+
       ### SERVER_EVENTS
-      if line['event_source'] == "server" 
+      if line['event_source'] == "server"
         $server += 1
         case line['event_type']
           when 'problem_check'
             user = Parser.get_user(line)
             Parser.problem_check_parser(line, user) ? $parsed += 1 : $toparse.write(l)
           when /edx\.forum\.(?<type>.*)\.created/
-            Parser.created_forum_parser(line, $LAST_MATCH_INFO['type']) ? $parsed += 1 : $toparse.write(l)  
-
+            Parser.created_forum_parser(line, $LAST_MATCH_INFO['type']) ? $parsed += 1 : $toparse.write(l)
           when /\/courses\/#{$auteur}\/#{$id_cours}\/#{$periode}\/discussion\/(?<type>.+)/
             discussion = /(?<categorie>[^\/]*)\/(?<arg>.*)/.match($LAST_MATCH_INFO['type'])
             #hack dégueulasse sur la ligne suivante
-            if discussion  
+            if discussion
               Parser.discussion_forum_parser(line, discussion) ? $parsed += 1 : $toparse.write(l)
             end
           when '/create_account'
@@ -85,11 +84,11 @@ def parse_logs(filename)
         user,session = Parser.get_session(line)
         $browser += 1
         Parser.browser_parser(line, user, session) ? $parsed += 1 : $toparse.write(l)
-      end	
+      end
       if $nb % 100 == 0
         puts($nb)
       end
-    rescue Exception => e  
+    rescue Exception => e
       $errors+=1
       if $errors > 10
         abort
@@ -99,7 +98,7 @@ def parse_logs(filename)
       $bugged.write e.message
       $bugged.write e.backtrace
       $bugged.write("#{$nb}:"+l)
-    end  
+    end
   end
   duration = Time.now - start
   puts("durée (en min) : #{duration/60}")
@@ -137,7 +136,3 @@ end
 #parse_logs('data/20003S02/course_head.json')
 parse_logs('prout')
 #parse_logs('data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized')
-
-
-
-
