@@ -25,7 +25,7 @@ module Parser
       return false
     else
       time = DateTime.iso8601(line['time'])
-      rel = Event.create(from_node: session, to_node: page, time: time, event_type: line['event_type'], org_id: line['context']['org_id'], path: line['context']['path'], page: line['page'])
+      rel = Event.create(from_node: session, to_node: page, time: time, event_type: line['event_type'])
       $new_relations += 1
       return true
     end

@@ -1,8 +1,10 @@
 require 'neo4j'
+require_relative '../regroup/user'
 
 class User
   #Un utilisateur ayant été vu au moins une fois pendant le cours
   include Neo4j::ActiveNode
+  include Regroup::Users
 
   property :username, type: String, constraint: :unique
   property :user_id, type: Integer, constraint: :unique
@@ -78,7 +80,5 @@ class User
   def sessions_number
     return self.sessions.count
   end
-
-
-
+  
 end

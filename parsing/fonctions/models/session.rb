@@ -1,21 +1,26 @@
 require 'neo4j'
 require 'date'
 
+
+require_relative '../regroup/session'
+
 class Session
   #Appartient à un User et regroupe un ensemble de Page visitées
-  include Neo4j::ActiveNode
+  include Regroup::Sessions
 
-  #Données
+  #Donées
   property :name, type: String, constraint: :unique
   property :agent, type: String
   property :ip, type: String
-  property :date_debut, type: DateTime
-  property :date_fin, type: DateTime
+
+  property :start, type: DateTime
+  property :end, type: DateTime
 
   #Méta-données
   property :page_vues, type: Integer, default: 0
   property :video_viewed, type: Integer, default: 0
   property :quiz_answered, type: Integer, default: 0
+  property :page_visited, type: Integer, default: 0
   property :forum_visited, type: Integer, default: 0
   property :forum_posted, type: Integer, default: 0
 
@@ -44,8 +49,9 @@ class Session
     self.save
   end
 
-  def set_visits
-
+  def set_visit
+    self.forum_visited = self.query_as(:s).match('s-[e:event]->(:Fil)').where(e:{event_type: 'forum_visit'}).count(:e)
+    self.save
   end
 
   def add_visit
@@ -54,7 +60,8 @@ class Session
   end
 
   def set_posts
-
+    self.forum_posted = self.query_as(:s).match('s-[e:event]->(:Fil)').where(e:{event_type: 'forum_post'}).count(:e)
+    self.save
   end
 
   def add_posts
