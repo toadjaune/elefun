@@ -5,7 +5,7 @@ class Result
   #regroupe les résultats au quiz d'un user via une de ses session 
   include Neo4j::ActiveRel
   
-  from_class :User
+  from_class :Session
   to_class :Quiz
   type 'result'
   

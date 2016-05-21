@@ -13,17 +13,6 @@ class Event
   property :time, type: DateTime
 
   #after_create :update_user_stats
-  #context
-  property :org_id, type: String
-  property :path, type: String
-
-  #event
-  property :event_id, type: String
-  property :event_POST, type: String
-  property :event_GET, type: String
-
-  property :page, type: String
-
   property :event_source, type: String
 
   def update_user_stats

@@ -130,14 +130,15 @@ module Parser
             #puts("/discussion/forum/#{discussion['arg']}")
             true
           when /(?<id_conv>\h{10,})\/(?<element>\w*)(\z|(\/(?<id_thread>\h{10,})))/
-            case $LAST_MATCH_INFO['element']
+            info = $LAST_MATCH_INFO
+            case info['element']
               when 'inline'
                 #puts("/discussion/forum/.../inline")
                 true
               when 'threads'
                 time =  DateTime.iso8601(line['time'])
                 user,session = Parser.get_session(line)
-                fil = Parser.get_fil($LAST_MATCH_INFO['id_thread'])
+                fil = Parser.get_fil(info['id_thread'])
                 rel = Event.create(from_node: session, to_node: fil, time: time, event_type: 'forum_visit')
                 #puts("/discussion/forum/.../threads/...")
                 true
@@ -156,4 +157,3 @@ module Parser
     end
   end
 end
-+

@@ -23,11 +23,12 @@ db = Neo4j::Session.open(:server_db)
 #on compte ce qu'on arrive à parser parmi les events browser en première partie en parsant sur le :path puis sur le event[:id]
 
 #question = Quiz.find_by(myid: "8367920c39f34e06bd5c64394f3a11d8")
-=begin
 
-file = File.new('data/20005S03/tracking_logs-ENSCachan_20005_Trimestre_3_2014-201501091638_anonymized','r')
 
-file2 = File.new('data/20005S03/event_types', 'w')
+
+file = File.new('data/20003S02/browser_events','r')
+
+#file2 = File.new('data/20005S03/event_types', 'w')
 
 h= Hash.new(0)
 
@@ -37,14 +38,5 @@ file.each do |line|
 end
 
 h.each do |event, nb|
-  file2.puts("#{event} | #{nb}")
+  puts("#{event} | #{nb}")
 end
-=end
-
-u = User.first
-puts u.sessions_number
-puts u.username
-
-u = User.last
-puts u.sessions_number
-puts u.username

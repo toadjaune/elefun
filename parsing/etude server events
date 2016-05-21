@@ -41,7 +41,13 @@ de l'user concernant cette question.
 
 
 
+REQUETES : 
+choix entre incrémenter au fur et à mesure les compteurs/variables ou faire une requete a la fin pour compter le tout
 
+test sur 1000 lignes de vidéos :
+1.99 minutes pour l'incrémentation
+1.56 minutes pour la requête
+on garde donc les requêtes en fin de parsing puisqu'elles sont de toute manière plus adaptées (pour les vidéos on ne compte qu'une fois la même vidéo par session, il peut y avoir des probleme, au moins un exemple de session avec 32 lien vers la même vidéo).
 
 parsing_struct :
 etudes des types des pages :

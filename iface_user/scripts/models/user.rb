@@ -31,7 +31,6 @@ class User
   has_many :out, :weeks, rel_class: :info_week
   has_many :out, :sessions, type: :session
   has_many :out, :fil, rel_class: :info_fil
-  has_many :out, :quizs, rel_class: :Result
 
   def set(params)
     self.username = params['username'][0]

@@ -5,16 +5,17 @@ require 'date'
 require_relative '../regroup/session'
 
 class Session
+  include Neo4j::ActiveNode
   #Appartient à un User et regroupe un ensemble de Page visitées
   include Regroup::Sessions
 
-  #Donées
-  property :name, type: String, constraint: :unique
+  #Données
+  property :name, type: String
   property :agent, type: String
   property :ip, type: String
 
-  property :start, type: DateTime
-  property :end, type: DateTime
+  property :start, type: Time
+  property :end, type: Time
 
   #Méta-données
   property :page_vues, type: Integer, default: 0
@@ -24,13 +25,15 @@ class Session
   property :forum_visited, type: Integer, default: 0
   property :forum_posted, type: Integer, default: 0
 
-  validates_presence_of :name
+  validates_presence_of :start
+  validates_presence_of :end
 
   has_one :in, :user, type: :user
   has_many :out, :pages, rel_class: :Event
-
+  has_many :out, :quizs, rel_class: :Result
+  
   def set_view
-    self.video_viewed = self.query_as(:s).match('s-[:event]->(v:Video)').count('DISTINCT v')
+    self.video_viewed = self.query_as(:s).match('(s)-[:event]->(v:Video)').count('DISTINCT v')
     self.save
   end
 
@@ -40,7 +43,7 @@ class Session
   end
 
   def set_quiz
-    self.quiz_answered = self.query_as(:s).match('s-[:event]->(:Question)<--(q:Quiz)').count('DISTINCT q')
+    self.quiz_answered = self.query_as(:s).match('(s)-[:result]->(q:Quiz)').count(:q)
     self.save
   end
 
@@ -50,7 +53,7 @@ class Session
   end
 
   def set_visit
-    self.forum_visited = self.query_as(:s).match('s-[e:event]->(:Fil)').where(e:{event_type: 'forum_visit'}).count(:e)
+    self.forum_visited = self.query_as(:s).match('(s)-[e:event]->(:Fil)').where(e:{event_type: 'forum_visit'}).count(:e)
     self.save
   end
 
@@ -60,7 +63,7 @@ class Session
   end
 
   def set_posts
-    self.forum_posted = self.query_as(:s).match('s-[e:event]->(:Fil)').where(e:{event_type: 'forum_post'}).count(:e)
+    self.forum_posted = self.query_as(:s).match('(s)-[e:event]->(:Fil)').where(e:{event_type: 'forum_post'}).count(:e)
     self.save
   end
 
