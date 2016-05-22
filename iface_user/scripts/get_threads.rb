@@ -1,13 +1,6 @@
 #!/usr/bin/env ruby
-require 'json'
-require 'neo4j'
-require 'date'
 
-require_relative 'models/fil'
-require_relative 'models/response'
-require_relative 'models/comment'
-
-db = Neo4j::Session.open(:server_db)
+require_relative 'common'
 
 def print_fil(fil)
   puts('________')

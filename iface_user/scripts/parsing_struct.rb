@@ -1,11 +1,6 @@
 #! /usr/bin/env ruby
-require 'neo4j'
-require 'json'
-require_relative 'models/page'
-require_relative 'models/video'
-require_relative 'models/question'
-require_relative 'models/quiz'
-require_relative 'models/week'
+
+require_relative 'common'
 
 #parcours l'arborescence en prenant en argument la page racine et la profondeur
 def tree(blocks, id, depth, week = nil)
@@ -55,7 +50,5 @@ def parse_struct(filename)
   puts(Page.count.to_s + " Pages")
 end
 
-db = Neo4j::Session.open(:server_db)  
 parse_struct('data/20003S02/course_structure_ENSCachan_20003S02_Trimestre_1_2015.json')
 db.close()
-	

@@ -1,23 +1,72 @@
 #!/usr/bin/env ruby
 
-
 require 'optparse'
+require 'json'
+require 'neo4j'
+require 'date'
+
+require_relative 'models/event'
+require_relative 'models/user'
+require_relative 'models/session'
+require_relative 'models/page'
+require_relative 'models/fil'
+require_relative 'models/response'
+require_relative 'models/comment'
+require_relative 'models/page'
+require_relative 'models/video'
+require_relative 'models/question'
+require_relative 'models/quiz'
+require_relative 'models/week'
+require_relative 'models/result'
+
+require_relative 'models/quiz'
+require_relative 'models/question'
+require_relative 'models/result'
+
+require_relative 'parsers/problem'
+require_relative 'parsers/user_session'
+require_relative 'parsers/enrollment'
+require_relative 'parsers/forum'
+require_relative 'parsers/browser'
 
 
 
-$structure_file = ''
+# Valeurs par défaut, propres au MOOC utilisé en dev
+# TODO: les retirer à la fin
+$fichier_structure  = 'data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized'
+$fichier_log        = 'data/20003S02/course_structure_ENSCachan_20003S02_Trimestre_1_2015.json'
+$auteur             = 'ENSCachan'
+$id_cours           = '20003S02'
+$periode            = 'Trimestre_1_2015'
+
+
 
 OptionParser.new do |opts|
 
   opts.banner = 'Test'
 
-  opts.on('-s', '--structure STRUCTURE_FILE', 'Fichier de structure du MOOC') do |s|
-    $structure_file = s
-    puts "structure : #{s}"
+  opts.on '-s', '--structure STRUCTURE_FILE', 'Fichier de structure du MOOC' do |s|
+    $fichier_structure = s
+  end
+
+  opts.on '-l', '--log LOG_FILE', 'Fichier de logs du MOOC' do |l|
+    $fichier_log = l
+  end
+
+  opts.on '-a', '--auteur AUTEUR', 'Auteur du MOOC' do |a|
+    $auteur = a
+  end
+
+  opts.on '-i', '--id ID_COURS', 'ID du MOOC' do |i|
+    $id_cours = i
+  end
+
+  opts.on '-p', '--periode PERIODE', 'Periode du MOOC' do |p|
+    $periode = p
   end
 
 end.parse!
 
-puts $structure_file
+puts $fichier_structure
 
-puts 'a'
+db = Neo4j::Session.open(:server_db)

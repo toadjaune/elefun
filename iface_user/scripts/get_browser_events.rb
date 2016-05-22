@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
-require 'json'
+
+require_relative 'common'
 
 #file = File.new('data/course_head.json','r')
 file1 = File.new('data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized','r')
