@@ -24,11 +24,9 @@ db = Neo4j::Session.open(:server_db)
 
 #question = Quiz.find_by(myid: "8367920c39f34e06bd5c64394f3a11d8")
 
+file = File.new('data/20003S02/left_to_parse','r')
 
-
-file = File.new('data/20003S02/browser_events','r')
-
-#file2 = File.new('data/20005S03/event_types', 'w')
+file2 = File.new('event_types', 'w')
 
 h= Hash.new(0)
 
@@ -38,5 +36,5 @@ file.each do |line|
 end
 
 h.each do |event, nb|
-  puts("#{event} | #{nb}")
+  file2.puts("#{event} | #{nb}")
 end

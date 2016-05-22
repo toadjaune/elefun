@@ -11,15 +11,22 @@ module Parser
         return id.split('-').last
       end
     else
-      return line['page'].split('/').last
+      #a nettoyer
+      if line['referer']
+        return line['referer'].split('/').last
+      elsif line['context']['path']
+        return line['context']['path'].split('/').last
+      else
+        return line['page'].split('/').last
+      end
     end
     return nil
   end
   
-  def self.browser_parser(line)
+  def self.browser_parser(line, id)
     user,session = Parser.get_session(line)
     #on récupère l'id de la page
-    page = Page.find_by(myid: Parser.get_id(line))
+    page = Page.find_by(myid: id)
     if page.nil?
       #puts("error #{line['event']['id']}")
       $page_errors += 1

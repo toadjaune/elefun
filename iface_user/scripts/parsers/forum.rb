@@ -1,12 +1,15 @@
 #!/usr/bin/env ruby
 module Parser
   def self.created_forum_parser(line, type)
+    time = DateTime.iso8601(line['time'])
+    user,session = Parser.get_session(line)
     return case type
       when 'thread'
         puts('fil')
         f = Fil.new
         f.set(line)
         f.save
+        rel = Event.create(from_node: session, to_node: f, time: time, event_type: 'forum_post')
         #puts(line['event']['id'])
         true
       when 'response'
@@ -14,6 +17,7 @@ module Parser
         r = Response.new
         r.set(line)
         r.save
+        rel = Event.create(from_node: session, to_node: r, time: time, event_type: 'forum_post')
         #puts(line['event']['id'])
         #puts('fil_id : ' + line['event']['discussion']['id'])
         true
@@ -22,6 +26,7 @@ module Parser
         c = Comment.new
         c.set(line)
         c.save
+        rel = Event.create(from_node: session, to_node: r, time: time, event_type: 'forum_post')
         #puts(line['event']['id'])
         #puts('response_id : ' + line['event']['response']['id'])
         true
@@ -46,6 +51,9 @@ module Parser
             f.set_discuss(line)
           end
           f.save
+          time = DateTime.iso8601(line['time'])
+          user,session = Parser.get_session(line)
+          rel = Event.create(from_node: session, to_node: f, time: time, event_type: 'forum_post')
           ###
           true
         else
@@ -106,12 +114,22 @@ module Parser
             #end
             #r.save
             ####
-            f = (discussion['categorie'] == 'thread' ? Parser.get_fil(action['id_fil']) : Parser.get_response(action['id_fil']) )
-            r = (discussion['categorie'] == 'thread' ? Reponse.new : Comment.new)
+            if discussion['categorie'] == 'thread'
+              f = Parser.get_fil(action['id_fil'])
+              r = Response.new
+              type = "forum_post"
+            else
+              f = Parser.get_response(action['id_fil'])
+              r = Comment.new
+              type = "forum_post"
+            end
             if line['event']
               r.set_discuss(line,f)
             end
             r.save
+            time = DateTime.iso8601(line['time'])
+            user,session = Parser.get_session(line)
+            rel = Event.create(from_node: session, to_node: r, time: time, event_type: type)
             true
           when 'pin', 'follow', 'unfollow', 'upvote', 'unvote', 'close', 'flagAbuse', 'endorse'
             #puts("/discussion/#{discussion['categorie']} : #{action['action']}")
@@ -129,7 +147,7 @@ module Parser
           when '', 'search'
             #puts("/discussion/forum/#{discussion['arg']}")
             true
-          when /(?<id_conv>\h{10,})\/(?<element>\w*)(\z|(\/(?<id_thread>\h{10,})))/
+          when /\/(?<element>\w*)(\z|(\/(?<id_thread>\h{10,})))/
             info = $LAST_MATCH_INFO
             case info['element']
               when 'inline'

@@ -111,9 +111,9 @@ module Parser
   end
 
   def self.get_response(idr)
-    resp = Fil.find_by(myid: idr)
+    resp = Response.find_by(myid: idr)
     if !resp
-      resp = Fil.create(myid: idr, display_name: "Réponse")
+      resp = Response.create(myid: idr)
     end
     return resp
   end

@@ -53,7 +53,6 @@ def parse_logs(filename)
   $browser = 0
 
   $errors = 0
-
   file.each do |l|
     $nb += 1
     line = JSON.parse(l)
@@ -75,17 +74,21 @@ def parse_logs(filename)
         when '/create_account'
           #puts('Enroll')
           Parser.enrollment_parser(line) ? $parsed += 1 : $toparse.write(l)
-        when /courseware/, 'play_video'
-          Parser.browser_parser(line) ? $parsed += 1 : $toparse.write(l)
+      when /courseware\/(?<page_1>\h{10,32})(\z|(\/(?<page_2>\h{10,32})))/
+          id = $LAST_MATCH_INFO['page_2'] ? $LAST_MATCH_INFO['page_2'] : $LAST_MATCH_INFO['page_1']
+          Parser.browser_parser(line, id) ? $parsed += 1 : $toparse.write(l)
+        when 'play_video'
+          id = line['event']['id'].split('-').last
+          Parser.browser_parser(line, id) ? $parsed += 1 : $toparse.write(l)
       end
       if $nb % 100 == 0
         puts($nb)
       end
     rescue Exception => e
       $errors+=1
-      if $errors > 10
-        abort
-      end
+      #if $errors > 10
+      #  abort
+      #end
       puts e.message
       puts e.backtrace
       $bugged.write e.message
@@ -128,6 +131,6 @@ def parse_logs(filename)
 end
 
 #parse_logs('data/20003S02/course_head.json')
-parse_logs('data/20003S02/forum')
+parse_logs('data/20003S02/left_to_parse_old')
 #parse_logs('test_opti')
 #parse_logs('data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized')

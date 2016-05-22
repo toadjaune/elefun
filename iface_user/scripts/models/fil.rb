@@ -17,20 +17,18 @@ class Fil < Page
   def set(params)
     self.myid = params['event']['id']
     self.time = params['time']
-    self.message = params['event']['body']
+    self.message = params['event']['body'].encode("UTF-8")
+    self.display_name = params['event']['title'].encode("UTF-8")
     self.fil_type = params['event']['thread_type']
     self.category_id = params['event']['category_id']
-    u,s = Parser.get_session(params['session'])
-    s.add_posts
-    self.sessions << s
     self.save
     i=self.users.where()
   end
 
   def set_discuss(params)
     self.time = params['time']
-    self.display_name = params['event']['POST']['title'].pop
-    self.message = params['event']['POST']['body'].pop
+    self.display_name = params['event']['POST']['title'].pop.encode("UTF-8")
+    self.message = params['event']['POST']['body'].pop.encode("UTF-8")
     self.fil_type = params['event']['POST']['thread_type'].pop
     u,s = Parser.get_session(params)
     s.add_posts

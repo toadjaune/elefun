@@ -18,7 +18,6 @@ class Session
   property :end, type: Time
 
   #Méta-données
-  property :page_vues, type: Integer, default: 0
   property :video_viewed, type: Integer, default: 0
   property :quiz_answered, type: Integer, default: 0
   property :page_visited, type: Integer, default: 0
@@ -32,48 +31,29 @@ class Session
   has_many :out, :pages, rel_class: :Event
   has_many :out, :quizs, rel_class: :Result
   
-  def set_view
+  def set_video_views
     self.video_viewed = self.query_as(:s).match('(s)-[:event]->(v:Video)').count('DISTINCT v')
     self.save
   end
 
-  def add_views
-    self.video_viewed +=1
-    self.save
-  end
-
-  def set_quiz
+  def set_quiz_answers
     self.quiz_answered = self.query_as(:s).match('(s)-[:result]->(q:Quiz)').count(:q)
     self.save
   end
 
-  def add_quiz
-    self.quiz_answered +=1
-    self.save
-  end
-
-  def set_visit
+  def set_forum_visits
     self.forum_visited = self.query_as(:s).match('(s)-[e:event]->(:Fil)').where(e:{event_type: 'forum_visit'}).count(:e)
     self.save
   end
 
-  def add_visit
-    self.page_vues+=1
-    self.save
-  end
-
-  def set_posts
+  def set_forum_posts
     self.forum_posted = self.query_as(:s).match('(s)-[e:event]->(:Fil)').where(e:{event_type: 'forum_post'}).count(:e)
     self.save
   end
 
-  def add_posts
-    self.forum_posted+=1
-    self.save
-  end
-
-  def add_forum_visits
-    self.forum_visited+=1
+  def set_page_visits
+    #à lancer apres forum post et forum visit
+    self.page_visited = self.query_as(:s).match('(s)-[e:event]->(:Page)').where(e:{event_type: 'forum_visit'}).count(:e) - self.forum_visited - self.forum_posted
     self.save
   end
 
