@@ -1,22 +1,7 @@
 #!/usr/bin/env ruby
-require 'json'
-require 'neo4j'
-require 'date'
 
-require_relative 'models/event'
-require_relative 'models/user'
-require_relative 'models/session'
-require_relative 'models/page'
-require_relative 'models/fil'
-require_relative 'models/response'
-require_relative 'models/comment'
+require_relative 'common'
 
-db = Neo4j::Session.open(:server_db)
-
-#file = File.new('data/20003S02/course_head.json','r')
-#file = File.new('data/20003S02/browser_events','r')
-#file = File.new('data/20003S02/bug','r')
-file = File.new('data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized','r')
 nb = 0
 parsed = 0
 server = 0
@@ -32,11 +17,7 @@ sess = []
 #Temps d'inactivité en secondes autorisé avant qu'on considère une nouvelle session
 inactivite=3600
 
-auteur = 'ENSCachan'
-id_cours = '20003S02'
-periode = 'Trimestre_1_2015'
-
-file.each do |l|
+$fichier_log.each do |l|
   nb += 1
   #puts("parsing line #{nb}")
 
@@ -93,4 +74,4 @@ puts("sessions créés : #{new_sessions}")
 puts("user créés : #{users}")
 puts("relations créées : #{rela}")
 
-db.close()
+$db.close()

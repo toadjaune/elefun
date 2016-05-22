@@ -1,6 +1,3 @@
-require 'neo4j'
-require 'date'
-
 class Result
   #regroupe les résultats au quiz d'un user via une de ses session 
   include Neo4j::ActiveRel

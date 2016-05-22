@@ -1,9 +1,3 @@
-require 'neo4j'
-require 'date'
-
-
-require_relative '../regroup/session'
-
 class Session
   include Neo4j::ActiveNode
   #Appartient à un User et regroupe un ensemble de Page visitées

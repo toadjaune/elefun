@@ -1,5 +1,3 @@
-require 'neo4j'
-
 class Page
   #Représente les différentes pages du cours
   include Neo4j::ActiveNode

@@ -1,5 +1,3 @@
-require 'neo4j'
-
 class Fil < Page
   #blabla
   include Neo4j::ActiveNode

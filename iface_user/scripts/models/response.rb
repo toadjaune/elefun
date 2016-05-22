@@ -1,5 +1,3 @@
-  require 'neo4j'
-
 class Response
   #réponse à blabla
   include Neo4j::ActiveNode

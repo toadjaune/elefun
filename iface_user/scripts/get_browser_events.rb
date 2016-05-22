@@ -1,12 +1,11 @@
 #!/usr/bin/env ruby
-require 'json'
 
-#file = File.new('data/course_head.json','r')
-file1 = File.new('data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized','r')
+require_relative 'common'
+
 file2 = File.new('data/20003S02/browser_events','w')
 
 i = 0
-file1.each do |l|
+$fichier_log.each do |l|
 	line = JSON.parse(l)
   if line['event_source'] == "browser" and !(line['event_type'] == "page_close")
 		file2.write(l)

@@ -1,6 +1,3 @@
-require 'neo4j'
-require 'date'
-
 class Info
   include Neo4j::ActiveRel
 
