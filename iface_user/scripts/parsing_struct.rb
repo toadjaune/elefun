@@ -37,7 +37,7 @@ def tree(blocks, id, depth, week = nil)
 end
 
 def parse_struct
-  cours = JSON.parse($fichier_structure)
+  cours = JSON.parse($fichier_structure.gets)
   #on a désormais un hash du JSON
   root = cours['root']
   blocks = cours['blocks']
@@ -50,4 +50,4 @@ def parse_struct
 end
 
 parse_struct
-db.close()
+$db.close()

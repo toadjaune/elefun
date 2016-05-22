@@ -74,4 +74,4 @@ puts("sessions créés : #{new_sessions}")
 puts("user créés : #{users}")
 puts("relations créées : #{rela}")
 
-db.close()
+$db.close()

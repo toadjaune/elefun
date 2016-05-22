@@ -5,6 +5,9 @@ require 'json'
 require 'neo4j'
 require 'date'
 
+require_relative 'regroup/user'
+require_relative 'regroup/session'
+
 require_relative 'models/event'
 require_relative 'models/user'
 require_relative 'models/session'
@@ -17,10 +20,6 @@ require_relative 'models/video'
 require_relative 'models/question'
 require_relative 'models/quiz'
 require_relative 'models/week'
-require_relative 'models/result'
-
-require_relative 'models/quiz'
-require_relative 'models/question'
 require_relative 'models/result'
 
 require_relative 'parsers/problem'
@@ -67,6 +66,4 @@ OptionParser.new do |opts|
 
 end.parse!
 
-puts $fichier_structure
-
-db = Neo4j::Session.open(:server_db)
+$db = Neo4j::Session.open(:server_db)

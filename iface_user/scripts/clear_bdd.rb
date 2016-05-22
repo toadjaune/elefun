@@ -2,6 +2,6 @@
 
 require_relative 'common'
 
-db.query("MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE r, n")  
+$db.query("MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE r, n")  
 puts("DB cleared !")
-db.close()
+$db.close()
