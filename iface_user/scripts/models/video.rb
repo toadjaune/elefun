@@ -1,5 +1,3 @@
-require 'neo4j'
-
 class Video < Page
   #Représente les différentes pages du cours 
   

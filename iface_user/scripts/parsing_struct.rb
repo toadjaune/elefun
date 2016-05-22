@@ -36,9 +36,8 @@ def tree(blocks, id, depth, week = nil)
   return page
 end
 
-def parse_struct(filename)
-  file =  File.new(filename, 'r')
-  cours = JSON.parse(file.gets)
+def parse_struct
+  cours = JSON.parse($fichier_structure)
   #on a désormais un hash du JSON
   root = cours['root']
   blocks = cours['blocks']
@@ -50,5 +49,5 @@ def parse_struct(filename)
   puts(Page.count.to_s + " Pages")
 end
 
-parse_struct('data/20003S02/course_structure_ENSCachan_20003S02_Trimestre_1_2015.json')
+parse_struct
 db.close()

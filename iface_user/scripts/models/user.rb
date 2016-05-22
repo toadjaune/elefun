@@ -1,6 +1,3 @@
-require 'neo4j'
-require_relative '../regroup/user'
-
 class User
   #Un utilisateur ayant été vu au moins une fois pendant le cours
   include Neo4j::ActiveNode

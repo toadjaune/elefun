@@ -33,8 +33,8 @@ require_relative 'parsers/browser'
 
 # Valeurs par défaut, propres au MOOC utilisé en dev
 # TODO: les retirer à la fin
-$fichier_structure  = 'data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized'
-$fichier_log        = 'data/20003S02/course_structure_ENSCachan_20003S02_Trimestre_1_2015.json'
+$fichier_structure  = File.new('fichiers/20003S02/course_structure_ENSCachan_20003S02_Trimestre_1_2015.json','r')
+$fichier_log        = File.new('fichiers/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized','r')
 $auteur             = 'ENSCachan'
 $id_cours           = '20003S02'
 $periode            = 'Trimestre_1_2015'
@@ -46,11 +46,11 @@ OptionParser.new do |opts|
   opts.banner = 'Test'
 
   opts.on '-s', '--structure STRUCTURE_FILE', 'Fichier de structure du MOOC' do |s|
-    $fichier_structure = s
+    $fichier_structure = File.new "fichiers/#{s}", 'r'
   end
 
   opts.on '-l', '--log LOG_FILE', 'Fichier de logs du MOOC' do |l|
-    $fichier_log = l
+    $fichier_log = File.new "fichiers/#{l}", 'r'
   end
 
   opts.on '-a', '--auteur AUTEUR', 'Auteur du MOOC' do |a|

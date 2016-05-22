@@ -1,5 +1,3 @@
-require 'neo4j'
-
 class Comment < Page
   #commentaire sur du blabla
   include Neo4j::ActiveNode

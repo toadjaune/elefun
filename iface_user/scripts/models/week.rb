@@ -1,6 +1,3 @@
-require 'neo4j'
-require 'date'
-
 class Week
   include Neo4j::ActiveNode
   
