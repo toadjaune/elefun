@@ -25,6 +25,8 @@ class Fichier < ActiveRecord::Base
   has_attached_file :fichier, path: 'fichiers'
   belongs_to :mooc
 
+  validates_attachment_content_type :fichier, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
+
 #  def new(params)
 #    origin = params[:tempfile]
 #    destination = '/fichiers'
