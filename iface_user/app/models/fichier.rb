@@ -22,7 +22,7 @@ class Fichier < ActiveRecord::Base
   include Rails.application.routes.url_helpers
 
 #  attr_accessible :fichier
-  has_attached_file :fichier, path: 'fichiers'
+  has_attached_file :fichier #, path: 'fichiers'
   belongs_to :mooc
 
   validates_attachment_content_type :fichier, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
