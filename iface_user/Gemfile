@@ -49,6 +49,9 @@ gem 'jquery-fileupload-rails'
 gem 'jquery-ui-rails'
 gem 'paperclip'
 
+# Base de données pour les données extraites
+gem 'neo4j'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'

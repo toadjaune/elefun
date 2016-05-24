@@ -1,0 +1,66 @@
+v : fait
+0 : en cours
+x : pas faisable
+USER
+  variables :
+  v  * genre, age, diplome                -> obtenu par enrollment
+  v  * nombre de vidéos vues              -> possible par semaine (doublons sauf par  session)
+  v  * nombre de quiz vus                 -> idem sur les quizs auxquels le user a répondu
+  x  * nombre de devoirs déposés          -> impossible sans MOODLE
+  x  * nombre d'accès à MOODLE            -> idem
+  0  * nombre de messages postés sur les forums -> Fil.count, Response.count, Comment.count
+  v  * nombre de messages lus sur les forums -> Parser.get_forum_visits, resultat à stocker
+  v  * nombre de sessions
+    * entropie des activités par session -> kesako?
+
+  groupes :
+  x  * va sur MOODLE                      -> impossible sans MOODLE
+    * participe au forum
+    * ne font que vidéos et quiz         -> pas trivial
+    * actif en semaine 1 pour voir l'évolution -> semaine 0/1 ? quelle activité ?
+    * actif seulement en semaine 1
+    * actif seulement en dernière semaine
+    
+  MOOC
+    variables :
+    0  * nombre d'inscrits              -> on n'a que 700 et quelques personnes inscrites
+      * nombre de participants effectifs-> @ vori si vidéo et quiz suffisent
+        (vidéo ou quiz ou MOODLE)
+    0  * genre des inscrits              -> on n'as pas d'infos sur une bonne partie
+    v  * nombre de vidéos dispo         -> Video.count
+    v  * nombre de quizz                 -> Quiz.count
+      * nombre d'activités (énigme, projet) -> projets sur MOODLE, énigme comment faire ?
+    v  * nombre de vues d'une vidéo     -> v.views
+    v  * nombre de quiz répondu         -> Result.count
+    x  * nombre de dépôts d'activité    -> impossible sans MOODLE
+      * nombre de certifié             -> trouver comment récupérer l'information
+      
+SESSION
+  définition :
+    période d'activité, on les délimite par une inactivité de plus d'une heure
+    -> en pratique on a les token dans les logs, il faut juste créer une nouvelle
+    session si le token est gardé même avec inactivité suffisante
+
+  groupes :
+    * navigation sans réalisation d'activité -> à expliciter
+    * visionnage de vidéo
+    * réalisation de quiz
+  x  * réalisation de devoirs         -> impossible sans MOODLE
+    -> combinaisons des groupes
+    -> introduction d'une notion quantitative ?
+    On va compter le nombre de réalisations d'activités dans le session afin de pouvoir choisir des critères de requêtes
+
+  but :
+    regrouper les gens par sessions qu'il réalisent
+    évolution des proportions de types de sessions
+      
+ECHANTILLONNAGE/ZAPPING :
+  définition : étude des "trous" de participation par rapport au déroulement 
+  prévu du cours 
+    -> réalisable mais peu pertinent sans les devoirs ???
+    -> on peut toujours essayer de faire cela sur les vidéos/quiz
+    
+    
+analyse de langage : 
+python nltk
+mesure de poid tfidf

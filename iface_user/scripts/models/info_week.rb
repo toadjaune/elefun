@@ -1,0 +1,14 @@
+class Info
+  include Neo4j::ActiveRel
+
+  from_class :User
+  to_class :Fil
+  type 'info_week'
+
+  property :page_visitees, type: Integer, default: 0
+  property :quizz, type: Integer, default: 0
+  property :forum_msg, type: Integer, default: 0
+  property :forum_lu, type: Integer, default: 0
+  property :video_play, type: Integer, default: 0
+  property :activite, type:Time, default: 0
+end
