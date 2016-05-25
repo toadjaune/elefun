@@ -8,7 +8,6 @@ module Parser
         puts('fil')
         f = Fil.new
         f.set(line)
-        f.save
         rel = Event.create(from_node: session, to_node: f, time: time, event_type: 'forum_post')
         #puts(line['event']['id'])
         true
@@ -16,7 +15,6 @@ module Parser
         puts('response')
         r = Response.new
         r.set(line)
-        r.save
         rel = Event.create(from_node: session, to_node: r, time: time, event_type: 'forum_post')
         #puts(line['event']['id'])
         #puts('fil_id : ' + line['event']['discussion']['id'])
@@ -25,8 +23,7 @@ module Parser
         puts('comment')
         c = Comment.new
         c.set(line)
-        c.save
-        rel = Event.create(from_node: session, to_node: r, time: time, event_type: 'forum_post')
+        rel = Event.create(from_node: session, to_node: c, time: time, event_type: 'forum_post')
         #puts(line['event']['id'])
         #puts('response_id : ' + line['event']['response']['id'])
         true
@@ -43,13 +40,11 @@ module Parser
   def self.discussion_forum_parser(line, discussion)
     return case discussion['categorie']
       when /((\h{15,})|(i4x-#{$auteur}-#{$id_cours}-course-#{$periode}_(?<partie>\w*)))/
-        if /threads\/create/.match(discussion['arg']) != nil
+          if /threads\/create/.match(discussion['arg']) != nil and line['event']
           #puts('fil /discussion')
           f = Fil.new
           ###erreur appel de [] sur nil,
-          if line['event']
-            f.set_discuss(line)
-          end
+          f.set_discuss(line)
           f.save
           time = DateTime.iso8601(line['time'])
           user,session = Parser.get_session(line)
@@ -114,22 +109,22 @@ module Parser
             #end
             #r.save
             ####
-            if discussion['categorie'] == 'thread'
-              f = Parser.get_fil(action['id_fil'])
-              r = Response.new
-              type = "forum_post"
-            else
-              f = Parser.get_response(action['id_fil'])
-              r = Comment.new
-              type = "forum_post"
+            if line['event']  
+              if discussion['categorie'] == 'thread'
+                f = Parser.get_fil(action['id_fil'])
+                r = Response.new
+                type = "forum_post"
+              else
+                f = Parser.get_response(action['id_fil'])
+                r = Comment.new
+                type = "forum_post"
+              end
+              r.set_discuss(line, f)
+              r.save
+              time = DateTime.iso8601(line['time'])
+              user,session = Parser.get_session(line)
+              rel = Event.create(from_node: session, to_node: r, time: time, event_type: type)
             end
-            if line['event']
-              r.set_discuss(line,f)
-            end
-            r.save
-            time = DateTime.iso8601(line['time'])
-            user,session = Parser.get_session(line)
-            rel = Event.create(from_node: session, to_node: r, time: time, event_type: type)
             true
           when 'pin', 'follow', 'unfollow', 'upvote', 'unvote', 'close', 'flagAbuse', 'endorse'
             #puts("/discussion/#{discussion['categorie']} : #{action['action']}")

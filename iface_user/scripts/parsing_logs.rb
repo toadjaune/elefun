@@ -4,8 +4,8 @@ require_relative 'common'
 
 def parse_logs(filename)
   file = File.new(filename,'r')
-  $toparse = File.new('data/20003S02/left_to_parse','w')
-  $bugged = File.new('data/20003S02/bugged','w')
+  $toparse = File.new('fichiers/20003S02/left_to_parse','w')
+  $bugged = File.new('fichiers/20003S02/bugged','w')
   $nb = 0
   $parsed = 0
   $new_users = 0
@@ -59,9 +59,9 @@ def parse_logs(filename)
       end
     rescue Exception => e
       $errors+=1
-      #if $errors > 10
-      #  abort
-      #end
+      if $errors > 10
+        abort
+      end
       puts e.message
       puts e.backtrace
       $bugged.write e.message
@@ -103,7 +103,7 @@ def parse_logs(filename)
   result.puts("_________________________________")
 end
 
-#parse_logs('data/20003S02/course_head.json')
-parse_logs('data/20003S02/left_to_parse_old')
+#parse_logs('fichiers/20003S02/course_head.json')
+parse_logs('fichiers/20003S02/forum')
 #parse_logs('test_opti')
-#parse_logs('data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized')
+#parse_logs('fichiers/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized')

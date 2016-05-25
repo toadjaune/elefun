@@ -1,8 +1,7 @@
-class Response
+class Response < Page
   #réponse à blabla
   include Neo4j::ActiveNode
   
-  property :myid, type: String
   property :time, type: DateTime
 
   property :message, type: String
@@ -16,6 +15,7 @@ class Response
 
   def set(params)
     self.myid = params['event']['id']
+    self.display_name = "response"
     self.time = params['time']
     self.message = params['event']['body'].encode("UTF-8")
     self.category_id = params['event']['category_id']
@@ -28,11 +28,9 @@ class Response
 
   def set_discuss(params, f)
     self.time = params['time']
+    self.display_name = "response"
     self.message = params['event']['POST']['body'].pop.encode("UTF-8")
     if f
-      if !f.is_a?(Fil)
-        puts 'PROUT'
-      end
       f.responses << self
     end
     self.save
