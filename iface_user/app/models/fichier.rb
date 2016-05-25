@@ -32,7 +32,7 @@ class Fichier < ActiveRecord::Base
     presence: true,
     inclusion: { in: ['structure', 'log'] }
 
-  validate :validate_liens_moocs, unless: 'mooc.nil? || genre.nil?'
+  validate :validate_lien_moocs, unless: 'mooc.nil? || genre.nil?'
 
 #  def new(params)
 #    origin = params[:tempfile]
