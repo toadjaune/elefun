@@ -17,6 +17,8 @@
 #
 
 class Mooc < ActiveRecord::Base
-  has_many :fichiers
+  has_many :fichiers, dependent: :destroy
   belongs_to :bdd
+
+  validates_presence_of :bdd
 end
