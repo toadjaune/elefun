@@ -21,4 +21,12 @@ class Mooc < ActiveRecord::Base
   belongs_to :bdd
 
   validates_presence_of :bdd
+
+  def fichier_log
+    fichiers.where(genre: 'log').first
+  end
+
+  def fichier_structure
+    fichiers.where(genre: 'strucure').first
+  end
 end
