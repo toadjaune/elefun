@@ -8,6 +8,7 @@ require 'date'
 require_relative 'regroup/user'
 require_relative 'regroup/session'
 
+require_relative 'models/etiquetable'
 require_relative 'models/event'
 require_relative 'models/user'
 require_relative 'models/session'
