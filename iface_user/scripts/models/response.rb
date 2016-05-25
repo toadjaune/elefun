@@ -1,4 +1,4 @@
-class Response
+class Response < Etiquetable
   #réponse à blabla
   include Neo4j::ActiveNode
   

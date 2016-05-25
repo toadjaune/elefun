@@ -1,4 +1,4 @@
-class Session
+class Session < Etiquetable
   include Neo4j::ActiveNode
   #Appartient à un User et regroupe un ensemble de Page visitées
   include Regroup::Sessions

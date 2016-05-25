@@ -1,4 +1,4 @@
-class Page
+class Page < Etiquetable
   #Représente les différentes pages du cours
   include Neo4j::ActiveNode
 
