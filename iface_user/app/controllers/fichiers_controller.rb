@@ -42,11 +42,6 @@ class FichiersController < ApplicationController
   # POST /fichiers.json
   def create
     @fichier = Fichier.new(fichier_params)
-    puts('chat')
-    puts(params)
-    puts(fichier_params)
-    puts(fichier_params[:fichier])
-    puts(@fichier)
 
     respond_to do |format|
       if @fichier.save
@@ -100,6 +95,6 @@ class FichiersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def fichier_params
-    params.require(:fichier).permit(:nom, :mooc, :fichier, :upload)
+    params.require(:fichier).permit(:nom, :mooc, :fichier, :genre, :mooc_id)
   end
 end

@@ -15,9 +15,19 @@
 //= require jquery-ui
 //= require twitter/bootstrap
 //= require turbolinks
-//= require jquery-fileupload
+// require jquery-fileupload
 //= require fileupload.js
 //= require_tree .
+
+//= require jquery-fileupload/vendor/jquery.ui.widget
+//= require jquery-fileupload/vendor/tmpl
+//= require jquery-fileupload/vendor/canvas-to-blob
+//= require jquery-fileupload/jquery.iframe-transport
+//= require jquery-fileupload/jquery.fileupload
+//= require jquery-fileupload/jquery.fileupload-process
+//= require jquery-fileupload/jquery.fileupload-validate
+//= require jquery-fileupload/locale
+//= require jquery-fileupload/jquery.fileupload-jquery-ui
 
 var url ,chargement, loadMOOC
 
@@ -39,6 +49,8 @@ function changeContent(tag, u, f){
 
 function loadMOOC(id){
     changeContent($("#info_mooc"), url+'/moocs/'+id, prepareFileupload);
+
+
 };
 
 function inputify(tag){

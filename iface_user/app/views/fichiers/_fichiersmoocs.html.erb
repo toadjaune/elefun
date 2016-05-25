@@ -1,20 +1,24 @@
 <h2>Fichiers</h2>
 
 <div class='well'>
-  <div class='row'>
-    <%= form_for Fichier.new, :html => { :multipart => true, :id => "fileupload"  } do |f| %>
-      <label class='col-sm-2 text-right'>Structure cours :</label>
-      <%= f.file_field :fichier, :html => { :type => "file", :name => "files[cours]", :class => "col-sm-4 fileupload"} %>
-    <button type="submit" class="btn btn-primary btn-xs col-sm-1">
-      <span>Start upload</span>
-    </button>
-  <% end %>
-  </div>
-  <div class='row'>
-    <strong class='col-sm-2 text-right'>Logs :</strong>
-    <input class='col-sm-4 fileupload' type='file'></input>
+  <%= form_for Fichier.new, :html => { :multipart => true, :class => "fileupload row", :id => "fichier_s" } do |f| %>
+    <%= f.hidden_field :genre, :value => "structure"  %>
+    <%= f.hidden_field :mooc_id, :value => "1"  %>
+    <span class='col-sm-2 text-right'>Structure cours :</span>
+    <label for="fichier_structure" class="fileinput-button btn btn-success col-sm-3 btn-xs fs">
+      <span class='fsc'><span>Choisir un fichier</span></span>
+    </label>
+      <%= f.file_field :structure, :value => "Chat", :name => "fichier[fichier]", :class => "hidden" %>
+<% end %>
+<%= form_for Fichier.new, :html => { :multipart => true, :class => "fileupload", :id => "fichier_l" } do |f| %>
+    <div class='row'>
+    <%= f.hidden_field :genre, :value => "log"  %>
+    <%= f.hidden_field :mooc_id, :value => "1"  %>
+    <label class='col-sm-2 text-right'>Logs :</label>
+    <%= f.file_field :log, :name => "fichier[fichier]", :class => "col-sm-4" %>
     <button class='btn btn-primary btn-xs col-sm-1'>Charger</button>
   </div>
+<% end %>
   <div class="progress progress-success progress-striped active">
     <div id="progress" class="progress-bar" style="width:0%;"></div>
   </div>
@@ -22,46 +26,4 @@
 
 
 
-<div class='well'>
-  <div class='row'>
-    <strong class='col-sm-2 text-right'>Structure cours :</strong>
-    <%= form_for Fichier.new, :html => { :multipart => true, :id => "fileupload"  } do |f| %>
-      <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
-    <div class="row fileupload-buttonbar">
-      <div class="span7">
-        <!-- The fileinput-button span is used to style the file input field as button -->
-        <span class="btn btn-success fileinput-button">
-          <i class="icon-plus icon-white"></i>
-          <span>Add files...</span>
-          <%= f.file_field :fichier %>
-        </span>
-        <button type="submit" class="btn btn-primary start">
-          <i class="icon-upload icon-white"></i>
-          <span>Start upload</span>
-        </button>
-        <button type="reset" class="btn btn-warning cancel">
-          <i class="icon-ban-circle icon-white"></i>
-          <span>Cancel upload</span>
-        </button>
-        <button type="button" class="btn btn-danger delete">
-          <i class="icon-trash icon-white"></i>
-          <span>Delete</span>
-        </button>
-        <input type="checkbox" class="toggle">
-      </div>
-      <div class="col-sm-5">
-        <!-- The global progress bar -->
-        <div class="progress progress-success progress-striped active">
-          <div id="prgress" class="progress-bar" style="width:0%;"></div>
-        </div>
-      </div>
-    </div>
-    <!-- The loading indicator is shown during image processing -->
-    <div class="fileupload-loading"></div>
-    <br>
-    <!-- The table listing the files available for upload/download -->
-    <table class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody>
-    </table>
-  <% end %>
-  </div>
-</div>
+
