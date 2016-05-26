@@ -11,9 +11,9 @@ function progressbar() {
     return '<div class="progress progress-success progress-striped active col-sm-offset-1 col-sm-4"><div class="progress-bar" style="width:0%;"></div></div>'
 };
 
-function deleteFile(url, span) {
+function deleteFile(url) {
     return '<span class="col-sm-2">Fichier chargé</span>'+
-            '<button class="btn btn-warning btn-xs col-sm-1 delete-file" data-confirm="Êtes-vous sûr ?" data-url='+url+'>Supprimer</button>'
+            '<button class="btn btn-warning btn-xs col-sm-1 delete-file" data-url='+url+'>Supprimer</button>'
 };
 
 
@@ -38,7 +38,7 @@ function prepareFileupload() {
         done: function (e, data) {
             var suppr = $('<div class="row"></div>');
             suppr.append($($(e.target).find('.categorie')))
-                .append($(deleteFile(data.result.files[0].delete_url)))
+                .append($(deleteFile(data.result.files[0].delete_url, $("#select_mooc").find(":selected").val())))
                 .replaceAll($(e.target));
             deleteFichier();
         },

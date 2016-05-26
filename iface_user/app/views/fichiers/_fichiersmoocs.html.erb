@@ -3,8 +3,8 @@
   <div class="row">
     <span class='col-sm-2 text-right categorie'><% if @rendu=="structure" %>Structure cours<% else %>Logs<%end %> :</span>
     <span class="col-sm-2">Fichier chargé</span>
-    <button data-url="/fichiers/<%=@fichier_ici.id%>" class="btn btn-warning btn-xs col-sm-1 delete-file" data-confirm="Êtes-vous sûr ?">Supprimer</button>
-    <!--%= link_to 'Supprimer', @fichier_ici, method: :delete, class: 'btn btn-warning btn-xs col-sm-1 delete-file', data: { confirm: 'Êtes-vous sûr ?' } %-->
+    <button data-url="/fichiers/<%=@fichier_ici.id%>" class="btn btn-warning btn-xs col-sm-1 delete-file">Supprimer</button>
+    <!--%= link_to 'Supprimer', @fichier_ici, method: :delete, class: 'btn btn-danger btn-xs col-sm-1', data: { confirm: 'Êtes-vous sûr ?' } %-->
   </div>
 <% else %>
   <%= form_for Fichier.new, :html => { :multipart => true, :class => "fileupload row", :id => "fichier_"+@rendu } do |f| %>

@@ -82,10 +82,12 @@ class FichiersController < ApplicationController
   # DELETE /fichiers/1.json
   def destroy
     @fichier = Fichier.find(params[:id])
+    @rendu = @fichier.genre
+    @mooc = Mooc.find(@fichier.mooc_id)
     @fichier.destroy
 
     respond_to do |format|
-      format.html { redirect_to fichiers_url }
+      format.html { render partial: "fichiersmoocs" }
 #      format.html { redirect_to fichiers_url, notice: 'Fichier was successfully destroyed.' }
       format.json { head :no_content }
     end
