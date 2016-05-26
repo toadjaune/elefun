@@ -52,9 +52,18 @@ function changeContent(tag, u, f, f2){
 
 function deleteFichier(){
     $('.delete-file').click( function(e){
-        // rel="nofollow" data-method="delete" href="'+url+'"
-        console.log(e);
         e.preventDefault();
+        $.ajax({
+            url: e.target.dataset.url,
+            type: 'DELETE',
+            success: function(response){
+                $(response).replaceAll($(e.target).parent());
+                prepareFileupload();
+            },
+            error: function(response){
+                console.log(response);
+            }
+        });
     });
 };
 
