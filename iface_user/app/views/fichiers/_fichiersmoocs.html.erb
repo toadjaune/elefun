@@ -14,7 +14,7 @@
     <label for="<%=@rendu%>" class="fileinput-button btn btn-primary col-sm-3 btn-xs fs">
       <span class='fsc'><span>Choisir un fichier</span></span>
     </label>
-    <%= f.file_field @rendu, :name => "fichier[fichier]", :class => "hidden", :id => @rendu, :name => "fichier_"+@rendu %>
+    <%= f.file_field @rendu, :name => "fichier[fichier]", :class => "hidden", :id => @rendu%>
     <span class="prog-zone"></span>
   <% end %>
 <% end %>
