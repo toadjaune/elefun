@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+require_relative 'common'
+
 start = Time.now
 
 Session.all.each do |s|

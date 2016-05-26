@@ -1,4 +1,4 @@
-class Response
+class Response < Page
   #réponse à blabla
   include Neo4j::ActiveNode
   

@@ -1,4 +1,4 @@
-class Comment
+class Comment < Page
   #commentaire sur du blabla
   include Neo4j::ActiveNode
 
