@@ -56,11 +56,15 @@ class Fichier < ActiveRecord::Base
     }
   end
 
+  def to_s
+    "#{mooc}_#{genre}"
+  end
+
   private
 
   def validate_lien_moocs
     # On vérifie qu'un mooc donné a au plus un fichier de chaque type
-    nb = Fichier.where(mooc_id: mooc_id).count
+    nb = Fichier.where(mooc_id: mooc_id, genre: genre).count
     # Si le fichier qu'on tente d'enregistrer est déjà en BDD, il faut le prendre en compte
     unless ( new_record? && nb == 0 ) || ( !new_record? && nb == 1)
       errors.add :mooc, "Il y a déjà un fichier de type #{genre} pour le mooc #{mooc}."

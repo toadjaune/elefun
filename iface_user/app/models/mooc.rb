@@ -29,4 +29,9 @@ class Mooc < ActiveRecord::Base
   def fichier_structure
     fichiers.where(genre: 'strucure').first
   end
+
+  def to_s
+    nom
+  end
+
 end
