@@ -13,6 +13,7 @@
 /db/neo4j
 
 /fichiers/*
+/public/system
 
 # Ignore all logfiles and tempfiles.
 /log/*

@@ -5,7 +5,15 @@
     <%= render 'moocs/showmooc' %>
     </li>
     <li id="fichier" class='list-group-item'>
-    <%= render 'fichiers/fichiersmoocs' %>
+      <h2>Fichiers</h2>
+
+      <div class='well'>
+        <% @rendu="structure" %>
+        <%= render 'fichiers/fichiersmoocs' %>
+        <% @rendu="log" %>
+        <%= render 'fichiers/fichiersmoocs' %>
+
+      </div>
     </li>
   </ul>
 </div>
