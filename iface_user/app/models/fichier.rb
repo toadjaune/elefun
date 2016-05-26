@@ -21,11 +21,18 @@ class Fichier < ActiveRecord::Base
 
   include Rails.application.routes.url_helpers
 
-#  attr_accessible :fichier
   has_attached_file :fichier #, path: 'fichiers'
   belongs_to :mooc
 
+
   validates_attachment_content_type :fichier, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
+  validates :mooc,
+    presence: true
+  validates :genre,
+    presence: true,
+    inclusion: { in: ['structure', 'log'] }
+
+  validate :validate_lien_moocs, unless: 'mooc.nil? || genre.nil?'
 
 #  def new(params)
 #    origin = params[:tempfile]
@@ -48,4 +55,16 @@ class Fichier < ActiveRecord::Base
       "delete_type" => "DELETE" 
     }
   end
+
+  private
+
+  def validate_lien_moocs
+    # On vérifie qu'un mooc donné a au plus un fichier de chaque type
+    nb = Fichier.where(mooc_id: mooc_id).count
+    # Si le fichier qu'on tente d'enregistrer est déjà en BDD, il faut le prendre en compte
+    unless ( new_record? && nb == 0 ) || ( !new_record? && nb == 1)
+      errors.add :mooc, "Il y a déjà un fichier de type #{genre} pour le mooc #{mooc}."
+    end
+  end
+    
 end

@@ -17,6 +17,16 @@
 #
 
 class Mooc < ActiveRecord::Base
-  has_many :fichiers
+  has_many :fichiers, dependent: :destroy
   belongs_to :bdd
+
+  validates_presence_of :bdd
+
+  def fichier_log
+    fichiers.where(genre: 'log').first
+  end
+
+  def fichier_structure
+    fichiers.where(genre: 'strucure').first
+  end
 end
