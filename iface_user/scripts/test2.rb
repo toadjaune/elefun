@@ -2,4 +2,5 @@
 
 require_relative 'common.rb'
 
-puts $structure_file
+puts Regroup::Sessions.forum_participation(-1,2)
+puts Session.count

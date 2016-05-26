@@ -23,7 +23,7 @@ module Parser
     return nil
   end
   
-  def self.browser_parser(line, id)
+  def self.browser_parser(line, id, type)
     user,session = Parser.get_session(line)
     #on récupère l'id de la page
     page = Page.find_by(myid: id)
@@ -33,7 +33,7 @@ module Parser
       return false
     else
       time = DateTime.iso8601(line['time'])
-      rel = Event.create(from_node: session, to_node: page, time: time, event_type: line['event_type'])
+      rel = Event.create(from_node: session, to_node: page, time: time, event_type: type)
       #if line['event_type'] == "play_video"
       #  session.add_views
       #end

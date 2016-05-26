@@ -49,10 +49,12 @@ def parse_logs(filename)
           Parser.enrollment_parser(line) ? $parsed += 1 : $toparse.write(l)
       when /courseware\/(?<page_1>\h{10,32})(\z|(\/(?<page_2>\h{10,32})))/
           id = $LAST_MATCH_INFO['page_2'] ? $LAST_MATCH_INFO['page_2'] : $LAST_MATCH_INFO['page_1']
-          Parser.browser_parser(line, id) ? $parsed += 1 : $toparse.write(l)
+        type = "page_visit"
+        Parser.browser_parser(line, id, type) ? $parsed += 1 : $toparse.write(l)
         when 'play_video'
           id = line['event']['id'].split('-').last
-          Parser.browser_parser(line, id) ? $parsed += 1 : $toparse.write(l)
+          type = "play_video"
+        Parser.browser_parser(line, id, type) ? $parsed += 1 : $toparse.write(l)
       end
       if $nb % 100 == 0
         puts($nb)

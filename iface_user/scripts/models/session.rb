@@ -1,4 +1,4 @@
-class Session < Etiquetable
+class Session
   include Neo4j::ActiveNode
   #Appartient à un User et regroupe un ensemble de Page visitées
   include Regroup::Sessions
@@ -48,11 +48,6 @@ class Session < Etiquetable
   def set_page_visits
     #à lancer apres forum post et forum visit
     self.page_visited = self.query_as(:s).match('(s)-[e:event]->(:Page)').where(e:{event_type: 'forum_visit'}).count(:e) - self.forum_visited - self.forum_posted
-    self.save
-  end
-
-  def end_inactivity
-    self.name += rand(36**10).to_s(36)
     self.save
   end
 end

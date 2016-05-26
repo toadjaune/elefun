@@ -9,8 +9,6 @@ class Fil < Page
   property :category_id, type: String
 
   has_many :out, :responses, type: :response
-  has_many :in, :users, rel_class: :info_fil
-  #has_one :in, :sess_creation, type: :session
 
   def set(params)
     self.myid = params['event']['id']
