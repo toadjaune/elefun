@@ -25,7 +25,9 @@ class Fichier < ActiveRecord::Base
   belongs_to :mooc
 
 
-  validates_attachment_content_type :fichier, :content_type => ["image/jpg", "image/jpeg", "image/png", "image/gif"]
+  validates_attachment :fichier,
+    presence: true,
+    content_type: { content_type: ['application/json', 'text/plain'] }
   validates :mooc,
     presence: true
   validates :genre,
