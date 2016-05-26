@@ -35,7 +35,7 @@ url='http://localhost:3000';
 
 chargement = $('<div class="hidden"><p>Chargement...</p></div>');
 
-function changeContent(tag, u, f){
+function changeContent(tag, u, f, f2){
     $(tag).empty();
     $(tag).append(chargement);
     $.get(u, function(data, status){
@@ -44,13 +44,23 @@ function changeContent(tag, u, f){
         if (f) {
             f();
         };
+        if (f2) {
+            f2();
+        };
     });
 };
 
+function deleteFichier(){
+    $('.delete-file').click( function(e){
+        // rel="nofollow" data-method="delete" href="'+url+'"
+        console.log(e);
+        e.preventDefault();
+    });
+};
+
+
 function loadMOOC(id){
-    changeContent($("#info_mooc"), url+'/moocs/'+id, prepareFileupload);
-
-
+    changeContent($("#info_mooc"), url+'/moocs/'+id, prepareFileupload, deleteFichier);
 };
 
 function inputify(tag){

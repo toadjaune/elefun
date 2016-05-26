@@ -1,29 +1,20 @@
-<h2>Fichiers</h2>
-
-<div class='well'>
-  <%= form_for Fichier.new, :html => { :multipart => true, :class => "fileupload row", :id => "fichier_s" } do |f| %>
-    <%= f.hidden_field :genre, :value => "structure"  %>
-    <%= f.hidden_field :mooc_id, :value => "1"  %>
-    <span class='col-sm-2 text-right'>Structure cours :</span>
-    <label for="fichier_structure" class="fileinput-button btn btn-success col-sm-3 btn-xs fs">
+<% @fichier_ici = Fichier.find_by(mooc_id: @mooc.id, genre: @rendu) %>
+<% if @fichier_ici %>
+  <div class="row">
+    <span class='col-sm-2 text-right categorie'><% if @rendu=="structure" %>Structure cours<% else %>Logs<%end %> :</span>
+    <span class="col-sm-2">Fichier chargé</span>
+    <button data-url="/fichiers/<%=@fichier_ici.id%>" class="btn btn-warning btn-xs col-sm-1 delete-file" data-confirm="Êtes-vous sûr ?">Supprimer</button>
+    <!--%= link_to 'Supprimer', @fichier_ici, method: :delete, class: 'btn btn-warning btn-xs col-sm-1 delete-file', data: { confirm: 'Êtes-vous sûr ?' } %-->
+  </div>
+<% else %>
+  <%= form_for Fichier.new, :html => { :multipart => true, :class => "fileupload row", :id => "fichier_"+@rendu } do |f| %>
+    <%= f.hidden_field :genre, :value => @rendu, :id => 'fichier_genre_'+@rendu  %>
+    <%= f.hidden_field :mooc_id, :value => @mooc.id, :id => 'fichier_mooc_id_'+@rendu  %>
+    <span class='col-sm-2 text-right categorie'><% if @rendu=="structure" %>Structure cours<% else %>Logs<%end %> :</span>
+    <label for="<%=@rendu%>" class="fileinput-button btn btn-primary col-sm-3 btn-xs fs">
       <span class='fsc'><span>Choisir un fichier</span></span>
     </label>
-      <%= f.file_field :structure, :value => "Chat", :name => "fichier[fichier]", :class => "hidden" %>
+    <%= f.file_field @rendu, :name => "fichier[fichier]", :class => "hidden", :id => @rendu, :name => "fichier_"+@rendu %>
+    <span class="prog-zone"></span>
+  <% end %>
 <% end %>
-<%= form_for Fichier.new, :html => { :multipart => true, :class => "fileupload", :id => "fichier_l" } do |f| %>
-    <div class='row'>
-    <%= f.hidden_field :genre, :value => "log"  %>
-    <%= f.hidden_field :mooc_id, :value => "1"  %>
-    <label class='col-sm-2 text-right'>Logs :</label>
-    <%= f.file_field :log, :name => "fichier[fichier]", :class => "col-sm-4" %>
-    <button class='btn btn-primary btn-xs col-sm-1'>Charger</button>
-  </div>
-<% end %>
-  <div class="progress progress-success progress-striped active">
-    <div id="progress" class="progress-bar" style="width:0%;"></div>
-  </div>
-</div>
-
-
-
-
