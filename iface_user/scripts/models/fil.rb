@@ -20,21 +20,16 @@ class Fil < Page
     self.fil_type = params['event']['thread_type']
     self.category_id = params['event']['category_id']
     self.save
-    i=self.users.where()
   end
 
   def set_discuss(params)
     self.time = params['time']
     self.display_name = params['event']['POST']['title'].pop.encode("UTF-8")
+    if self.display_name.empty?
+      self.display_name = "thread"
+    end
     self.message = params['event']['POST']['body'].pop.encode("UTF-8")
     self.fil_type = params['event']['POST']['thread_type'].pop
-    u,s = Parser.get_session(params)
-    s.add_posts
-    #if s.nil?
-    #	s = Session.create(name: params['session'], agent: params['agent'], debut_time: params['time'])
-    #end
-    self.sessions << s
-    self.save
   end
 
 end

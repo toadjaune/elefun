@@ -1,4 +1,4 @@
-class User
+class User < Etiquetable
   #Un utilisateur ayant été vu au moins une fois pendant le cours
   include Neo4j::ActiveNode
   include Regroup::Users

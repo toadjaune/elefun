@@ -2,7 +2,6 @@ class Comment < Page
   #commentaire sur du blabla
   include Neo4j::ActiveNode
 
-  property :myid, type: String
   property :time, type: DateTime
   property :message, type: String
 
@@ -14,6 +13,7 @@ class Comment < Page
 
   def set(params)
     self.myid = params['event']['id']
+    self.display_name = "comment"
     self.time = params['time']
     self.message = params['event']['body'].encode("UTF-8")
     self.category_id = params['event']['category_id']
@@ -26,6 +26,7 @@ class Comment < Page
 
   def set_discuss(params, r)
     self.time = params['time']
+    self.display_name = "comment"
     self.message = params['event']['POST']['body'].pop.encode("UTF-8")
     if r
       r.comments << self
