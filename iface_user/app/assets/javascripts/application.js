@@ -12,9 +12,22 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui
 //= require twitter/bootstrap
 //= require turbolinks
+// require jquery-fileupload
+//= require fileupload.js
 //= require_tree .
+
+//= require jquery-fileupload/vendor/jquery.ui.widget
+//= require jquery-fileupload/vendor/tmpl
+//= require jquery-fileupload/vendor/canvas-to-blob
+//= require jquery-fileupload/jquery.iframe-transport
+//= require jquery-fileupload/jquery.fileupload
+//= require jquery-fileupload/jquery.fileupload-process
+//= require jquery-fileupload/jquery.fileupload-validate
+//= require jquery-fileupload/locale
+//= require jquery-fileupload/jquery.fileupload-jquery-ui
 
 var url ,chargement, loadMOOC
 
@@ -22,17 +35,41 @@ url='http://localhost:3000';
 
 chargement = $('<div class="hidden"><p>Chargement...</p></div>');
 
-function changeContent(tag, u){
+function changeContent(tag, u, f, f2){
     $(tag).empty();
     $(tag).append(chargement);
     $.get(u, function(data, status){
         $(tag).empty();
         $(tag).append(data);
+        if (f) {
+            f();
+        };
+        if (f2) {
+            f2();
+        };
     });
 };
 
+function deleteFichier(){
+    $('.delete-file').click( function(e){
+        e.preventDefault();
+        $.ajax({
+            url: e.target.dataset.url,
+            type: 'DELETE',
+            success: function(response){
+                $(response).replaceAll($(e.target).parent());
+                prepareFileupload();
+            },
+            error: function(response){
+                console.log(response);
+            }
+        });
+    });
+};
+
+
 function loadMOOC(id){
-    changeContent($("#info_mooc"), url+'/moocs/'+id);
+    changeContent($("#info_mooc"), url+'/moocs/'+id, prepareFileupload, deleteFichier);
 };
 
 function inputify(tag){
@@ -42,15 +79,9 @@ function inputify(tag){
 };
 
 function editMOOC(id){
-    changeContent($("#mooc"), url+'/moocs/'+id+'/edit')
+    changeContent($("#mooc"), url+'/moocs/'+id+'/edit',prepareFileupload);
 };
-/*
-$(document).on('click', 'nav', function() {
-    if ($('#info_mooc').children().length == 0) {
-        loadMOOC($("#select_mooc").find(":selected").val());
-    }
-});
-*/
+
 $(document).on('page:load ready', function(){
     loadMOOC($("#select_mooc").find(":selected").val());
     $(document).on('submit', '.edit_mooc', function() {

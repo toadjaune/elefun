@@ -13,3 +13,12 @@
  *= require_tree .
  *= require_self
  */
+
+.progress {
+	padding: 0;
+	margin-bottom:0;
+}
+
+.row {
+	margin-bottom: 4px;
+}

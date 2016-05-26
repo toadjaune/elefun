@@ -44,6 +44,11 @@ gem 'devise', '~> 4.1.0'
 # Lancement des scripts en background
 gem 'sidekiq'
 
+# Upload en backgroud des fichiers
+gem 'jquery-fileupload-rails'
+gem 'jquery-ui-rails'
+gem 'paperclip'
+
 # Base de données pour les données extraites
 gem 'neo4j'
 
