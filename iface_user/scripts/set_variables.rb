@@ -22,17 +22,19 @@ nb = 0
 weeks = Week.all
 User.all.each do |u|
   weeks.each do |w|
-    info = InfoWeek.find_or_create_by(from_node: u, to_node: w)
-    info.set_page_visits
-    info.set_quiz_answers
+    nb += 1
+    info = InfoWeek.create(from_node: u, to_node: w)
+    info.set_page_visits(w)
+    info.set_quiz_answers(w)
     
-    info.set_forum_posts
-    info.set_forum_visits
+    info.set_forum_posts(w)
+    info.set_forum_visits(w)
     
-    info.set_video_views
+    info.set_video_views(w)
     
     #À DÉFINIR
     info.set_activite
+    info.save
   end
 end
 puts "#{nb} users traités"

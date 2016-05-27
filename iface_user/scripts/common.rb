@@ -20,6 +20,7 @@ require_relative 'models/page'
 require_relative 'models/video'
 require_relative 'models/question'
 require_relative 'models/quiz'
+require_relative 'models/info_week'
 require_relative 'models/week'
 require_relative 'models/result'
 

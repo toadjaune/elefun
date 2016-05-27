@@ -2,5 +2,9 @@
 
 require_relative 'common.rb'
 
-puts Regroup::Sessions.forum_participation(-1,2)
-puts Session.count
+i = InfoWeek.find(84645)
+w = Week.find_by(number: 0)
+puts w.name
+puts i.video_viewed
+i.set_video_views(w)
+puts i.video_viewed
