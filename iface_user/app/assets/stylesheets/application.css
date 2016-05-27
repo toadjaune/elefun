@@ -22,3 +22,12 @@
 .row {
 	margin-bottom: 4px;
 }
+
+#refresh-script{
+	margin-top: 25px;
+	margin-bottom: 10px;
+}
+
+.container{
+	max-width: 970px;
+}
