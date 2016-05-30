@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 require_relative 'common'
 
+require_relative 'common'
+
 start = Time.now
 "Début cacul des variables de sessions"
 nb = 0

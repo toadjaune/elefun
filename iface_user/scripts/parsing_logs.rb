@@ -105,7 +105,4 @@ def parse_logs(filename)
   result.puts("_________________________________")
 end
 
-#parse_logs('fichiers/20003S02/course_head.json')
-parse_logs('fichiers/20003S02/videos')
-#parse_logs('test_opti')
-#parse_logs('fichiers/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized')
+parse_logs('data/20003S02/export_course_ENSCachan_20003S02_Trimestre_1_2015.log_anonymized')
