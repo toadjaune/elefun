@@ -17,6 +17,7 @@
 //= require turbolinks
 // require jquery-fileupload
 //= require fileupload.js
+//= require scriptsbdd.js
 //= require_tree .
 
 //= require jquery-fileupload/vendor/jquery.ui.widget
