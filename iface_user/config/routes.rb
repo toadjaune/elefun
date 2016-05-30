@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
   resources :bdds
   resources :bdd_script_associations do
-    # GET bdd_script_associations/:id/launch
-    get 'launch', on: :member
-    # GET bdd_script_associations/:id/reset
-    get 'reset', on: :member
+    member do
+      # GET bdd_script_associations/:id/launch
+      get 'launch'
+      # GET bdd_script_associations/:id/reset
+      get 'reset'
+    end
   end
   resources :fichiers
   resources :moocs do
