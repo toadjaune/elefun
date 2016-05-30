@@ -7,7 +7,10 @@ Rails.application.routes.draw do
     get 'reset', on: :member
   end
   resources :fichiers
-  resources :moocs
+  resources :moocs do
+    # GET moocs/:id/bdd_script_associations
+    get 'bdd_script_associations', on: :member
+  end
   get 'moocs/:id/all' => 'moocs#all', as: :liste_moocs
 
   # The priority is based upon order of creation: first created -> highest priority.

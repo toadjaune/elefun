@@ -1,4 +1,6 @@
 json.array!(@bdd_script_associations) do |bdd_script_association|
   json.extract! bdd_script_association, :id
-  json.url bdd_script_association_url(bdd_script_association, format: :json)
+  json.nom bdd_script_association.script.nom 
+  json.ordre bdd_script_association.script.id
+  json.extract! bdd_script_association, :etat
 end
