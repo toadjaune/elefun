@@ -31,3 +31,7 @@
 .container{
 	max-width: 970px;
 }
+
+h2.panel-heading{
+	margin-top: 0;
+}
