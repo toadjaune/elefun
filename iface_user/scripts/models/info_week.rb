@@ -15,24 +15,24 @@ class InfoWeek
   property :video_viewed, type: Integer, default: 0
   property :activite, type:Time, default: 0
   
-  def set_page_visits
-    return self.from_node.as(:u).match_nodes(w: week).match('(u)-->(:Session)-[e:event]->(:Page)-->(w)').where(e: {event_type: "page_visit"}).count(:e)
+  def set_page_visits(week)
+    self.page_visited =  self.from_node.query_as(:u).match_nodes(w: week).match('(u)-->(:Session)-[e:event]->(:Page)-->(w)').where(e: {event_type: "page_visit"}).count(:e)
   end
   
-  def set_quiz_answers
-    return self.from_node.as(:u).match_nodes(w: week).match('(u)-->(:Session)-[r:result]->(:Quiz)-->(w)').count(:r)
+  def set_quiz_answers(week)
+    self.quiz_answered =  self.from_node.query_as(:u).match_nodes(w: week).match('(u)-->(:Session)-[r:result]->(:Quiz)-->(w)').count(:r)
   end
 
-  def set_forum_posts
-    return self.from_node.as(:u).match_nodes(w: week).match('(u)-->(:Session)-[e:event]->(:Page)-->(w)').where(e: {event_type: "forum_post"}).count(:e)
+  def set_forum_posts(week)
+    self.forum_posted =  self.from_node.query_as(:u).match_nodes(w: week).match('(u)-->(:Session)-[e:event]->(:Page)-->(w)').where(e: {event_type: "forum_post"}).count(:e)
   end
   
-  def set_forum_visits
-    return self.from_node.as(:u).match_nodes(w: week).match('(u)-->(:Session)-[e:event]->(:Page)-->(w)').where(e: {event_type: "forum_visit"}).count(:e)
+  def set_forum_visits(week)
+    self.forum_visited = self.from_node.query_as(:u).match_nodes(w: week).match('(u)-->(:Session)-[e:event]->(:Page)-->(w)').where(e: {event_type: "forum_visit"}).count(:e)
   end
 
-  def set_video_views
-    return self.from_node.as(:u).match_nodes(w: week).match('(u)-->(:Session)-[e:event]->(:Page)-->(w)').where(e: {event_type: "play_video"}).count(:e)
+  def set_video_views(week)
+    self.video_viewed = self.from_node.query_as(:u).match_nodes(w: week).match('(u)-->(:Session)-[e:event]->(v:Video)-->(w)').count(:v)
   end
 
   #À DÉFINIR
