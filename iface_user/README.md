@@ -13,10 +13,12 @@
  * sudo apt-get install redis
  * bundle install
  * rake neo4j:install
-* Installer neo4j-shell-tools pour l'export en .csv
- * curl -Lk -o neo4j-shell-tools.zip http://dist.neo4j.org/jexp/shell/neo4j-shell-tools_2.3.2.zip 
- * unzip neo4j-shell-tools.zip -d db/neo4j/development/lib
- * rm neo4j-shell-tools.zip  
+ * Installer neo4j-shell-tools pour l'export en .csv (se placer dans iface_user/)
+   * `curl -Lk -o neo4j-shell-tools.zip http://dist.neo4j.org/jexp/shell/neo4j-shell-tools_2.3.2.zip && \
+      unzip neo4j-shell-tools.zip -nd db/neo4j/development/lib && \
+      rm neo4j-shell-tools.zip && \
+      chmod -R 755 db/neo4j/development/lib && \
+      db/neo4j/development/bin/neo4j restart `
 
 ## Commandes utiles :
 * rails server      : Lance le serveur web sur le port 3000
