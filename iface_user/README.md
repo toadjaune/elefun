@@ -13,12 +13,16 @@
  * sudo apt-get install redis
  * bundle install
  * rake neo4j:install
-
+* Installer neo4j-shell-tools pour l'export en .csv
+ * curl -Lk -o neo4j-shell-tools.zip http://dist.neo4j.org/jexp/shell/neo4j-shell-tools_2.3.2.zip 
+ * unzip neo4j-shell-tools.zip -d db/neo4j/development/lib
+ * rm neo4j-shell-tools.zip  
 
 ## Commandes utiles :
 * rails server      : Lance le serveur web sur le port 3000
 * sidekiq           : Lance sidekiq, nécéssaire pour le lancement de scripts en background
 * rake neo4j:start  : Lance le serveur neo4j (sur le port 7474)
+* rake neo4j:shell  : Lance une CLI neo4j
 * bundle install    : à lancer à chaque changement de gems
 * rake db:migrate   : à lancer à chaque changement de structure de bdd
 * rake db:seed      : initialise la BDD avec des données initiales
