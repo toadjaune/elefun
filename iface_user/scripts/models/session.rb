@@ -24,7 +24,7 @@ class Session
   has_one :in, :user, type: :user
   has_many :out, :pages, rel_class: :Event
   has_many :out, :quizs, rel_class: :Result
-  
+
   def set_video_views
     self.video_viewed = self.query_as(:s).match('(s)-[:event]->(v:Video)').count('DISTINCT v')
     self.save
@@ -50,4 +50,15 @@ class Session
     self.page_visited = self.query_as(:s).match('(s)-[e:event]->(:Page)').where(e:{event_type: 'forum_visit'}).count(:e) - self.forum_visited - self.forum_posted
     self.save
   end
+
+  def get_entropy
+    total = self.video_viewed + self.page_visited + self.forum_posted + self.forum_visited + self.quiz_answered
+    return Math.log2(total)-(self.video_viewed*Math.log2(self.video_viewed)+self.page_visited*Math.log2(self.page_visited)+self.forum_posted*Math.log2(self.forum_posted)+self.forum_visited*Math.log2(self.forum_visited)+self.quiz_answered*Math.log2(self.quiz_answered))/total
+  end
+
+  def get_reducted_entropy
+    total = self.video_viewed + self.page_visited + self.forum_posted + self.forum_visited + self.quiz_answered
+    return Math.log2(total)-(self.video_viewed*Math.log2(self.video_viewed)+self.page_visited*Math.log2(self.page_visited)+(self.forum_posted+self.forum_visited)*Math.log2(self.forum_posted+self.forum_visited)+self.quiz_answered*Math.log2(self.quiz_answered))/total
+  end
+
 end
