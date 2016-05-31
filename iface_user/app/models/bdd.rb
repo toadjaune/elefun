@@ -9,6 +9,8 @@
 
 class Bdd < ActiveRecord::Base
 
+  # Il y a peu d'intérêt à la séparation de ce modèle de mooc, c'est un reliquat de la structure initialement envisagée
+  has_one  :mooc, dependent: :destroy
   has_many :bdd_script_associations, dependent: :destroy
   has_many :scripts, through: :bdd_script_associations
 
