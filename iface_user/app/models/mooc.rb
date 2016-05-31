@@ -20,7 +20,8 @@ class Mooc < ActiveRecord::Base
   has_many :fichiers, dependent: :destroy
   belongs_to :bdd, dependent: :destroy
 
-  validates_presence_of :auteur, :id_cours, :periode, :bdd
+  validates_presence_of   :auteur, :id_cours, :periode, :bdd
+  validates_uniqueness_of          :id_cours,           :bdd
 
   before_validation :set_bdd, on: :create
 
