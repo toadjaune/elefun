@@ -34,4 +34,8 @@ class Mooc < ActiveRecord::Base
     nom
   end
 
+  def launch_all_scripts
+    # TODO
+  end
+
 end

@@ -87,6 +87,17 @@ class MoocsController < ApplicationController
     end
   end
 
+  # GET /moocs/1/launch_all_scripts
+  # GET /moocs/1/launch_all_scripts.json
+
+  def launch_all_scripts
+    @mooc.launch_all_scripts
+    respond_to do |format|
+      format.html { redirect_to '/moocs' }
+      format.json { render 'bdd_script_associations/index' }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_mooc

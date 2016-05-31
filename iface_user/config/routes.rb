@@ -10,8 +10,12 @@ Rails.application.routes.draw do
   end
   resources :fichiers
   resources :moocs do
-    # GET moocs/:id/bdd_script_associations
-    get 'bdd_script_associations', on: :member
+    member do
+      # GET moocs/:id/bdd_script_associations
+      get 'bdd_script_associations'
+      # GET moocs/:id/launch_all_scripts
+      get 'launch_all_scripts'
+    end
   end
   get 'moocs/:id/all' => 'moocs#all', as: :liste_moocs
 
