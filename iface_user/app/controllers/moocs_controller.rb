@@ -1,5 +1,5 @@
 class MoocsController < ApplicationController
-  before_action :set_mooc, only: [:show, :edit, :update, :destroy]
+  before_action :set_mooc, only: [:show, :edit, :update, :destroy, :bdd_script_associations]
 
   # GET /moocs
   # GET /moocs.json
@@ -73,6 +73,28 @@ class MoocsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to '/moocs', notice: 'Mooc supprimé' }
       format.json { head :no_content }
+    end
+  end
+
+  # GET /moocs/1/bdd_script_associations
+  # GET /moocs/1/bdd_script_associations.json
+
+  def bdd_script_associations
+    @bdd_script_associations = @mooc.bdd.bdd_script_associations
+    respond_to do |format|
+      format.html { redirect_to '/moocs' }
+      format.json { render 'bdd_script_associations/index' }
+    end
+  end
+
+  # GET /moocs/1/launch_all_scripts
+  # GET /moocs/1/launch_all_scripts.json
+
+  def launch_all_scripts
+    @mooc.launch_all_scripts
+    respond_to do |format|
+      format.html { redirect_to '/moocs' }
+      format.json { render 'bdd_script_associations/index' }
     end
   end
 

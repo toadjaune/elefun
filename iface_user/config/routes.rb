@@ -1,13 +1,22 @@
 Rails.application.routes.draw do
   resources :bdds
   resources :bdd_script_associations do
-    # GET bdd_script_associations/:id/launch
-    get 'launch', on: :member
-    # GET bdd_script_associations/:id/reset
-    get 'reset', on: :member
+    member do
+      # GET bdd_script_associations/:id/launch
+      get 'launch'
+      # GET bdd_script_associations/:id/reset
+      get 'reset'
+    end
   end
   resources :fichiers
-  resources :moocs
+  resources :moocs do
+    member do
+      # GET moocs/:id/bdd_script_associations
+      get 'bdd_script_associations'
+      # GET moocs/:id/launch_all_scripts
+      get 'launch_all_scripts'
+    end
+  end
   get 'moocs/:id/all' => 'moocs#all', as: :liste_moocs
 
   # The priority is based upon order of creation: first created -> highest priority.

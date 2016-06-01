@@ -68,7 +68,10 @@ class BddScriptAssociationsController < ApplicationController
       res = @bdd_script_association.launch
       if res.nil?
         format.html { redirect_to @bdd_script_association, notice: 'Script lancé avec succès.' }
-        format.json { render :show, status: :ok, location: @bdd_script_association }
+        format.json do
+          @bdd_script_associations = @bdd_script_association.bdd.bdd_script_associations
+          render :index
+        end
       else
         format.html { render :edit, notice: res }
         format.json { render json: @bdd_script_association.errors, status: :unprocessable_entity }
@@ -82,7 +85,10 @@ class BddScriptAssociationsController < ApplicationController
     respond_to do |format|
       if @bdd_script_association.reset_etat
         format.html { redirect_to @bdd_script_association, notice: 'Script réinitialisé avec succès.' }
-        format.json { render :show, status: :ok, location: @bdd_script_association }
+        format.json do
+          @bdd_script_associations = @bdd_script_association.bdd.bdd_script_associations
+          render :index
+        end
       else
         format.html { render :edit }
         format.json { render json: @bdd_script_association.errors, status: :unprocessable_entity }

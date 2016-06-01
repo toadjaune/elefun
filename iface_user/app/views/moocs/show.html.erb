@@ -1,11 +1,13 @@
 <div class='panel panel-default'>
-  <div class='panel panel-heading'><%= @mooc.nom %></div>
+  <h2 class='panel panel-heading'><%= @mooc.nom %></h2>
   <ul class='list-group'>
     <li id="mooc" class='list-group-item'>
     <%= render 'moocs/showmooc' %>
     </li>
     <li id="fichier" class='list-group-item'>
-      <h2>Fichiers</h2>
+    <div class="row">
+      <h2 class="col-sm-6 col-sm-offset-1">Fichiers</h2>-
+    </div>
 
       <div class='well'>
         <% @rendu="structure" %>
@@ -14,6 +16,25 @@
         <%= render 'fichiers/fichiersmoocs' %>
 
       </div>
+    </li>
+    <li id="bdd_script" class='list-group-item'>
+    <div class="row">
+      <h2 class="col-sm-6 col-sm-offset-1">Scripts</h2>
+      <button id="refresh-script" class="btn btn-info btn-xs col-sm-1 col-sm-offset-3 refresh-scripts">Actualiser</button>
+    </div>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th colspan="2">Nom du script</th>
+          <th>État</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="bdd-script-container">
+      </tbody>
+    </table>
+    <button id="run-all" class="btn btn-success">Lancer tous les scripts</button>
+    <script>prepareScript();affichageScripts();</script>
     </li>
   </ul>
 </div>
